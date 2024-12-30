@@ -5,4 +5,5 @@
     <string name="how_to_do">How To Do</string>
     <string name="got_it">Got It</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="url_error">URL error</string>
 </resources>
