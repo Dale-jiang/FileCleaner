@@ -1,0 +1,72 @@
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    id 'kotlin-parcelize'
+    id 'stringfog'
+}
+
+android {
+    namespace 'com.clean.filecleaner'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.clean.filecleaner"
+        minSdk 24
+        //noinspection OldTargetApi
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+    packagingOptions {
+        jniLibs.useLegacyPackaging true
+    }
+}
+
+import com.github.megatronking.stringfog.plugin.StringFogMode
+import com.github.megatronking.stringfog.plugin.kg.RandomKeyGenerator
+
+stringfog {
+    implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
+    enable true
+    fogPackages = ['com.clean.filecleaner']
+    kg new RandomKeyGenerator()
+    mode StringFogMode.bytes
+}
+
+dependencies {
+    implementation fileTree(include: ['*.aar', '*.jar'], dir: 'libs')
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    implementation libs.androidx.fragment.ktx
+    implementation libs.androidx.lifecycle.livedata.ktx
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    // StringFog https://github.com/MegatronKing/StringFog
+    implementation libs.xor
+    // https://github.com/bumptech/glide
+    implementation libs.glide
+    // https://github.com/airbnb/lottie-android
+    implementation libs.lottie
+    //https://github.com/Blankj/AndroidUtilCode?tab=readme-ov-file
+    implementation libs.utilcodex
+}

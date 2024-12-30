@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FileCleaner</string>
+    <string name="splash_loading_tips">Loading, thank you for your patience.</string>
+</resources>
