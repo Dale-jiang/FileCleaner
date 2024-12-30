@@ -11,5 +11,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
 
+
+
     }
 }
