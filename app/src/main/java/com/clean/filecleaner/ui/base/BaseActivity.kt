@@ -19,10 +19,14 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupImmersiveMode()
         binding = inflateViewBinding()
         setContentView(binding.root)
         initView(savedInstanceState)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        setupImmersiveMode()
     }
 
     protected abstract fun setupImmersiveMode()

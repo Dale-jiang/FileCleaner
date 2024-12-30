@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.canInteractive
 import com.clean.filecleaner.ui.module.MainActivity
+import com.clean.filecleaner.ui.module.SettingTipsActivity
 import com.clean.filecleaner.ui.module.SplashActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,6 +80,7 @@ object AppLifeHelper {
             finishJob?.cancel()
             foregroundActivityCount--
             if (foregroundActivityCount <= 0) {
+                if (activity is SettingTipsActivity) return
                 LogUtils.d(TAG, "App moved to background, scheduling finish all activities")
                 finishJob = scope.launch {
                     try {

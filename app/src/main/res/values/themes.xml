@@ -14,4 +14,11 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/white</item>
     </style>
+
+    <style name="TransparentActivityTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>
