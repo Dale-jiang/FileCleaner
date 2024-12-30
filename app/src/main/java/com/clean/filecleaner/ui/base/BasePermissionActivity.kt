@@ -8,6 +8,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.viewbinding.ViewBinding
+import com.blankj.utilcode.util.ToastUtils
+import com.clean.filecleaner.R
 import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.ext.hasAllStoragePermissions
 import com.clean.filecleaner.ui.module.AutoCloseActivity
@@ -34,6 +36,13 @@ abstract class BasePermissionActivity<VB : ViewBinding> : BaseActivity<VB>() {
         }
     }
 
+    protected fun toUsageAccessSettings() {
+        Intent(this, AutoCloseActivity::class.java).apply {
+            action = Settings.ACTION_USAGE_ACCESS_SETTINGS
+            settingsActivityLauncher.launch(this)
+        }
+    }
+
     private fun handleLauncherResult() = run {
         isFromSettings = false
         if (hasAllStoragePermissions()) {
@@ -56,6 +65,8 @@ abstract class BasePermissionActivity<VB : ViewBinding> : BaseActivity<VB>() {
             isFromSettings = true
             settingsActivityLauncher.launch(intent)
         }
+    }.onFailure {
+        ToastUtils.showLong(getString(R.string.unknown_error))
     }
 
 }

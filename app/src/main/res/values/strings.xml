@@ -4,4 +4,5 @@
     <string name="make_sure_this_option_is_enabled">Make sure this option is enabled.</string>
     <string name="how_to_do">How To Do</string>
     <string name="got_it">Got It</string>
+    <string name="unknown_error">Unknown error</string>
 </resources>

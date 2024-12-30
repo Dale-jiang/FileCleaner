@@ -81,7 +81,16 @@ class AutoCloseActivity : BaseActivity<ActivityAutoCloseBinding>() {
                 data = Uri.parse("package:$packageName")
             }
         }
-        startActivity(intent)
+
+        runCatching {
+            startActivity(intent)
+        }.onFailure {
+            if (action == Settings.ACTION_USAGE_ACCESS_SETTINGS) {
+                startActivity(Intent(action).apply {
+                    flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+                })
+            }
+        }
 
         lifecycleScope.launch {
             delay(300)
