@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <include
         android:id="@+id/toolbar"
         layout="@layout/layout_toolbar" />
@@ -26,7 +25,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:ellipsize="end"
         android:gravity="center"
+        android:maxLines="1"
         android:text="xxxxxxxxxxxxxxxxxxx"
         android:textColor="@color/color_999"
         android:textSize="15sp" />

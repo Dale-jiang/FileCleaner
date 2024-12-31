@@ -9,5 +9,11 @@
 
     <string name="user_terms">User Terms</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="just_a_moment_while_we_scan">Just a moment while we scan...</string>
+    <string name="apk_files">Apk Files</string>
+    <string name="log_files">Log Files</string>
+    <string name="ad_junk">AD Junk</string>
+    <string name="temp_files">Temp Files</string>
+    <string name="app_cache">App Cache</string>
 
 </resources>
