@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.clean.filecleaner.databinding.ActivityMainBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
+import com.clean.filecleaner.ui.module.junk.JunkSearchActivity
 
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun setupImmersiveMode() = immersiveMode()
@@ -14,7 +15,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
         binding.request.setOnClickListener {
             requestPermissions {
-                startActivity(Intent(this@MainActivity, SettingActivity::class.java))
+                startActivity(Intent(this@MainActivity, JunkSearchActivity::class.java))
             }
         }
 
