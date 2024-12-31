@@ -1,18 +1,478 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/request"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="Permission"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="16dp"
+            android:text="@string/app_name"
+            android:textColor="@color/color_161617"
+            android:textSize="20sp"
+            android:theme="@style/FugazOne" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_setting"
+            android:layout_width="36dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            app:srcCompat="@mipmap/icon_setting" />
+
+    </FrameLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="104dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_bg_primary_8">
+
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:indeterminate="false"
+                    android:progress="50"
+                    app:indicatorColor="@color/white"
+                    app:indicatorDirectionCircular="clockwise"
+                    app:indicatorSize="65dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:trackColor="#3BFFFFFF"
+                    app:trackCornerRadius="6dp"
+                    app:trackThickness="6dp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="50%"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:theme="@style/SansitaBold"
+                    app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+                    app:layout_constraintEnd_toEndOf="@+id/progressBar"
+                    app:layout_constraintStart_toStartOf="@+id/progressBar"
+                    app:layout_constraintTop_toTopOf="@+id/progressBar" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btn_clean"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:layout_marginEnd="14dp"
+                    android:autoSizeMaxTextSize="13dp"
+                    android:autoSizeMinTextSize="8dp"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/shape_btn_clean_bg"
+                    android:gravity="center"
+                    android:minWidth="68dp"
+                    android:text="@string/clean"
+                    android:textColor="@color/white"
+                    android:textSize="13dp"
+                    android:theme="@style/SansitaBold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="SpUsage,UnusedAttribute" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/internal_storage"
+                    android:textColor="#B2FFFFFF"
+                    android:textSize="12sp"
+                    android:theme="@style/Sansita"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_clean"
+                    app:layout_constraintStart_toEndOf="@+id/progressBar" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:autoSizeMaxTextSize="14dp"
+                    android:autoSizeMinTextSize="8dp"
+                    android:autoSizeTextType="uniform"
+                    android:text="64GB of 128GB Used"
+                    android:textColor="#E6FFFFFF"
+                    android:textSize="14dp"
+                    android:theme="@style/Sansita"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_clean"
+                    app:layout_constraintStart_toEndOf="@+id/progressBar"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal"
+                    tools:ignore="SpUsage,UnusedAttribute" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/app_manager"
+                    android:layout_width="100dp"
+                    android:layout_height="128dp"
+                    android:background="@drawable/shape_btn_function_bg_28"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/duplicate_files"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        app:srcCompat="@mipmap/icon_app_manager" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/app_manager"
+                        android:textColor="#FF292D35"
+                        android:textSize="13sp"
+                        android:theme="@style/SansitaBold" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/duplicate_files"
+                    android:layout_width="100dp"
+                    android:layout_height="128dp"
+                    android:background="@drawable/shape_btn_function_bg_28"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/screenshot"
+                    app:layout_constraintStart_toEndOf="@+id/app_manager"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center_horizontal"
+                        app:srcCompat="@mipmap/icon_duplicate_files" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/duplicate_files"
+                        android:textColor="#FF292D35"
+                        android:textSize="13sp"
+                        android:theme="@style/SansitaBold" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/screenshot"
+                    android:layout_width="100dp"
+                    android:layout_height="128dp"
+                    android:background="@drawable/shape_btn_function_bg_28"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/duplicate_files"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center_horizontal"
+                        app:srcCompat="@mipmap/icon_screenshot" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/screenshot"
+                        android:textColor="#FF292D35"
+                        android:textSize="13sp"
+                        android:theme="@style/SansitaBold" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/file_manager"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:theme="@style/SansitaBold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/image"
+                    android:layout_width="103dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_btn_function_bg_5"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/video"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="21dp"
+                        app:srcCompat="@mipmap/icon_image" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="13dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="13dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/image"
+                        android:textColor="#FF292D35"
+                        android:textSize="13dp"
+                        android:theme="@style/Sansita"
+                        tools:ignore="SpUsage" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/video"
+                    android:layout_width="103dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_btn_function_bg_5"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/audio"
+                    app:layout_constraintStart_toEndOf="@+id/image"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="21dp"
+                        android:gravity="center_horizontal"
+                        app:srcCompat="@mipmap/icon_video" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginBottom="13dp"
+                        android:text="@string/video"
+                        android:textColor="#FF292D35"
+                        android:textSize="13dp"
+                        android:theme="@style/Sansita"
+                        tools:ignore="SpUsage" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/audio"
+                    android:layout_width="103dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_btn_function_bg_5"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/video"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="21dp"
+                        android:gravity="center_horizontal"
+                        app:srcCompat="@mipmap/icon_audio" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginBottom="13dp"
+                        android:text="Audio"
+                        android:textColor="#FF292D35"
+                        android:textSize="13dp"
+                        android:theme="@style/Sansita"
+                        tools:ignore="HardcodedText,SpUsage" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/docs"
+                    android:layout_width="103dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_btn_function_bg_5"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/apk"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="21dp"
+                        app:srcCompat="@mipmap/icon_docs" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="13dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="13dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/docs"
+                        android:textColor="#FF292D35"
+                        android:textSize="13dp"
+                        android:theme="@style/Sansita"
+                        tools:ignore="SpUsage" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/apk"
+                    android:layout_width="103dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_btn_function_bg_5"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/empty"
+                    app:layout_constraintStart_toEndOf="@+id/docs"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="21dp"
+                        android:gravity="center_horizontal"
+                        app:srcCompat="@mipmap/icon_apk" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginBottom="13dp"
+                        android:text="@string/apk"
+                        android:textColor="#FF292D35"
+                        android:textSize="13dp"
+                        android:theme="@style/Sansita"
+                        tools:ignore="SpUsage" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/empty"
+                    android:layout_width="103dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/apk"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="21dp"
+                        android:gravity="center_horizontal"
+                        android:visibility="invisible"
+                        app:srcCompat="@mipmap/icon_audio" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="13dp"
+                        android:layout_marginBottom="13dp"
+                        android:text="Audio"
+                        android:textColor="#FF292D35"
+                        android:textSize="13dp"
+                        android:theme="@style/Sansita"
+                        android:visibility="invisible"
+                        tools:ignore="HardcodedText,SpUsage" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -12,13 +12,28 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/color_page</item>
     </style>
 
     <style name="TransparentActivityTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="Sansita">
+        <item name="android:fontFamily">@font/sansita</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="FugazOne">
+        <item name="android:fontFamily">@font/fugaz_one</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="SansitaBold">
+        <item name="android:fontFamily">@font/sansita_bold</item>
+        <item name="android:includeFontPadding">false</item>
     </style>
 
 </resources>

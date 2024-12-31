@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF0096F0</color>
+    <color name="colorPrimary">#21C366</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="color_999">#FF999999</color>
     <color name="color_666">#FF666666</color>
+    <color name="color_161617">#FF161617</color>
+    <color name="color_f3bb44">#F3BB44</color>
+    <color name="color_page">#F9FAFC</color>
+
 </resources>

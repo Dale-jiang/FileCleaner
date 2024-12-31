@@ -15,5 +15,15 @@
     <string name="ad_junk">AD Junk</string>
     <string name="temp_files">Temp Files</string>
     <string name="app_cache">App Cache</string>
+    <string name="clean">Clean</string>
+    <string name="internal_storage">Internal Storage</string>
+    <string name="app_manager">App Manager</string>
+    <string name="duplicate_files">Duplicate Files</string>
+    <string name="screenshot">Screenshot</string>
+    <string name="file_manager">File Manager</string>
+    <string name="image">Image</string>
+    <string name="video">Video</string>
+    <string name="docs">Docs</string>
+    <string name="apk">Apk</string>
 
 </resources>
