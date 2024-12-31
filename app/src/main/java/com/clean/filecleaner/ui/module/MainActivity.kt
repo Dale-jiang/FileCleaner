@@ -13,6 +13,8 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
 
+//        TransitionManager.beginDelayedTransition(binding.root)
+
         binding.request.setOnClickListener {
             requestPermissions {
                 startActivity(Intent(this@MainActivity, JunkSearchActivity::class.java))
