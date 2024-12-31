@@ -9,6 +9,8 @@ val storagePermissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Mani
 typealias Callback = () -> Unit
 
 const val WEB_URL = "WEB_URL"
+const val USER_TERMS = "www.baidu.com"
+const val PRIVACY_POLICY = "www.baidu.com"
 
 /**---------------------SP-----------------------------**/
 const val FIRST_LAUNCH = "FIRST_LAUNCH"

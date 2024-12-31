@@ -2,7 +2,6 @@ package com.clean.filecleaner.ui.module
 
 import android.content.Intent
 import android.os.Bundle
-import com.clean.filecleaner.data.WEB_URL
 import com.clean.filecleaner.databinding.ActivityMainBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
@@ -15,9 +14,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
         binding.request.setOnClickListener {
             requestPermissions {
-                startActivity(Intent(this@MainActivity, WebActivity::class.java).apply {
-                    putExtra(WEB_URL, "www.baidu.com")
-                })
+                startActivity(Intent(this@MainActivity, SettingActivity::class.java))
             }
         }
 

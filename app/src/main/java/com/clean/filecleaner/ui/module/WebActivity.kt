@@ -14,7 +14,6 @@ import com.clean.filecleaner.databinding.ActivityWebBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ui.base.BaseActivity
 
-@SuppressLint("CustomSplashScreen")
 class WebActivity : BaseActivity<ActivityWebBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
     override fun inflateViewBinding(): ActivityWebBinding = ActivityWebBinding.inflate(layoutInflater)
@@ -40,7 +39,7 @@ class WebActivity : BaseActivity<ActivityWebBinding>() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWebView() = kotlin.runCatching {
-        binding.webView.apply {
+        with(binding.webView) {
             settings.javaScriptEnabled = true
             webChromeClient = object : WebChromeClient() {
                 override fun onReceivedTitle(view: WebView?, title: String?) {
