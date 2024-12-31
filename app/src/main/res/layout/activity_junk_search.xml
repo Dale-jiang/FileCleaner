@@ -11,6 +11,26 @@
         android:id="@+id/toolbar"
         layout="@layout/layout_toolbar" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/junk_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="30MB"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/file_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="xxxxxxxxxxxxxxxxxxx"
+        android:textColor="@color/color_999"
+        android:textSize="15sp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

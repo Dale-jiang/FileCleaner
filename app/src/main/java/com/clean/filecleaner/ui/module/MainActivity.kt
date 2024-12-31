@@ -1,11 +1,10 @@
 package com.clean.filecleaner.ui.module
 
-import android.content.Intent
 import android.os.Bundle
 import com.clean.filecleaner.databinding.ActivityMainBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
-import com.clean.filecleaner.ui.module.junk.JunkSearchActivity
+import com.clean.filecleaner.ui.module.dialog.CommonDialog
 
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun setupImmersiveMode() = immersiveMode()
@@ -17,7 +16,18 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
         binding.request.setOnClickListener {
             requestPermissions {
-                startActivity(Intent(this@MainActivity, JunkSearchActivity::class.java))
+                //  startActivity(Intent(this@MainActivity, JunkSearchActivity::class.java))
+
+
+                CommonDialog(message = "dsfsdfsdfsd", leftBtn = "Cancel", rightBtn = "OK", cancelable = true,
+                    leftClick = {
+
+                    },
+                    rightClick = {
+
+                    }).show(supportFragmentManager, "CommonDialog")
+
+
             }
         }
 
