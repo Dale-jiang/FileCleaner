@@ -86,6 +86,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.module.junk.JunkSearchEndActivity"
+            android:configChanges="density|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
     </application>
 

@@ -1,6 +1,7 @@
 package com.clean.filecleaner.ui.module.junk
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.format.Formatter.formatFileSize
 import android.view.animation.AnimationUtils
@@ -106,9 +107,11 @@ class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
                         if (it == JunkType.TEMP_FILES) {
                             delay(100L)
                             if (allJunkDataList.isEmpty()) {
-                                // toActivity<CleanResultActivity>(true)
+                                startActivity(Intent(this@JunkSearchActivity, JunkSearchEndActivity::class.java))
+                                finish()
                             } else {
-                                //  toActivity<CleanScanResultActivity>(true)
+                                startActivity(Intent(this@JunkSearchActivity, JunkSearchEndActivity::class.java))
+                                finish()
                             }
                         }
                     } ?: run {

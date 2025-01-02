@@ -17,6 +17,7 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:theme="@style/SansitaBold"
         tools:text="tit;e" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -29,6 +30,7 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="normal"
+        android:theme="@style/Sansita"
         tools:text="tit;e" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -49,6 +51,7 @@
             android:minWidth="72dp"
             android:textColor="@color/white"
             android:textSize="14sp"
+            android:theme="@style/SansitaBold"
             tools:text="cancel" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -61,6 +64,7 @@
             android:minWidth="72dp"
             android:textColor="@color/white"
             android:textSize="14sp"
+            android:theme="@style/SansitaBold"
             tools:text="ok" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
