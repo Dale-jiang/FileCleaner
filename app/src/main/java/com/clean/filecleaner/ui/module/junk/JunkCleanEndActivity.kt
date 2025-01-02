@@ -2,30 +2,44 @@ package com.clean.filecleaner.ui.module.junk
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.clean.filecleaner.R
+import com.clean.filecleaner.data.app
 import com.clean.filecleaner.databinding.ActivityJunkCleanEndBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
+import com.clean.filecleaner.ui.module.junk.bean.CleanJunkType
+import com.clean.filecleaner.ui.module.junk.bean.TrashItem
+import com.clean.filecleaner.ui.module.junk.bean.TrashItemCache
+import com.clean.filecleaner.ui.module.junk.bean.TrashItemParent
+import com.clean.filecleaner.ui.module.junk.viewmodel.allJunkDataList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 
 class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndBinding>() {
 
     override fun setupImmersiveMode() = immersiveMode(binding.root)
     override fun inflateViewBinding(): ActivityJunkCleanEndBinding = ActivityJunkCleanEndBinding.inflate(layoutInflater)
 
+    private var startDeleteTime = 0L
 
     private val cleanSize by lazy {
         intent?.getStringExtra("MESSAGE") ?: ""
@@ -60,12 +74,7 @@ class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndB
             ivLoading.startRotatingWithRotateAnimation()
             loadingJob = showLoadingAnimation()
 
-            lifecycleScope.launch {
-                delay(3000L)
-                TransitionManager.beginDelayedTransition(root)
-                loadingView.isVisible = false
-                stopLoadingAnim()
-            }
+            deleteJunk()
 
         }
         initBackListeners()
@@ -87,6 +96,52 @@ class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndB
         loadingJob?.cancel()
         binding.ivLoading.stopRotatingWithRotateAnimation()
     }
+
+
+    private fun deleteJunk() {
+        startDeleteTime = System.currentTimeMillis()
+        lifecycleScope.launch(Dispatchers.IO + SupervisorJob()) {
+            val itemsToDelete = allJunkDataList
+                .filterIsInstance<TrashItemParent>()
+                .flatMap { parent -> parent.subItems }
+                .filter { it.select }
+
+            itemsToDelete.forEach { item -> deleteItem(item) }
+            allJunkDataList.clear()
+            val delayTime = startDeleteTime + 3000L - System.currentTimeMillis()
+            if (delayTime > 0) {
+                delay(delayTime)
+            }
+            withContext(Dispatchers.Main) {
+                TransitionManager.beginDelayedTransition(binding.root)
+                binding.loadingView.isVisible = false
+                stopLoadingAnim()
+            }
+        }
+    }
+
+    private fun deleteItem(item: CleanJunkType) = runCatching {
+        when (item) {
+            is TrashItemCache -> {
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.R) {
+                    DocumentFile.fromSingleUri(app, Uri.parse(item.path))
+                        ?.takeIf { it.exists() }
+                        ?.delete()
+                } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+                    File(item.path).deleteRecursively()
+                } else Unit
+            }
+
+            is TrashItem -> {
+                File(item.path).deleteRecursively()
+            }
+
+            else -> Unit
+        }
+    }.onFailure {
+        LogUtils.e(it.message)
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
