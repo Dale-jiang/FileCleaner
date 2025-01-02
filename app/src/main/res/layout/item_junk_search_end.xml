@@ -15,7 +15,6 @@
         android:layout_height="16dp"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
-        android:scaleType="center"
         app:srcCompat="@drawable/svg_app_cache" />
 
     <androidx.appcompat.widget.AppCompatTextView

@@ -93,6 +93,7 @@
         android:text="@string/clean"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:theme="@style/SansitaBold" />
+        android:theme="@style/SansitaBold"
+        android:visibility="gone" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

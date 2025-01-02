@@ -75,7 +75,7 @@ class JunkSearchEndAdapter(
                         bind.loading.startRotatingWithRotateAnimation()
                     } else {
                         bind.loading.stopRotatingWithRotateAnimation()
-                        bind.loading.setImageResource(R.drawable.grey_circle)
+                        bind.loading.setImageResource(if (item.select) R.mipmap.icon_item_checked else R.drawable.grey_circle)
                     }
                 }
                 bind.itemExpand.animate().rotation(if (item.isOpen) 180f else 0f).setDuration(270L).start()
@@ -87,7 +87,6 @@ class JunkSearchEndAdapter(
                 } else {
                     formatFileSize(activity, item.subItems.filterIsInstance<TrashItem>().sumOf { it.fileSize })
                 }
-                bind.loading.setImageResource(if (item.select) R.mipmap.icon_item_checked else R.drawable.grey_circle)
                 val lp = bind.root.layoutParams as? RecyclerView.LayoutParams
                 lp?.setMargins(horizontalMargin, verticalMargin, horizontalMargin, 0)
 
