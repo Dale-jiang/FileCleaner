@@ -36,5 +36,6 @@
     <string name="need_authorization_to_find_more_junk">Need Authorization To Find More Junk</string>
     <string name="grant">Grant</string>
     <string name="not_now">Not Now</string>
+    <string name="ok">OK</string>
 
 </resources>
