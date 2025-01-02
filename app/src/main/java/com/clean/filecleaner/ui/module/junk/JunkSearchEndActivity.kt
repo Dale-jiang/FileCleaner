@@ -13,12 +13,12 @@ import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
 import androidx.transition.TransitionManager
 import com.blankj.utilcode.util.SPStaticUtils
-import com.blankj.utilcode.util.ToastUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.LAST_CLEAN_CACHE_TIME
 import com.clean.filecleaner.databinding.ActivityJunkSearchEndBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ui.module.AppCacheTipsActivity
+import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CachePermissionRequestDialog
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.junk.adapter.JunkSearchEndAdapter
@@ -36,6 +36,7 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
 
     private val viewModel by viewModels<JunkSearchEndViewModel>()
     private lateinit var mAdapter: JunkSearchEndAdapter
+    private var selectJunkSize = 0L
 
     override fun folderLauncherEnd() {
         viewModel.getAppCaches()
@@ -43,13 +44,12 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
 
     override fun above12LauncherEnd() {
         SPStaticUtils.put(LAST_CLEAN_CACHE_TIME, System.currentTimeMillis())
-
-        ToastUtils.showLong("clean....")
-
-//        toActivity<CleanResultActivity> {
-//            putExtra(CleanResultActivity.INTENT_KEY, getString(R.string.freed_up_of_space_for_you, binding.tvSize.text))
-//        }
-//        finish()
+        startActivity(Intent(this, JunkCleanEndActivity::class.java).apply {
+            if (selectJunkSize > 0) {
+                putExtra("MESSAGE", getString(R.string.clean_end_tips, binding.junkSize.text))
+            }
+        })
+        finish()
     }
 
 
@@ -63,6 +63,7 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
                 cancelable = true,
                 leftClick = {
                     allJunkDataList.clear()
+                    startActivity(Intent(this@JunkSearchEndActivity, MainActivity::class.java))
                     finish()
                 }
             ).show(
@@ -91,11 +92,13 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
             if (AndroidVersionUtils.isAndroid12OrAbove() && cacheParent != null && cacheParent.trashType == JunkType.APP_CACHE && cacheParent.select) {
                 above12Launcher.launch(Intent(StorageManager.ACTION_CLEAR_APP_CACHE))
             } else {
-//                    toActivity<CleanResultActivity> {
-//                        putExtra(CleanResultActivity.INTENT_KEY, getString(R.string.freed_up_of_space_for_you, binding.tvSize.text))
-//                    }
-//                    finish()
-                ToastUtils.showLong("结果页")
+                startActivity(Intent(this, JunkCleanEndActivity::class.java).apply {
+                    if (selectJunkSize > 0) {
+                        putExtra("MESSAGE", getString(R.string.clean_end_tips, binding.junkSize.text))
+                    }
+                })
+
+                finish()
             }
         }
 
@@ -132,10 +135,8 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
                 val firstItem = allJunkDataList.firstOrNull() as? TrashItemParent
 
                 if (!shouldReset && allJunkDataList.size == 1 && (firstItem?.subItems?.isEmpty() == true)) {
-                    ToastUtils.showLong("结果页")
-                    // 如果后续有跳转到其他 Activity 的逻辑可在这里执行
-                    // toActivity<CleanResultActivity>()
-                    // finish()
+                    startActivity(Intent(this@JunkSearchEndActivity, JunkCleanEndActivity::class.java))
+                    finish()
                     return@observe
                 }
 
@@ -191,7 +192,8 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
         binding.apply {
             btnClean.isEnabled = selectedItems.isNotEmpty()
             btnClean.alpha = if (selectedItems.isNotEmpty()) 1f else 0.3f
-            junkSize.text = formatFileSize(this@JunkSearchEndActivity, selectedItems.sumOf { it.fileSize })
+            selectJunkSize = selectedItems.sumOf { it.fileSize }
+            junkSize.text = formatFileSize(this@JunkSearchEndActivity, selectJunkSize)
         }
     }
 

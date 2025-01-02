@@ -37,5 +37,10 @@
     <string name="grant">Grant</string>
     <string name="not_now">Not Now</string>
     <string name="ok">OK</string>
+    <string name="cleaning_back_tips">Cleaning is in progress, thank you for your patience</string>
+    <string name="loading">Loading</string>
+    <string name="clean_end_tips">A total of %1$s has been deleted.</string>
+    <string name="clean_finished">Clean Finished</string>
+    <string name="tools">Tools</string>
 
 </resources>
