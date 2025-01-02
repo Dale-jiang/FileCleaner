@@ -25,11 +25,11 @@ interface Nameable {
 }
 
 enum class JunkType(val iconId: Int, val nameId: Int) {
-    LOG_FILES(R.drawable.more_arrow, R.string.log_files),
-    TEMP_FILES(R.drawable.more_arrow, R.string.temp_files),
-    APP_CACHE(R.drawable.more_arrow, R.string.app_cache),
-    AD_JUNK(R.drawable.more_arrow, R.string.ad_junk),
-    APK_FILES(R.drawable.more_arrow, R.string.apk_files);
+    LOG_FILES(R.drawable.svg_log_files, R.string.log_files),
+    TEMP_FILES(R.drawable.svg_temp_files, R.string.temp_files),
+    APP_CACHE(R.drawable.svg_app_cache, R.string.app_cache),
+    AD_JUNK(R.drawable.svg_ad_junk, R.string.ad_junk),
+    APK_FILES(R.drawable.svg_apk_files, R.string.apk_files);
 
     fun getImageIcon(): Int = iconId
     fun getName(): Int = nameId

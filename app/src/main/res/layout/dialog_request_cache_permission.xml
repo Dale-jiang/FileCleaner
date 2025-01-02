@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_white_12">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/icon"
+        android:layout_width="238dp"
+        android:layout_height="133dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/icon_request_appcache_per" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/des"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="25dp"
+        android:layout_marginTop="17dp"
+        android:gravity="center"
+        android:text="@string/need_authorization_to_find_more_junk"
+        android:textColor="#4C4C4C"
+        android:theme="@style/Sansita"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btn_grant"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="37dp"
+        android:layout_marginTop="27dp"
+        android:background="@drawable/ripple_primary_bg_10"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/grant"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:theme="@style/SansitaBold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/des" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btn_not_now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="11dp"
+        android:gravity="center"
+        android:paddingVertical="5dp"
+        android:text="@string/not_now"
+        android:textColor="#FFC3C3C3"
+        android:textSize="13sp"
+        android:theme="@style/Sansita"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_grant" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

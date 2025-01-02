@@ -14,8 +14,8 @@ import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.databinding.DialogCommonBinding
 
 class CommonDialog(
-    val title: String = "", val message: String, val leftBtn: String, val rightBtn: String,
-    val cancelable: Boolean = true, val leftClick: Callback, val rightClick: Callback
+    val title: String = "", val message: String = "", val leftBtn: String = "", val rightBtn: String = "",
+    val cancelable: Boolean = true, val leftClick: Callback? = null, val rightClick: Callback? = null
 ) :
     DialogFragment() {
 
@@ -59,12 +59,12 @@ class CommonDialog(
 
         binding.btnLeft.setOnClickListener {
             dismiss()
-            leftClick()
+            leftClick?.invoke()
         }
 
         binding.btnRight.setOnClickListener {
             dismiss()
-            rightClick()
+            rightClick?.invoke()
         }
 
     }

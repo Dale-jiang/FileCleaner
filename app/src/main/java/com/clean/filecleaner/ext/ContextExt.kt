@@ -11,8 +11,16 @@ import androidx.core.content.ContextCompat
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.data.storagePermissions
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid10OrAbove
+import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid11OrAbove
+import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid12OrAbove
 
 fun Application.canInteractive() = runCatching { (getSystemService(Context.POWER_SERVICE) as PowerManager).isInteractive }.getOrNull() ?: false
+
+fun Context.getApplicationLabelString(packageName: String) = runCatching {
+    app.packageManager.getApplicationLabel(app.packageManager.getApplicationInfo(packageName, 0)).toString()
+}.getOrNull() ?: ""
+
+fun Context.getApplicationIconDrawable(packageName: String) = runCatching { app.packageManager.getApplicationIcon(packageName) }.getOrNull()
 
 fun Context.hasAllStoragePermissions(): Boolean {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -35,4 +43,17 @@ fun Context.hasUsagePermissions(): Boolean {
     } catch (t: Throwable) {
         false
     }
+}
+
+fun Context.isGrantAppCache(): Boolean {
+    return when {
+        isAndroid12OrAbove() -> hasUsagePermissions()
+        isAndroid11OrAbove() -> isGrantAndroidData()
+        else -> true
+    }
+
+}
+
+fun Context.isGrantAndroidData(): Boolean {
+    return this.contentResolver.persistedUriPermissions.any { it.uri.toString() == "content://com.android.externalstorage.documents/tree/primary%3AAndroid%2Fdata" }
 }

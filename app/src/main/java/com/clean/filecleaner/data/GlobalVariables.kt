@@ -14,3 +14,4 @@ const val PRIVACY_POLICY = "www.baidu.com"
 
 /**---------------------SP-----------------------------**/
 const val FIRST_LAUNCH = "FIRST_LAUNCH"
+const val LAST_CLEAN_CACHE_TIME = "lastCleanCacheTime"

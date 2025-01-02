@@ -26,5 +26,15 @@
     <string name="docs">Docs</string>
     <string name="apk">Apk</string>
     <string name="scanning">scanning...</string>
+    <string name="permission_needed_clean_more_junk_now">Permission needed: clean more junk now.</string>
+    <string name="there_are_no_application_cache_files">There are no application cache files.</string>
+    <string name="junk_exit_tips">Junk files haven’t been cleaned yet. Would you still like to exit?</string>
+    <string name="exit">Exit</string>
+    <string name="cancel">Cancel</string>
+    <string name="please_click_the_bottom_button">Please click the bottom button</string>
+    <string name="i_know">I Know</string>
+    <string name="need_authorization_to_find_more_junk">Need Authorization To Find More Junk</string>
+    <string name="grant">Grant</string>
+    <string name="not_now">Not Now</string>
 
 </resources>

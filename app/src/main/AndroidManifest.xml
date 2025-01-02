@@ -92,6 +92,14 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.module.AppCacheTipsActivity"
+            android:configChanges="density|screenSize|keyboardHidden"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/TransparentActivityTheme" />
+
     </application>
 
 </manifest>

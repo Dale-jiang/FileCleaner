@@ -10,8 +10,8 @@
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/icon_junk_search_bg"
-        android:minHeight="280dp">
+        android:background="@mipmap/icon_junk_search_end_bg"
+        android:minHeight="250dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/toolbar"
@@ -51,55 +51,48 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
             android:gravity="center"
             android:text="30MB"
             android:textColor="@color/white"
             android:textSize="32sp"
             android:theme="@style/SansitaBold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            app:indicatorColor="#26FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:trackColor="#1AFFFFFF"
-            app:trackThickness="35dp"
-            tools:progress="50" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/file_path"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:text="@string/scanning"
-            android:textColor="@color/white"
-            android:textSize="13sp"
-            android:theme="@style/Sansita"
-            app:layout_constraintBottom_toBottomOf="@+id/progress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/progress" />
-
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.4" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:clipToPadding="false"
         android:paddingTop="14dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="20"
-        tools:listitem="@layout/item_junk_search" />
+        tools:listitem="@layout/item_junk_search_end_parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1A999999" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btn_clean"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ripple_f89836_12"
+        android:gravity="center"
+        android:text="@string/clean"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:theme="@style/SansitaBold" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
