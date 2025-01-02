@@ -21,7 +21,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
-    override fun setupImmersiveMode() = immersiveMode(binding.root)
+    override fun setupImmersiveMode() = immersiveMode(binding.topLayout, binding.root)
     override fun inflateViewBinding(): ActivityJunkSearchBinding = ActivityJunkSearchBinding.inflate(layoutInflater)
 
     private val viewModel by viewModels<JunkSearchViewModel>()
@@ -36,11 +36,11 @@ class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
 
     private val adapter by lazy {
         val list = listOf(
-            JunkSearchItem(getString(R.string.app_cache), R.drawable.more_arrow, 0L, true),
-            JunkSearchItem(getString(R.string.apk_files), R.drawable.more_arrow, 0L, true),
-            JunkSearchItem(getString(R.string.log_files), R.drawable.more_arrow, 0L, true),
-            JunkSearchItem(getString(R.string.ad_junk), R.drawable.more_arrow, 0L, true),
-            JunkSearchItem(getString(R.string.temp_files), R.drawable.more_arrow, 0L, true)
+            JunkSearchItem(getString(R.string.app_cache), R.drawable.svg_app_cache, 0L, true),
+            JunkSearchItem(getString(R.string.apk_files), R.drawable.svg_apk_files, 0L, true),
+            JunkSearchItem(getString(R.string.log_files), R.drawable.svg_log_files, 0L, true),
+            JunkSearchItem(getString(R.string.ad_junk), R.drawable.svg_ad_junk, 0L, true),
+            JunkSearchItem(getString(R.string.temp_files), R.drawable.svg_temp_files, 0L, true)
         )
         JunkSearchAdapter(this, list)
     }
@@ -51,7 +51,7 @@ class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
                 ToastUtils.showLong(getString(R.string.just_a_moment_while_we_scan))
             }
         }
-        binding.toolbar.ivLeft.setOnClickListener {
+        binding.ivLeft.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
     }

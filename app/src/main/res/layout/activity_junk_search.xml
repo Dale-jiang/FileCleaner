@@ -6,36 +6,98 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/layout_toolbar" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/junk_size"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:text="30MB"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:background="@mipmap/icon_junk_search_bg"
+        android:minHeight="260dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/file_path"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="xxxxxxxxxxxxxxxxxxx"
-        android:textColor="@color/color_999"
-        android:textSize="15sp" />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_left"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="18dp"
+                app:srcCompat="@drawable/svg_back_white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:theme="@style/SansitaBold"
+                tools:text="Clean" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_right"
+                android:layout_width="56dp"
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/junk_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:text="30MB"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:theme="@style/SansitaBold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:indicatorColor="#26FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:trackColor="#1AFFFFFF"
+            app:trackThickness="35dp"
+            tools:progress="50" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/file_path"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/scanning"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:theme="@style/Sansita"
+            app:layout_constraintBottom_toBottomOf="@+id/progress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/progress" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="14dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="20"
         tools:listitem="@layout/item_junk_search" />

@@ -34,12 +34,11 @@ class JunkSearchAdapter(private val activity: Activity, val list: List<JunkSearc
                 size.text = formatFileSize(activity, item.size)
 
                 if (item.isLoading) {
-                    loading.setImageResource(R.drawable.more_arrow)
+                    loading.setImageResource(R.mipmap.icon_item_loading)
                     loading.startRotatingWithRotateAnimation(500)
                 } else {
                     loading.stopRotatingWithRotateAnimation()
-                    // loading.rotation = 0f
-                    loading.setImageResource(R.drawable.more_arrow)
+                    loading.setImageResource(R.mipmap.icon_item_checked)
                 }
             }
         }

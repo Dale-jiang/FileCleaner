@@ -25,5 +25,6 @@
     <string name="video">Video</string>
     <string name="docs">Docs</string>
     <string name="apk">Apk</string>
+    <string name="scanning">scanning...</string>
 
 </resources>

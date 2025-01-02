@@ -9,12 +9,14 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_left"
         android:layout_width="56dp"
+        android:paddingHorizontal="18dp"
         android:layout_height="match_parent"
-        app:srcCompat="@color/colorPrimary" />
+        app:srcCompat="@drawable/svg_back_black" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
         android:layout_width="0dp"
+        android:theme="@style/SansitaBold"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"

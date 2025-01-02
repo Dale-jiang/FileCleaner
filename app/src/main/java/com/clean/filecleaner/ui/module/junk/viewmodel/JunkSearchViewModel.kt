@@ -90,8 +90,8 @@ class JunkSearchViewModel : ViewModel() {
     private fun createJunkDataList() {
         viewModelScope.launch(Dispatchers.IO + SupervisorJob()) {
             allJunkDataList.clear()
-            val trashTypesOrder = listOf(JunkType.APK_FILES, JunkType.LOG_FILES, JunkType.AD_JUNK, JunkType.TEMP_FILES)
-            val delayPerType = mapOf(JunkType.APK_FILES to 200L, JunkType.LOG_FILES to 200L, JunkType.AD_JUNK to 200L, JunkType.TEMP_FILES to 500L)
+            val trashTypesOrder = listOf(JunkType.APP_CACHE, JunkType.APK_FILES, JunkType.LOG_FILES, JunkType.AD_JUNK, JunkType.TEMP_FILES)
+            val delayPerType = mapOf(JunkType.APP_CACHE to 200L, JunkType.APK_FILES to 200L, JunkType.LOG_FILES to 200L, JunkType.AD_JUNK to 200L, JunkType.TEMP_FILES to 500L)
 
             for (trashType in trashTypesOrder) {
                 val filteredList = junkDetailsTempList.filter { it.trashType == trashType }
@@ -103,6 +103,11 @@ class JunkSearchViewModel : ViewModel() {
                         allJunkDataList.add(parentItem)
                     }
 
+                    withContext(Dispatchers.Main) {
+                        delay(delayPerType[trashType] ?: 200L)
+                        createJunkDataListObserver.value = trashType
+                    }
+                } else {
                     withContext(Dispatchers.Main) {
                         delay(delayPerType[trashType] ?: 200L)
                         createJunkDataListObserver.value = trashType
