@@ -13,6 +13,7 @@ import com.clean.filecleaner.ext.startScaleAnimation
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.junk.JunkSearchActivity
+import com.clean.filecleaner.ui.module.screenshot.ScreenshotCleanActivity
 
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
@@ -43,6 +44,10 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
             appManager.setOnClickListener {
                 startActivity(Intent(this@MainActivity, ApplicationManagementActivity::class.java))
+            }
+
+            screenshot.setOnClickListener {
+                startActivity(Intent(this@MainActivity, ScreenshotCleanActivity::class.java))
             }
         }
     }
