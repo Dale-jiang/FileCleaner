@@ -131,11 +131,10 @@ class ApplicationManagementActivity : BaseActivity<ActivityApplicationManagement
                 itemList
             }
 
+            val delayTime = timeTag + 2000 - System.currentTimeMillis()
+            if (delayTime > 0) delay(delayTime)
+
             withContext(Dispatchers.Main) {
-
-                val delayTime = timeTag + 2000 - System.currentTimeMillis()
-                if (delayTime > 0) delay(delayTime)
-
                 TransitionManager.beginDelayedTransition(binding.root)
                 binding.loadingView.isVisible = false
                 setUpAdapter(finalList.toMutableList())

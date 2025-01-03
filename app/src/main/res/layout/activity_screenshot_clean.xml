@@ -33,7 +33,8 @@
                     android:text="0MB"
                     android:textColor="#FF0F3536"
                     android:textSize="30sp"
-                    android:theme="@style/SansitaBold"
+                    android:textStyle="bold"
+                    android:theme="@style/Sansita"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="HardcodedText" />
@@ -46,7 +47,8 @@
                     android:text="@string/screenshot"
                     android:textColor="#FF8C9198"
                     android:textSize="12sp"
-                    android:theme="@style/SansitaBold"
+                    android:textStyle="bold"
+                    android:theme="@style/Sansita"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/total_size" />
 
@@ -66,11 +68,53 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="20"
                 tools:listitem="@layout/item_screenshot_group" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="88dp">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/all_checked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:checked="false" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/unanimous"
+                    android:textColor="#FF828B8F"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:theme="@style/Sansita" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/btn_clean"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="25dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ripple_primary_bg_10"
+                    android:gravity="center"
+                    android:text="@string/clean"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:theme="@style/Sansita"
+                    android:visibility="visible" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -119,5 +163,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

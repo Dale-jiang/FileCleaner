@@ -32,7 +32,8 @@
     </style>
 
     <style name="SansitaBold">
-        <item name="android:fontFamily">@font/sansita_bold</item>
+        <item name="android:fontFamily">@font/sansita</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
