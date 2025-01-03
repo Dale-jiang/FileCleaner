@@ -25,7 +25,7 @@ object AppLifeHelper {
     private const val TAG = "AppLifeHelper"
 
     private val activities = CopyOnWriteArrayList<WeakReference<Activity>>()
-    var isFromSettings = false
+    var jumpToSettings = false
     private var needHotRestart = false
     private var finishJob: Job? = null
     private var foregroundActivityCount = 0
@@ -57,9 +57,9 @@ object AppLifeHelper {
                     return
                 }
 
-                if (isFromSettings) {
+                if (jumpToSettings) {
                     LogUtils.d(TAG, "Returning from settings, skipping SplashActivity launch")
-                    isFromSettings = false
+                    jumpToSettings = false
                     return
                 }
 
@@ -80,7 +80,7 @@ object AppLifeHelper {
             finishJob?.cancel()
             foregroundActivityCount--
             if (foregroundActivityCount <= 0) {
-                if (activity is SettingTipsActivity) return
+                if (jumpToSettings || activity is SettingTipsActivity) return
                 LogUtils.d(TAG, "App moved to background, scheduling finish all activities")
                 finishJob = scope.launch {
                     try {

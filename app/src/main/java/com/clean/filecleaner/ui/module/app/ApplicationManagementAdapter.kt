@@ -8,15 +8,14 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.clean.filecleaner.R
-import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.databinding.ItemApplicationManagementBinding
 import com.clean.filecleaner.ext.formatTimestampToMMddyyyy
 import com.clean.filecleaner.utils.Tools
 
 class ApplicationManagementAdapter(
     private val activity: AppCompatActivity,
-    val list: List<ApplicationInfo>,
-    private val clickListener: Callback
+    val list: MutableList<ApplicationInfo>,
+    private val clickListener: (ApplicationInfo) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -51,7 +50,7 @@ class ApplicationManagementAdapter(
                 }
 
                 btnUninstall.setOnClickListener {
-                    clickListener.invoke()
+                    clickListener.invoke(item)
                 }
 
             }

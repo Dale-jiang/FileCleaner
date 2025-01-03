@@ -13,7 +13,7 @@ import com.clean.filecleaner.R
 import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.ext.hasAllStoragePermissions
 import com.clean.filecleaner.ui.module.AutoCloseActivity
-import com.clean.filecleaner.utils.AppLifeHelper.isFromSettings
+import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
 
 abstract class BasePermissionActivity<VB : ViewBinding> : BaseActivity<VB>() {
 
@@ -44,7 +44,7 @@ abstract class BasePermissionActivity<VB : ViewBinding> : BaseActivity<VB>() {
     }
 
     private fun handleLauncherResult() = run {
-        isFromSettings = false
+        jumpToSettings = false
         if (hasAllStoragePermissions()) {
             permissionRequestCallback?.invoke()
         }
@@ -62,7 +62,7 @@ abstract class BasePermissionActivity<VB : ViewBinding> : BaseActivity<VB>() {
             data = Uri.parse("package:$packageName")
             flags = Intent.FLAG_ACTIVITY_NO_HISTORY
         }.let { intent ->
-            isFromSettings = true
+            jumpToSettings = true
             settingsActivityLauncher.launch(intent)
         }
     }.onFailure {

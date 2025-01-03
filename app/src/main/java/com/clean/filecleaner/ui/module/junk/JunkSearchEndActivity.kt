@@ -27,7 +27,7 @@ import com.clean.filecleaner.ui.module.junk.bean.TrashItemParent
 import com.clean.filecleaner.ui.module.junk.viewmodel.JunkSearchEndViewModel
 import com.clean.filecleaner.ui.module.junk.viewmodel.allJunkDataList
 import com.clean.filecleaner.utils.AndroidVersionUtils
-import com.clean.filecleaner.utils.AppLifeHelper.isFromSettings
+import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
 
 class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBinding>() {
 
@@ -209,7 +209,7 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
 
             else -> {
                 // Android 12 以下，通过 OPEN_DOCUMENT_TREE 手动获取权限
-                isFromSettings = true
+                jumpToSettings = true
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
                     addFlags(
                         Intent.FLAG_ACTIVITY_NO_HISTORY or
