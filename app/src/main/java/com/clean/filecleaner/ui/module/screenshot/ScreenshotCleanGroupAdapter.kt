@@ -9,7 +9,7 @@ import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ItemScreenshotGroupBinding
 
 class ScreenshotCleanGroupAdapter(
-    private val activity: AppCompatActivity, private val list: MutableList<ScreenshotCleanParent>, val clickListener: (Boolean) -> Unit
+    private val activity: AppCompatActivity, private val list: MutableList<ScreenshotCleanParent>, val clickListener: () -> Unit
 ) : RecyclerView.Adapter<ScreenshotCleanGroupAdapter.ItemViewHolder>() {
 
     private val viewPool = RecyclerView.RecycledViewPool()
@@ -21,7 +21,7 @@ class ScreenshotCleanGroupAdapter(
             if (position != RecyclerView.NO_POSITION) {
                 val item = list[position]
                 item.isSelected = item.children.all { it.isSelected }
-                clickListener.invoke(item.isSelected)
+                clickListener.invoke()
                 notifyItemChanged(position)
             }
         }
@@ -45,6 +45,14 @@ class ScreenshotCleanGroupAdapter(
                 clear()
                 addAll(item.children)
                 subAdapter.notifyDataSetChanged()
+            }
+
+            binding.ivChecked.setOnClickListener {
+                if (item.isSelected) item.deselect() else item.select()
+                subAdapter.list.forEach { if (item.isSelected) it.select() else it.deselect() }
+                notifyItemChanged(layoutPosition)
+                subAdapter.notifyDataSetChanged()
+                clickListener.invoke()
             }
 
         }

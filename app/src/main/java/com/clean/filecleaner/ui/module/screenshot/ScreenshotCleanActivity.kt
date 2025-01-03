@@ -1,9 +1,11 @@
 package com.clean.filecleaner.ui.module.screenshot
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.format.Formatter
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
@@ -43,6 +45,10 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
         binding.toolbar.ivLeft.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+
+        binding.allChecked.setOnClickListener {
+            selectAllBtnClick()
+        }
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -66,8 +72,8 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
     private fun setUpAdapter() {
         with(binding) {
             adapter = ScreenshotCleanGroupAdapter(this@ScreenshotCleanActivity, list = allScreenshotList) {
-
-
+                allChecked.isChecked = allScreenshotList.all { c -> c.isSelected }
+                setUpCleanBtn()
             }
             recyclerView.itemAnimator = null
             recyclerView.adapter = adapter
@@ -75,6 +81,49 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
             recyclerView.layoutAnimation = controller
             recyclerView.scheduleLayoutAnimation()
         }
+    }
+
+
+    private fun setUpCleanBtn() {
+
+        val totalSize = allScreenshotList.sumOf { parent ->
+            parent.children.sumOf { child -> if (child.isSelected) child.size else 0L }
+        }
+
+        val hasSelectedItems = totalSize > 0
+        val isListEmpty = allScreenshotList.isEmpty()
+
+        with(binding) {
+            this.totalSize.text = Formatter.formatFileSize(this@ScreenshotCleanActivity, totalSize)
+            btnClean.apply {
+                isEnabled = hasSelectedItems
+                alpha = if (hasSelectedItems) 1f else 0.3f
+            }
+            allChecked.apply {
+                isEnabled = !isListEmpty
+                if (!hasSelectedItems) isChecked = false
+            }
+            emptyView.isVisible = isListEmpty
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun selectAllBtnClick() {
+        var totalSize = 0L
+        allScreenshotList.forEach {
+            val status = binding.allChecked.isChecked
+            if (status) it.select() else it.deselect()
+            it.children.forEach { c ->
+                if (status) c.select() else c.deselect()
+                if (c.isSelected) totalSize += c.size
+            }
+        }
+        binding.totalSize.text = Formatter.formatFileSize(this@ScreenshotCleanActivity, totalSize)
+        binding.btnClean.apply {
+            isEnabled = totalSize > 0
+            alpha = if (totalSize > 0) 1f else 0.3f
+        }
+        adapter?.notifyDataSetChanged()
     }
 
     private suspend fun fetchScreenshotList() = withContext(Dispatchers.IO + SupervisorJob()) {
@@ -135,6 +184,7 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
                 stopLoadingAnim()
                 TransitionManager.beginDelayedTransition(binding.root)
                 binding.loadingView.isVisible = false
+                binding.emptyView.isVisible = allScreenshotList.isEmpty()
                 setUpAdapter()
             }
         } catch (e: Exception) {
