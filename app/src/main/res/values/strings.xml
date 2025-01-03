@@ -51,5 +51,8 @@
     <string name="more_than">"more than "</string>
     <string name="unanimous">Unanimous</string>
     <string name="currently_no_data">Currently no data.</string>
-
+    <string name="cleaning">Cleaning</string>
+    <string name="warning">Warning</string>
+    <string name="do_you_wish_to_delete_this">Do you wish to delete this?</string>
+    <string name="delete">Delete</string>
 </resources>

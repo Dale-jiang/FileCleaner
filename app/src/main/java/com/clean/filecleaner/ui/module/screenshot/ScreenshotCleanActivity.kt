@@ -18,6 +18,7 @@ import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
+import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -31,6 +32,7 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
     override fun inflateViewBinding(): ActivityScreenshotCleanBinding = ActivityScreenshotCleanBinding.inflate(layoutInflater)
     private var timeTag = 0L
     private var adapter: ScreenshotCleanGroupAdapter? = null
+    private var mTotalSize = 0L
 
     companion object {
         val allScreenshotList = mutableListOf<ScreenshotCleanParent>()
@@ -48,6 +50,25 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
 
         binding.allChecked.setOnClickListener {
             selectAllBtnClick()
+        }
+
+        binding.btnClean.setOnClickListener {
+            CommonDialog(
+                title = getString(R.string.warning),
+                message = getString(R.string.do_you_wish_to_delete_this),
+                leftBtn = getString(R.string.delete),
+                rightBtn = getString(R.string.cancel),
+                cancelable = true,
+                leftClick = {
+                    startActivity(Intent(this, ScreenshotCleanEndActivity::class.java).apply {
+                        if (mTotalSize > 0) {
+                            putExtra("MESSAGE", getString(R.string.clean_end_tips, binding.totalSize.text))
+                        }
+                    })
+
+                    finish()
+                }
+            ).show(supportFragmentManager, "CommonDialog")
         }
     }
 
@@ -86,15 +107,15 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
 
     private fun setUpCleanBtn() {
 
-        val totalSize = allScreenshotList.sumOf { parent ->
+        mTotalSize = allScreenshotList.sumOf { parent ->
             parent.children.sumOf { child -> if (child.isSelected) child.size else 0L }
         }
 
-        val hasSelectedItems = totalSize > 0
+        val hasSelectedItems = mTotalSize > 0
         val isListEmpty = allScreenshotList.isEmpty()
 
         with(binding) {
-            this.totalSize.text = Formatter.formatFileSize(this@ScreenshotCleanActivity, totalSize)
+            this.totalSize.text = Formatter.formatFileSize(this@ScreenshotCleanActivity, mTotalSize)
             btnClean.apply {
                 isEnabled = hasSelectedItems
                 alpha = if (hasSelectedItems) 1f else 0.3f
@@ -109,19 +130,19 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun selectAllBtnClick() {
-        var totalSize = 0L
+        mTotalSize = 0
         allScreenshotList.forEach {
             val status = binding.allChecked.isChecked
             if (status) it.select() else it.deselect()
             it.children.forEach { c ->
                 if (status) c.select() else c.deselect()
-                if (c.isSelected) totalSize += c.size
+                if (c.isSelected) mTotalSize += c.size
             }
         }
-        binding.totalSize.text = Formatter.formatFileSize(this@ScreenshotCleanActivity, totalSize)
+        binding.totalSize.text = Formatter.formatFileSize(this@ScreenshotCleanActivity, mTotalSize)
         binding.btnClean.apply {
-            isEnabled = totalSize > 0
-            alpha = if (totalSize > 0) 1f else 0.3f
+            isEnabled = mTotalSize > 0
+            alpha = if (mTotalSize > 0) 1f else 0.3f
         }
         adapter?.notifyDataSetChanged()
     }
