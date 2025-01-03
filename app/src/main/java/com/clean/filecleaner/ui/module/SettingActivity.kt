@@ -2,6 +2,8 @@ package com.clean.filecleaner.ui.module
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.addCallback
+import com.clean.filecleaner.R
 import com.clean.filecleaner.data.PRIVACY_POLICY
 import com.clean.filecleaner.data.USER_TERMS
 import com.clean.filecleaner.data.WEB_URL
@@ -15,6 +17,16 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         with(binding) {
+
+            binding.toolbar.title.text = getString(R.string.setting)
+            onBackPressedDispatcher.addCallback {
+                startActivity(Intent(this@SettingActivity, MainActivity::class.java))
+                finish()
+            }
+
+            binding.toolbar.ivLeft.setOnClickListener {
+                onBackPressedDispatcher.onBackPressed()
+            }
 
             userTerms.setOnClickListener {
                 startActivity(Intent(this@SettingActivity, WebActivity::class.java).apply {
@@ -33,4 +45,5 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
 
     }
 }
+
 
