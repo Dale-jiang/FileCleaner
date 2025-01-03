@@ -2,17 +2,21 @@ package com.clean.filecleaner.ext
 
 import android.app.AppOpsManager
 import android.app.Application
+import android.app.usage.StorageStatsManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
 import android.os.PowerManager
+import android.os.StatFs
+import android.os.storage.StorageManager
 import androidx.core.content.ContextCompat
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.data.storagePermissions
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid10OrAbove
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid11OrAbove
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid12OrAbove
+import java.io.IOException
 
 fun Application.canInteractive() = runCatching { (getSystemService(Context.POWER_SERVICE) as PowerManager).isInteractive }.getOrNull() ?: false
 
@@ -56,4 +60,35 @@ fun Context.isGrantAppCache(): Boolean {
 
 fun Context.isGrantAndroidData(): Boolean {
     return this.contentResolver.persistedUriPermissions.any { it.uri.toString() == "content://com.android.externalstorage.documents/tree/primary%3AAndroid%2Fdata" }
+}
+
+fun Context.getStorageSizeInfo(): Pair<Long, Long> {
+    return try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val storageStatsManager = getSystemService(StorageStatsManager::class.java)
+            val totalBytes = storageStatsManager.getTotalBytes(StorageManager.UUID_DEFAULT)
+            val freeBytes = storageStatsManager.getFreeBytes(StorageManager.UUID_DEFAULT)
+            Pair(totalBytes, totalBytes - freeBytes)
+        } else {
+            getStorageSizeByStatFs()
+        }
+    } catch (e: SecurityException) {
+        getStorageSizeByStatFs()
+    } catch (e: IOException) {
+        getStorageSizeByStatFs()
+    } catch (e: Throwable) {
+        getStorageSizeByStatFs()
+    }
+}
+
+private fun getStorageSizeByStatFs(): Pair<Long, Long> {
+    val path = Environment.getDataDirectory()
+    val statFs = StatFs(path.path)
+    val blockSize = statFs.blockSizeLong
+    val totalBlocks = statFs.blockCountLong
+    val availableBlocks = statFs.availableBlocksLong
+
+    val totalSize = totalBlocks * blockSize
+    val usedSize = (totalBlocks - availableBlocks) * blockSize
+    return Pair(totalSize, usedSize)
 }

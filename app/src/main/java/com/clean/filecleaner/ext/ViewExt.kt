@@ -1,9 +1,11 @@
 package com.clean.filecleaner.ext
 
+import android.animation.ValueAnimator
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
+import android.widget.ProgressBar
 
 fun View.startRotatingWithRotateAnimation(duration: Long = 1000L) {
     if (this.animation != null) {
@@ -24,4 +26,18 @@ fun View.startRotatingWithRotateAnimation(duration: Long = 1000L) {
 
 fun View.stopRotatingWithRotateAnimation() {
     this.clearAnimation()
+}
+
+fun ProgressBar.animateToProgressWithValueAnimator(targetProgress: Int, durationMillis: Long = 500L, onUpdate: ((animatedValue: Int) -> Unit)? = null) {
+    val safeTarget = targetProgress.coerceIn(0, max)
+    val animator = ValueAnimator.ofInt(0, safeTarget).apply {
+        duration = durationMillis
+
+        addUpdateListener { animation ->
+            val animatedValue = animation.animatedValue as Int
+            this@animateToProgressWithValueAnimator.progress = animatedValue
+            onUpdate?.invoke(animatedValue)
+        }
+    }
+    animator.start()
 }

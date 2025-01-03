@@ -42,5 +42,6 @@
     <string name="clean_end_tips">A total of %1$s has been deleted.</string>
     <string name="clean_finished">Clean Finished</string>
     <string name="tools">Tools</string>
+    <string name="storage_of_used">%1$s of %2$s Used</string>
 
 </resources>
