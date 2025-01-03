@@ -1,18 +1,15 @@
 package com.clean.filecleaner.ui.module
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.format.Formatter.formatFileSize
-import android.view.View
-import androidx.core.animation.doOnEnd
 import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ActivityMainBinding
 import com.clean.filecleaner.ext.animateToProgressWithValueAnimator
 import com.clean.filecleaner.ext.getStorageSizeInfo
 import com.clean.filecleaner.ext.immersiveMode
+import com.clean.filecleaner.ext.startScaleAnimation
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.junk.JunkSearchActivity
@@ -31,7 +28,8 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
         with(binding) {
 
             setStorageInfo()
-            startHeartbeatAnimation(btnClean)
+
+            btnClean.startScaleAnimation()
 
             btnClean.setOnClickListener {
                 requestPermissions {
@@ -62,15 +60,9 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
         }
     }
 
-    private fun startHeartbeatAnimation(view: View) {
-        val scaleXUp = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.1f, 1f, 1.1f, 1f).apply { duration = 600 }
-        val scaleYUp = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.1f, 1f, 1.1f, 1f).apply { duration = 600 }
-        val animatorSet = AnimatorSet().apply {
-            playTogether(scaleXUp, scaleYUp)
-            doOnEnd {
-                view.postDelayed({ startHeartbeatAnimation(view) }, 2500L)
-            }
-        }
-        animatorSet.start()
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.btnClean.clearAnimation()
     }
+
 }
