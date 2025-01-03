@@ -26,10 +26,8 @@ import com.clean.filecleaner.ui.module.junk.bean.TrashItemCache
 import com.clean.filecleaner.ui.module.junk.bean.TrashItemParent
 import com.clean.filecleaner.ui.module.junk.viewmodel.allJunkDataList
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -44,8 +42,6 @@ class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndB
     private val cleanSize by lazy {
         intent?.getStringExtra("MESSAGE") ?: ""
     }
-
-    private var loadingJob: Job? = null
 
     private fun initBackListeners() {
 
@@ -72,7 +68,9 @@ class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndB
             toolbar.title.text = getString(R.string.clean)
             message.text = cleanSize
             ivLoading.startRotatingWithRotateAnimation()
-            loadingJob = showLoadingAnimation()
+            showLoadingAnimation(preStr = getString(R.string.loading)) {
+                tvLoading.text = it
+            }
 
             deleteJunk()
 
@@ -80,23 +78,10 @@ class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndB
         initBackListeners()
     }
 
-    private fun showLoadingAnimation(delayTime: Long = 500): Job {
-        return lifecycleScope.launch(Dispatchers.Main) {
-            var dotCount = 0
-            while (isActive) {
-                val str = getString(R.string.loading) + ".".repeat(dotCount + 1)
-                binding.tvLoading.text = str
-                dotCount = (dotCount + 1) % 3
-                delay(delayTime)
-            }
-        }
-    }
-
-    private fun stopLoadingAnim() {
-        loadingJob?.cancel()
+    override fun stopLoadingAnim() {
+        super.stopLoadingAnim()
         binding.ivLoading.stopRotatingWithRotateAnimation()
     }
-
 
     private fun deleteJunk() {
         startDeleteTime = System.currentTimeMillis()

@@ -25,7 +25,7 @@
     <string name="video">Video</string>
     <string name="docs">Docs</string>
     <string name="apk">Apk</string>
-    <string name="scanning">scanning...</string>
+    <string name="scanning">scanning</string>
     <string name="permission_needed_clean_more_junk_now">Permission needed: clean more junk now.</string>
     <string name="there_are_no_application_cache_files">There are no application cache files.</string>
     <string name="junk_exit_tips">Junk files haven’t been cleaned yet. Would you still like to exit?</string>

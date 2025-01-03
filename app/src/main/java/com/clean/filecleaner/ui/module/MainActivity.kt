@@ -14,7 +14,7 @@ import com.clean.filecleaner.ext.animateToProgressWithValueAnimator
 import com.clean.filecleaner.ext.getStorageSizeInfo
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
-import com.clean.filecleaner.ui.module.dialog.CommonDialog
+import com.clean.filecleaner.ui.module.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.junk.JunkSearchActivity
 
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
@@ -44,14 +44,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
             }
 
             appManager.setOnClickListener {
-                CommonDialog(message = "dsfsdfsdfsd", leftBtn = "Cancel", rightBtn = "OK", cancelable = true,
-                    leftClick = {
-
-                    },
-                    rightClick = {
-
-                    }).show(supportFragmentManager, "CommonDialog")
-
+                startActivity(Intent(this@MainActivity, ApplicationManagementActivity::class.java))
             }
         }
     }

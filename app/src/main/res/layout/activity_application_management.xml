@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="14dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="20"
+            tools:listitem="@layout/item_junk_search_end_parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/loading_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F9FAFC"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_loading"
+                android:layout_width="198dp"
+                android:layout_height="198dp"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.35"
+                app:srcCompat="@mipmap/icon_clean_loading" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_loading"
+                app:layout_constraintEnd_toEndOf="@+id/iv_loading"
+                app:layout_constraintStart_toStartOf="@+id/iv_loading"
+                app:layout_constraintTop_toTopOf="@+id/iv_loading"
+                app:srcCompat="@mipmap/icon_app_manager_scan" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="21dp"
+                android:textColor="#FF4D5962"
+                android:textSize="20sp"
+                android:theme="@style/SansitaBold"
+                app:layout_constraintEnd_toEndOf="@+id/iv_loading"
+                app:layout_constraintStart_toStartOf="@+id/iv_loading"
+                app:layout_constraintTop_toBottomOf="@+id/iv_loading"
+                tools:text="Scanning..." />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

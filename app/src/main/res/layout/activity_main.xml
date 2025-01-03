@@ -30,6 +30,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
+            android:foreground="?selectableItemBackgroundBorderless"
             app:srcCompat="@mipmap/icon_setting" />
 
     </FrameLayout>

@@ -17,6 +17,86 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
+    <queries>
+        <!-- ========= Packages ========== -->
+        <package android:name="com.android.vending" />
+        <package android:name="com.huawei.appmarket" />
+        <package android:name="com.samsung.android.lool" />
+        <package android:name="com.samsung.android.sm" />
+        <package android:name="com.facebook.katana" />
+        <package android:name="com.instagram.android" />
+
+        <!-- ========= Intents ========== -->
+        <!-- Launcher -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+
+        <!-- 主入口 (也可被其他地方触发 MAIN) -->
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+
+        <!-- 普通 VIEW 动作 -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+        </intent>
+
+        <!-- 内容选择 (如文件/图片) -->
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+        </intent>
+
+        <!-- 发送内容 (分享等) -->
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+        </intent>
+
+        <!-- 浏览器相关 (https) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+
+        <!-- 支持自定义标签服务 (Custom Tabs Service) -->
+        <intent>
+            <action android:name="android.support.customtabs.action.CustomTabsService" />
+        </intent>
+        <intent>
+            <action android:name="androidx.browser.customtabs.CustomTabsService" />
+        </intent>
+
+        <!-- Applovin 自定义服务 -->
+        <intent>
+            <action android:name="com.applovin.am.intent.action.APPHUB_SERVICE" />
+        </intent>
+
+        <!-- 浏览器相关 (http) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="http" />
+        </intent>
+
+        <!-- 市场 (market) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="market" />
+        </intent>
+
+        <!-- 谷歌内购服务 -->
+        <intent>
+            <action android:name="com.android.vending.billing.InAppBillingService.BIND" />
+        </intent>
+
+        <!-- 数字广告（Digital Turbine）相关服务 -->
+        <intent>
+            <action android:name="com.digitalturbine.ignite.cl.IgniteRemoteService" />
+        </intent>
+    </queries>
+
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
@@ -102,6 +182,12 @@
 
         <activity
             android:name=".ui.module.junk.JunkCleanEndActivity"
+            android:configChanges="density|keyboardHidden|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.module.app.ApplicationManagementActivity"
             android:configChanges="density|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

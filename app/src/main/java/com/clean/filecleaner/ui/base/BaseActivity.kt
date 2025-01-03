@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.blankj.utilcode.util.AdaptScreenUtils
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -55,6 +56,26 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
                 if (currentValue >= maxIterations) this.cancel()
             }
             if (currentValue >= maxIterations) end()
+        }
+    }
+
+
+    private var loadingJob: Job? = null
+
+    protected open fun stopLoadingAnim() {
+        loadingJob?.cancel()
+    }
+
+    protected fun showLoadingAnimation(delayTime: Long = 500, preStr: String, update: (String) -> Unit) {
+        loadingJob?.cancel()
+        loadingJob = lifecycleScope.launch(Dispatchers.Main) {
+            var dotCount = 0
+            while (isActive) {
+                val str = preStr + ".".repeat(dotCount + 1)
+                update(str)
+                dotCount = (dotCount + 1) % 3
+                delay(delayTime)
+            }
         }
     }
 
