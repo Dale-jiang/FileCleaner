@@ -18,6 +18,7 @@ import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
+import com.clean.filecleaner.ui.module.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.screenshot.ScreenshotCleanActivity.Companion.allScreenshotList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -52,6 +53,16 @@ class ScreenshotCleanEndActivity : StoragePermissionBaseActivity<ActivityScreens
                 startActivity(Intent(this@ScreenshotCleanEndActivity, MainActivity::class.java))
                 finish()
             }
+        }
+
+        binding.appManager.setOnClickListener {
+            startActivity(Intent(this@ScreenshotCleanEndActivity, ApplicationManagementActivity::class.java))
+            finish()
+        }
+
+        binding.screenshot.setOnClickListener {
+            startActivity(Intent(this@ScreenshotCleanEndActivity, ScreenshotCleanActivity::class.java))
+            finish()
         }
 
     }

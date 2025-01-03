@@ -20,11 +20,13 @@ import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
+import com.clean.filecleaner.ui.module.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.junk.bean.CleanJunkType
 import com.clean.filecleaner.ui.module.junk.bean.TrashItem
 import com.clean.filecleaner.ui.module.junk.bean.TrashItemCache
 import com.clean.filecleaner.ui.module.junk.bean.TrashItemParent
 import com.clean.filecleaner.ui.module.junk.viewmodel.allJunkDataList
+import com.clean.filecleaner.ui.module.screenshot.ScreenshotCleanActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -47,6 +49,7 @@ class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndB
 
         binding.loadingView.setOnClickListener { }
 
+
         binding.toolbar.ivLeft.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -58,6 +61,16 @@ class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndB
                 startActivity(Intent(this@JunkCleanEndActivity, MainActivity::class.java))
                 finish()
             }
+        }
+
+        binding.appManager.setOnClickListener {
+            startActivity(Intent(this@JunkCleanEndActivity, ApplicationManagementActivity::class.java))
+            finish()
+        }
+
+        binding.screenshot.setOnClickListener {
+            startActivity(Intent(this@JunkCleanEndActivity, ScreenshotCleanActivity::class.java))
+            finish()
         }
 
     }
