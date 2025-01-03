@@ -2,6 +2,9 @@ package com.clean.filecleaner.ext
 
 import androidx.documentfile.provider.DocumentFile
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 fun DocumentFile.calculateDirectorySizeSafely(): Long {
@@ -17,7 +20,7 @@ fun DocumentFile.calculateDirectorySizeSafely(): Long {
                 file.length()
             }
         } catch (e: Exception) {
-            // 根据业务需求处理异常（记录日志、忽略、提示用户等）
+            e.printStackTrace()
         }
     }
     return totalSize
@@ -37,11 +40,17 @@ fun File.getFileSize(): Long {
             current.listFiles()?.forEach { subFile ->
                 queue.add(subFile)
             }
-            // 这里加上 4096 用来统计目录本身所占用的一些空间（对 ext4 等文件系统来说可能近似）
             totalSize += 4096
         } else {
             totalSize += current.length()
         }
     }
     return totalSize
+}
+
+
+fun Long.formatTimestampToMMddyyyy(): String {
+    val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+    val date = Date(this)
+    return sdf.format(date)
 }

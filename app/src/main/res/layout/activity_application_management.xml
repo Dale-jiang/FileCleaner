@@ -23,14 +23,15 @@
             android:paddingTop="14dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="20"
-            tools:listitem="@layout/item_junk_search_end_parent" />
+            tools:listitem="@layout/item_application_management" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/loading_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#F9FAFC"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:visibility="gone">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_loading"

@@ -44,5 +44,10 @@
     <string name="tools">Tools</string>
     <string name="storage_of_used">%1$s of %2$s Used</string>
     <string name="setting">Setting</string>
+    <string name="uninstall">Uninstall</string>
+    <string name="installed_time">Installed:%1$s</string>
+    <string name="day_unused">day unused</string>
+    <string name="days_unused">days unused</string>
+    <string name="more_than">"more than "</string>
 
 </resources>
