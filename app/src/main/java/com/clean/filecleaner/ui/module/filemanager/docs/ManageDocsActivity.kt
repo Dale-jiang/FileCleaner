@@ -2,6 +2,7 @@ package com.clean.filecleaner.ui.module.filemanager.docs
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +20,8 @@ import kotlinx.coroutines.launch
 class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
     override fun inflateViewBinding(): ActivityManageDocsBinding = ActivityManageDocsBinding.inflate(layoutInflater)
+
+    private var adapter: ManageDocsAdapter? = null
 
     private fun setListeners() {
         onBackPressedDispatcher.addCallback {
@@ -49,8 +52,23 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
             TransitionManager.beginDelayedTransition(binding.root)
             binding.loadingView.isVisible = false
             binding.bottomView.isVisible = true
+            setUpAdapter()
         }
     }
+
+    private fun setUpAdapter() {
+        with(binding) {
+            adapter = ManageDocsAdapter(this@ManageDocsActivity, list = mutableListOf()) {
+
+            }
+            recyclerView.itemAnimator = null
+            recyclerView.adapter = adapter
+            val controller = AnimationUtils.loadLayoutAnimation(this@ManageDocsActivity, R.anim.recyclerview_animation_controller)
+            recyclerView.layoutAnimation = controller
+            recyclerView.scheduleLayoutAnimation()
+        }
+    }
+
 
     override fun stopLoadingAnim() {
         super.stopLoadingAnim()
