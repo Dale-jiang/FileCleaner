@@ -12,6 +12,7 @@ import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startScaleAnimation
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.app.ApplicationManagementActivity
+import com.clean.filecleaner.ui.module.duplicate.DuplicateFileCleanActivity
 import com.clean.filecleaner.ui.module.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.screenshot.ScreenshotCleanActivity
 
@@ -47,7 +48,15 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
             }
 
             screenshot.setOnClickListener {
-                startActivity(Intent(this@MainActivity, ScreenshotCleanActivity::class.java))
+                requestPermissions {
+                    startActivity(Intent(this@MainActivity, ScreenshotCleanActivity::class.java))
+                }
+            }
+
+            duplicateFiles.setOnClickListener {
+                requestPermissions {
+                    startActivity(Intent(this@MainActivity, DuplicateFileCleanActivity::class.java))
+                }
             }
         }
     }
