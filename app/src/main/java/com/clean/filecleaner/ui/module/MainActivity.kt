@@ -15,6 +15,7 @@ import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
+import com.clean.filecleaner.ui.module.filemanager.docs.ManageDocsActivity
 
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
@@ -58,6 +59,14 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
                     startActivity(Intent(this@MainActivity, DuplicateFileCleanActivity::class.java))
                 }
             }
+
+
+            docs.setOnClickListener {
+                requestPermissions {
+                    startActivity(Intent(this@MainActivity, ManageDocsActivity::class.java))
+                }
+            }
+
         }
     }
 

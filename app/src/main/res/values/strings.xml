@@ -62,4 +62,5 @@
     <string name="phone_clean">Phone Clean</string>
     <string name="file_not_exist">File not exist</string>
     <string name="no_permission_to_install">[File Cleaner] does not have permission to install items</string>
+    <string name="files">files</string>
 </resources>
