@@ -11,10 +11,10 @@ import com.clean.filecleaner.ext.getStorageSizeInfo
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startScaleAnimation
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
-import com.clean.filecleaner.ui.module.app.ApplicationManagementActivity
-import com.clean.filecleaner.ui.module.duplicate.DuplicateFileCleanActivity
-import com.clean.filecleaner.ui.module.junk.JunkSearchActivity
-import com.clean.filecleaner.ui.module.screenshot.ScreenshotCleanActivity
+import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
+import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
+import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
+import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
 
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
