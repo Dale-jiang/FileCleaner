@@ -224,7 +224,6 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
     override fun onDestroy() {
         super.onDestroy()
         stopLoadingAnim()
-        allScreenshotList.clear()
     }
 
 }

@@ -23,6 +23,7 @@ import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.dialog.DuplicateFileCleanFilterDialog
+import com.clean.filecleaner.ui.module.screenshot.ScreenshotCleanEndActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -103,8 +104,8 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
                 rightBtn = getString(R.string.cancel),
                 cancelable = true,
                 leftClick = {
-                    ToastUtils.showLong("delete")
-                    // finish()
+                    startActivity(Intent(this, DuplicateFileCleanEndActivity::class.java))
+                    finish()
                 }
             ).show(supportFragmentManager, "CommonDialog")
         }
@@ -156,10 +157,11 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
         with(binding) {
             adapter = DuplicateFileCleanGroupAdapter(this@DuplicateFileCleanActivity, allDuplicateFileList,
                 changeListener = {
-                    // TODO:
-                    ToastUtils.showLong("打开")
+                    setCleanBtn()
                 },
-                clickListener = { setCleanBtn() })
+                clickListener = {
+                    ToastUtils.showLong("打开")
+                })
 
             recyclerView.itemAnimator = null
             recyclerView.adapter = adapter
@@ -307,7 +309,6 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
     override fun onDestroy() {
         super.onDestroy()
         stopLoadingAnim()
-        allDuplicateFileList.clear()
     }
 
 }

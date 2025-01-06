@@ -72,47 +72,14 @@
                 android:layout_marginTop="10dp">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/app_manager"
+                    android:id="@+id/clean"
                     android:layout_width="100dp"
                     android:layout_height="128dp"
                     android:background="@drawable/shape_btn_function_bg_28"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/duplicate_files"
+                    app:layout_constraintEnd_toStartOf="@+id/app_manager"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="52dp"
-                        android:layout_height="52dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="25dp"
-                        app:srcCompat="@mipmap/icon_app_manager" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginHorizontal="5dp"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/app_manager"
-                        android:textColor="#FF292D35"
-                        android:textSize="13sp"
-                        android:theme="@style/SansitaBold" />
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/duplicate_files"
-                    android:layout_width="100dp"
-                    android:layout_height="128dp"
-                    android:background="@drawable/shape_btn_function_bg_28"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/screenshot"
-                    app:layout_constraintStart_toEndOf="@+id/app_manager"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -137,15 +104,47 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/screenshot"
+                    android:id="@+id/app_manager"
                     android:layout_width="100dp"
                     android:layout_height="128dp"
-                    android:visibility="invisible"
                     android:background="@drawable/shape_btn_function_bg_28"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/screenshot"
+                    app:layout_constraintStart_toEndOf="@+id/clean"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        app:srcCompat="@mipmap/icon_app_manager" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/app_manager"
+                        android:textColor="#FF292D35"
+                        android:textSize="13sp"
+                        android:theme="@style/SansitaBold" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/screenshot"
+                    android:layout_width="100dp"
+                    android:layout_height="128dp"
+                    android:background="@drawable/shape_btn_function_bg_28"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/duplicate_files"
+                    app:layout_constraintStart_toEndOf="@+id/app_manager"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatImageView
