@@ -12,11 +12,11 @@ import androidx.core.database.getStringOrNull
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
-import com.blankj.utilcode.util.ToastUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.databinding.ActivityDuplicateFileCleanBinding
 import com.clean.filecleaner.ext.immersiveMode
+import com.clean.filecleaner.ext.opFile
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.BaseActivity
@@ -159,7 +159,7 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
                     setCleanBtn()
                 },
                 clickListener = {
-                    ToastUtils.showLong("打开")
+                    opFile(it.filePath)
                 })
 
             recyclerView.itemAnimator = null
