@@ -76,6 +76,7 @@
                 tools:listitem="@layout/item_screenshot_group" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/bottom_view"
                 android:layout_width="match_parent"
                 android:layout_height="88dp">
 

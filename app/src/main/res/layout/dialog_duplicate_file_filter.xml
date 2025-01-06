@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_bg_white_10"
+    android:orientation="vertical"
+    android:paddingVertical="10dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/keep_latest"
+        style="@style/Sansita"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/keep_the_latest"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/keep_oldest"
+        style="@style/Sansita"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/keep_the_oldest"
+        android:textColor="@color/color_text"
+        android:textSize="15sp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/deselect_all"
+        style="@style/Sansita"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/deselect_all"
+        android:textColor="@color/color_text"
+        android:textSize="15sp" />
+</androidx.appcompat.widget.LinearLayoutCompat>

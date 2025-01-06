@@ -31,6 +31,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
@@ -56,6 +57,7 @@
         app:srcCompat="@mipmap/icon_item_checked" />
 
     <View
+        android:id="@+id/bottom_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#F2F3F3"

@@ -1,6 +1,9 @@
 package com.clean.filecleaner.ext
 
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import androidx.documentfile.provider.DocumentFile
+import com.clean.filecleaner.data.app
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -53,4 +56,18 @@ fun Long.formatTimestampToMMddyyyy(): String {
     val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.US)
     val date = Date(this)
     return sdf.format(date)
+}
+
+fun String.getApkLogo(): Drawable? {
+    return try {
+        val packageManager = app.packageManager
+        val packageInfo = packageManager.getPackageArchiveInfo(this, PackageManager.GET_ACTIVITIES)
+        packageInfo?.applicationInfo?.let { appInfo ->
+            appInfo.sourceDir = this
+            appInfo.publicSourceDir = this
+            packageManager.getApplicationIcon(appInfo)
+        }
+    } catch (e: Exception) {
+        null
+    }
 }

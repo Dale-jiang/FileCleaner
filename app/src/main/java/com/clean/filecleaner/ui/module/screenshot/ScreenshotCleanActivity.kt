@@ -40,6 +40,7 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
 
     private fun setBackListener() {
         onBackPressedDispatcher.addCallback {
+            allScreenshotList.clear()
             startActivity(Intent(this@ScreenshotCleanActivity, MainActivity::class.java))
             finish()
         }
@@ -125,6 +126,7 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
                 if (!hasSelectedItems) isChecked = false
             }
             emptyView.isVisible = isListEmpty
+            binding.bottomView.isVisible = !isListEmpty
         }
     }
 
@@ -205,6 +207,7 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
                 stopLoadingAnim()
                 TransitionManager.beginDelayedTransition(binding.root)
                 binding.loadingView.isVisible = false
+                binding.bottomView.isVisible = allScreenshotList.isNotEmpty()
                 binding.emptyView.isVisible = allScreenshotList.isEmpty()
                 setUpAdapter()
             }
@@ -216,6 +219,12 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
     override fun stopLoadingAnim() {
         super.stopLoadingAnim()
         binding.ivLoading.stopRotatingWithRotateAnimation()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopLoadingAnim()
+        allScreenshotList.clear()
     }
 
 }
