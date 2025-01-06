@@ -23,7 +23,6 @@ import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.dialog.DuplicateFileCleanFilterDialog
-import com.clean.filecleaner.ui.module.screenshot.ScreenshotCleanEndActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob

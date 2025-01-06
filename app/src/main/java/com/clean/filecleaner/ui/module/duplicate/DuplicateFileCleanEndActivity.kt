@@ -12,7 +12,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.app
-import com.clean.filecleaner.databinding.ActivityScreenshotCleanEndBinding
+import com.clean.filecleaner.databinding.ActivityDuplicateCleanEndBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
@@ -30,10 +30,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class DuplicateFileCleanEndActivity : StoragePermissionBaseActivity<ActivityScreenshotCleanEndBinding>() {
+class DuplicateFileCleanEndActivity : StoragePermissionBaseActivity<ActivityDuplicateCleanEndBinding>() {
 
     override fun setupImmersiveMode() = immersiveMode(binding.root)
-    override fun inflateViewBinding(): ActivityScreenshotCleanEndBinding = ActivityScreenshotCleanEndBinding.inflate(layoutInflater)
+    override fun inflateViewBinding(): ActivityDuplicateCleanEndBinding = ActivityDuplicateCleanEndBinding.inflate(layoutInflater)
 
     private var startDeleteTime = 0L
 
@@ -79,7 +79,7 @@ class DuplicateFileCleanEndActivity : StoragePermissionBaseActivity<ActivityScre
     @SuppressLint("NotifyDataSetChanged")
     override fun initView(savedInstanceState: Bundle?) {
         with(binding) {
-            toolbar.title.text = getString(R.string.screenshot)
+            toolbar.title.text = getString(R.string.duplicate_files)
             ivLoading.startRotatingWithRotateAnimation()
             showLoadingAnimation(preStr = getString(R.string.cleaning)) {
                 tvLoading.text = it

@@ -21,6 +21,7 @@ import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.app.ApplicationManagementActivity
+import com.clean.filecleaner.ui.module.duplicate.DuplicateFileCleanActivity
 import com.clean.filecleaner.ui.module.junk.bean.CleanJunkType
 import com.clean.filecleaner.ui.module.junk.bean.TrashItem
 import com.clean.filecleaner.ui.module.junk.bean.TrashItemCache
@@ -63,14 +64,23 @@ class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndB
             }
         }
 
+        binding.duplicateFiles.setOnClickListener {
+            requestPermissions {
+                startActivity(Intent(this@JunkCleanEndActivity, DuplicateFileCleanActivity::class.java))
+                finish()
+            }
+        }
+
         binding.appManager.setOnClickListener {
             startActivity(Intent(this@JunkCleanEndActivity, ApplicationManagementActivity::class.java))
             finish()
         }
 
         binding.screenshot.setOnClickListener {
-            startActivity(Intent(this@JunkCleanEndActivity, ScreenshotCleanActivity::class.java))
-            finish()
+            requestPermissions {
+                startActivity(Intent(this@JunkCleanEndActivity, ScreenshotCleanActivity::class.java))
+                finish()
+            }
         }
 
     }

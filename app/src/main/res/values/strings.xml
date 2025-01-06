@@ -59,4 +59,5 @@
     <string name="keep_the_oldest">keep the oldest</string>
     <string name="deselect_all">Deselect All</string>
     <string name="files_have_been_deleted">%1$d files have been deleted</string>
+    <string name="phone_clean">Phone Clean</string>
 </resources>
