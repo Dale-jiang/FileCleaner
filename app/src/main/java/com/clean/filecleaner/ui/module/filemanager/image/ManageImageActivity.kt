@@ -6,6 +6,8 @@ import android.provider.MediaStore
 import android.text.format.Formatter
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
+import androidx.core.database.getLongOrNull
+import androidx.core.database.getStringOrNull
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
@@ -131,12 +133,12 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
                 val mimeTypeCol = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE)
 
                 while (cursor.moveToNext()) {
-                    val dateModified = cursor.getLong(dateModifiedCol) * 1000L
-                    val dateAdded = cursor.getLong(dateAddedCol) * 1000L
-                    val path = cursor.getString(dataCol)
-                    val displayName = cursor.getString(displayNameCol)
-                    val size = cursor.getLong(sizeCol)
-                    val mimeType = cursor.getString(mimeTypeCol)
+                    val dateModified = cursor.getLongOrNull(dateModifiedCol) ?: 0L
+                    val dateAdded = cursor.getLongOrNull(dateAddedCol) ?: 0L
+                    val path = cursor.getStringOrNull(dataCol).orEmpty()
+                    val displayName = cursor.getStringOrNull(displayNameCol).orEmpty()
+                    val size = cursor.getLongOrNull(sizeCol) ?: 0L
+                    val mimeType = cursor.getStringOrNull(mimeTypeCol).orEmpty()
 
                     val file = File(path)
                     if (file.exists() && file.isFile) {
@@ -145,10 +147,10 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
                                 name = displayName,
                                 size = size,
                                 sizeString = Formatter.formatFileSize(this@ManageImageActivity, size),
-                                updateTime = dateModified,
-                                addTime = dateAdded,
+                                updateTime = dateModified * 1000L,
+                                addTime = dateAdded * 1000L,
                                 path = path,
-                                mimetype = mimeType
+                                mimetype = mimeType.ifEmpty { "*/*" }
                             )
                         )
                     }

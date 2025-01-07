@@ -8,6 +8,8 @@ import android.provider.MediaStore
 import android.text.format.Formatter
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
+import androidx.core.database.getLongOrNull
+import androidx.core.database.getStringOrNull
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
@@ -184,14 +186,14 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
                 val sizeCol = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)
 
                 while (cursor.moveToNext()) {
-                    val datetime = cursor.getLong(dateModifiedCol) * 1000L
-                    val path = cursor.getString(dataCol)
-                    val displayName = cursor.getString(displayNameCol)
-                    val size = cursor.getLong(sizeCol)
+                    val datetime = cursor.getLongOrNull(dateModifiedCol) ?: 0L
+                    val path = cursor.getStringOrNull(dataCol).orEmpty()
+                    val displayName = cursor.getStringOrNull(displayNameCol).orEmpty()
+                    val size = cursor.getLongOrNull(sizeCol) ?: 0L
 
                     val file = File(path)
                     if (file.exists() && file.isFile && (path.endsWith(".png", ignoreCase = true) || path.endsWith(".jpg", ignoreCase = true))) {
-                        imgList.add(ScreenshotCleanSub(displayName, size, datetime, path))
+                        imgList.add(ScreenshotCleanSub(displayName, size, datetime * 1000L, path))
                     }
                 }
             }
