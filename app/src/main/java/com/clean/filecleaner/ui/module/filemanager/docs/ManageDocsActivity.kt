@@ -8,7 +8,6 @@ import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.transition.TransitionManager
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.docMatchList
 import com.clean.filecleaner.databinding.ActivityManageDocsBinding
@@ -18,6 +17,8 @@ import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
+import com.clean.filecleaner.ui.module.dialog.CommonDialog
+import com.clean.filecleaner.ui.module.filemanager.FileCleanEndActivity
 import com.clean.filecleaner.ui.module.filemanager.FileInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -50,6 +51,22 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
         binding.toolbar.ivLeft.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
+
+        binding.btnClean.setOnClickListener {
+            CommonDialog(
+                title = getString(R.string.warning),
+                message = getString(R.string.do_you_wish_to_delete_this),
+                leftBtn = getString(R.string.delete),
+                rightBtn = getString(R.string.cancel),
+                cancelable = true,
+                leftClick = {
+                    startActivity(Intent(this, FileCleanEndActivity::class.java).apply {
+                        putExtra("FILE_TYPES", FileCleanEndActivity.docs)
+                    })
+                    finish()
+                }
+            ).show(supportFragmentManager, "CommonDialog")
+        }
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -71,16 +88,25 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
 
     private fun setUpAdapter() {
         with(binding) {
-            adapter = ManageDocsAdapter(this@ManageDocsActivity, list = allDocsList) {
-
-                opFile(it.path, it.mimetype)
-
-            }
+            adapter = ManageDocsAdapter(this@ManageDocsActivity, list = allDocsList,
+                clickListener = {
+                    opFile(it.path, it.mimetype)
+                }, checkboxListener = {
+                    setCleanBtn()
+                })
             recyclerView.itemAnimator = null
             recyclerView.adapter = adapter
             val controller = AnimationUtils.loadLayoutAnimation(this@ManageDocsActivity, R.anim.recyclerview_animation_controller)
             recyclerView.layoutAnimation = controller
             recyclerView.scheduleLayoutAnimation()
+        }
+    }
+
+    private fun setCleanBtn() {
+        adapter?.list?.let { itemList ->
+            val isEnabled = itemList.any { c -> c.isSelected }
+            binding.btnClean.isEnabled = isEnabled
+            binding.btnClean.alpha = if (isEnabled) 1f else 0.4f
         }
     }
 
@@ -155,8 +181,8 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
                 binding.loadingView.isVisible = false
                 binding.bottomView.isVisible = allDocsList.isNotEmpty()
                 binding.emptyView.isVisible = allDocsList.isEmpty()
-
                 setUpAdapter()
+                setCleanBtn()
             }
 
         } catch (e: Throwable) {

@@ -7,13 +7,15 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.clean.filecleaner.R
+import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.databinding.ItemManageDocsBinding
 import com.clean.filecleaner.ui.module.filemanager.FileInfo
 
 class ManageDocsAdapter(
     private val activity: AppCompatActivity,
     val list: MutableList<FileInfo>,
-    private val clickListener: (FileInfo) -> Unit
+    private val clickListener: (FileInfo) -> Unit,
+    private val checkboxListener: Callback
 ) : RecyclerView.Adapter<ManageDocsAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(val binding: ItemManageDocsBinding) : RecyclerView.ViewHolder(binding.root)
@@ -45,10 +47,11 @@ class ManageDocsAdapter(
                 checkbox.setOnClickListener {
                     item.isSelected = !item.isSelected
                     notifyItemChanged(holder.layoutPosition)
+                    checkboxListener()
                 }
 
                 itemView.setOnClickListener {
-                    clickListener.invoke(item)
+                    clickListener(item)
                 }
             }
         }

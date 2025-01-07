@@ -153,25 +153,21 @@
         <activity
             android:name=".ui.module.WebActivity"
             android:configChanges="density|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.module.SettingActivity"
             android:configChanges="density|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity"
             android:configChanges="density|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.clean.filecleaner.ui.module.clean.junk.JunkSearchEndActivity"
             android:configChanges="density|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
@@ -185,19 +181,16 @@
         <activity
             android:name="com.clean.filecleaner.ui.module.clean.junk.JunkCleanEndActivity"
             android:configChanges="density|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity"
             android:configChanges="density|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity"
             android:configChanges="density|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
@@ -210,19 +203,21 @@
         <activity
             android:name="com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity"
             android:configChanges="density|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanEndActivity"
             android:configChanges="density|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.module.filemanager.docs.ManageDocsActivity"
             android:configChanges="density|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.module.filemanager.FileCleanEndActivity"
+            android:configChanges="density|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 
         <provider

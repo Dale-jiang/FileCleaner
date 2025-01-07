@@ -55,6 +55,7 @@
     <string name="warning">Warning</string>
     <string name="do_you_wish_to_delete_this">Do you wish to delete this?</string>
     <string name="delete">Delete</string>
+    <string name="deleting">Deleting</string>
     <string name="keep_the_latest">Keep the latest</string>
     <string name="keep_the_oldest">keep the oldest</string>
     <string name="deselect_all">Deselect All</string>
