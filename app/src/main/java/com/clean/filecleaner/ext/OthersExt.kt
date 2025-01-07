@@ -8,6 +8,8 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 
 fun DocumentFile.calculateDirectorySizeSafely(): Long {
@@ -69,5 +71,19 @@ fun String.getApkLogo(): Drawable? {
         }
     } catch (e: Exception) {
         null
+    }
+}
+
+fun Long.formatVideoDurationWithKotlinDuration(): String {
+    val duration = this.toDuration(DurationUnit.MILLISECONDS)
+    val totalSeconds = duration.inWholeSeconds
+    val hours = totalSeconds / 3600
+    val minutes = (totalSeconds % 3600) / 60
+    val seconds = totalSeconds % 60
+
+    return if (hours == 0L) {
+        String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+    } else {
+        String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds)
     }
 }

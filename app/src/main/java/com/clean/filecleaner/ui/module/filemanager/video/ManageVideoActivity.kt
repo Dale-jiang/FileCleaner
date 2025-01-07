@@ -149,6 +149,7 @@ class ManageVideoActivity : BaseActivity<ActivityManageVideoBinding>() {
                                 sizeString = Formatter.formatFileSize(this@ManageVideoActivity, size),
                                 updateTime = dateModified,
                                 addTime = dateAdded,
+                                duration =  duration,
                                 path = path,
                                 mimetype = mimeType
                             )

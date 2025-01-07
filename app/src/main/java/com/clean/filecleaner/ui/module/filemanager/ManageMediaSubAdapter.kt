@@ -44,6 +44,8 @@ class ManageMediaSubAdapter(
                     .into(image)
 
                 videoPlay.isVisible = isVideo
+                tvDuration.isVisible = isVideo
+                if (isVideo) tvDuration.text = item.durationStr
                 checkbox.setImageResource(if (item.isSelected) R.drawable.svg_image_check else R.drawable.svg_image_uncheck)
 
                 checkbox.setOnClickListener {

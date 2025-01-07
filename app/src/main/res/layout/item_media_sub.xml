@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="2dp"
@@ -43,6 +44,23 @@
             android:paddingStart="15dp"
             android:paddingTop="15dp"
             app:srcCompat="@drawable/svg_image_uncheck" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_duration"
+            android:layout_width="match_parent"
+            android:background="#4D000000"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:layout_margin="1dp"
+            android:paddingHorizontal="2dp"
+            android:paddingVertical="3dp"
+            android:theme="@style/Sansita"
+            android:layout_gravity="end|top"
+            tools:ignore="SmallSp"
+            tools:text="00:35" />
+
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
