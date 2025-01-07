@@ -1,4 +1,4 @@
-package com.clean.filecleaner.ui.module.clean.screenshot
+package com.clean.filecleaner.ui.module.filemanager
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,7 +13,6 @@ import com.clean.filecleaner.R
 import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.databinding.ItemMediaSubBinding
 import com.clean.filecleaner.ext.opFile
-import com.clean.filecleaner.ui.module.filemanager.FileInfo
 import java.io.File
 
 class ManageMediaSubAdapter(

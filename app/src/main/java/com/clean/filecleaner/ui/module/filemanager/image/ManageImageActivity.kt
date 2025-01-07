@@ -19,6 +19,7 @@ import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.filemanager.FileCleanEndActivity
 import com.clean.filecleaner.ui.module.filemanager.FileInfo
+import com.clean.filecleaner.ui.module.filemanager.ManageMediaGroupAdapter
 import com.clean.filecleaner.ui.module.filemanager.MediaInfoParent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

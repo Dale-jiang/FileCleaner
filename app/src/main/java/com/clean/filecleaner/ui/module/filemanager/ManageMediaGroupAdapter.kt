@@ -1,4 +1,4 @@
-package com.clean.filecleaner.ui.module.filemanager.image
+package com.clean.filecleaner.ui.module.filemanager
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ItemMediaGroupBinding
-import com.clean.filecleaner.ui.module.clean.screenshot.ManageMediaSubAdapter
-import com.clean.filecleaner.ui.module.filemanager.MediaInfoParent
 
 class ManageMediaGroupAdapter(
     private val activity: AppCompatActivity, val list: MutableList<MediaInfoParent>, private val isVideo: Boolean, val clickListener: () -> Unit
