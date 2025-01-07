@@ -9,7 +9,6 @@ import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.transition.TransitionManager
 import com.blankj.utilcode.util.AppUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.app
@@ -24,7 +23,6 @@ import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
 import com.clean.filecleaner.utils.Tools.getAppDataSize
-import com.clean.filecleaner.utils.Tools.getLastUsedTime
 import com.clean.filecleaner.utils.Tools.isSystemApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -119,7 +117,7 @@ class ApplicationManagementActivity : BaseActivity<ActivityApplicationManagement
                         pkgName = packageName,
                         appName = getApplicationLabelString(packageName),
                         installTime = packageInfo.firstInstallTime,
-                        lastUsedTime = getLastUsedTime(this@ApplicationManagementActivity, packageName),
+//                        lastUsedTime = getLastUsedTime(packageInfo.firstInstallTime, packageName),
                         usedSize = if (hasUsagePerm) getAppDataSize(packageName) else 0L
                     )
                 }.getOrNull()

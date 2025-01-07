@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ItemApplicationManagementBinding
 import com.clean.filecleaner.ext.formatTimestampToMMddyyyy
-import com.clean.filecleaner.utils.Tools
 
 class ApplicationManagementAdapter(
     private val activity: AppCompatActivity,
@@ -36,18 +35,20 @@ class ApplicationManagementAdapter(
                 val item = list[holder.layoutPosition]
                 Glide.with(activity).load(item.drawable).into(appIcon)
                 appName.text = item.appName
-                installTime.text = activity.getString(R.string.installed_time, item.installTime.formatTimestampToMMddyyyy())
+                val installTimeStr = item.installTime.formatTimestampToMMddyyyy()
+                installTime.isVisible = !installTimeStr.endsWith("1970")
+                installTime.text = activity.getString(R.string.installed_time, installTimeStr)
 
                 sizeUsed.isVisible = item.usedSize > 0
-                sizeUsed.text = Formatter.formatFileSize(activity, item.usedSize)
+                sizeUsed.text = activity.getString(R.string.used, Formatter.formatFileSize(activity, item.usedSize))
 
-                lastUsed.isVisible = item.lastUsedTime > 0
-                if (item.lastUsedTime > 0) {
-                    val day = Tools.calculateDaysUnused(item.lastUsedTime).toInt()
-                    val preStr = if (day > 1) activity.getString(R.string.days_unused) else activity.getString(R.string.day_unused)
-                    val lastUsedStr = if (day > 30) activity.getString(R.string.more_than) + "30$preStr" else "$day$preStr"
-                    lastUsed.text = lastUsedStr
-                }
+                lastUsed.isVisible = false
+//                if (item.lastUsedTime > 0) {
+//                    val day = Tools.calculateDaysUnused(item.lastUsedTime).toInt()
+//                    val preStr = if (day > 1) activity.getString(R.string.days_unused) else activity.getString(R.string.day_unused)
+//                    val lastUsedStr = if (day > 30) activity.getString(R.string.more_than) + "30$preStr" else "$day$preStr"
+//                    lastUsed.text = lastUsedStr
+//                }
 
                 btnUninstall.setOnClickListener {
                     clickListener.invoke(item)
