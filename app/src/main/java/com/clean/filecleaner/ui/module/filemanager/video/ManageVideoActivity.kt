@@ -1,4 +1,4 @@
-package com.clean.filecleaner.ui.module.filemanager.image
+package com.clean.filecleaner.ui.module.filemanager.video
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.clean.filecleaner.R
-import com.clean.filecleaner.databinding.ActivityManageImageBinding
+import com.clean.filecleaner.databinding.ActivityManageVideoBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
@@ -29,20 +29,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
+class ManageVideoActivity : BaseActivity<ActivityManageVideoBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
-    override fun inflateViewBinding(): ActivityManageImageBinding = ActivityManageImageBinding.inflate(layoutInflater)
+    override fun inflateViewBinding(): ActivityManageVideoBinding = ActivityManageVideoBinding.inflate(layoutInflater)
 
     private var adapter: ManageMediaGroupAdapter? = null
     private var timeTag = 0L
-
 
     private fun setListeners() {
         onBackPressedDispatcher.addCallback {
             kotlin.runCatching {
                 allMediaList.clear()
             }
-            startActivity(Intent(this@ManageImageActivity, MainActivity::class.java))
+            startActivity(Intent(this@ManageVideoActivity, MainActivity::class.java))
             finish()
         }
 
@@ -58,7 +57,7 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
                 cancelable = true,
                 leftClick = {
                     startActivity(Intent(this, FileCleanEndActivity::class.java).apply {
-                        putExtra("FILE_TYPES", FileCleanEndActivity.image)
+                        putExtra("FILE_TYPES", FileCleanEndActivity.video)
                     })
                     finish()
                 }).show(supportFragmentManager, "CommonDialog")
@@ -70,7 +69,7 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
         setListeners()
 
         with(binding) {
-            toolbar.title.text = getString(R.string.image)
+            toolbar.title.text = getString(R.string.video)
             ivLoading.startRotatingWithRotateAnimation()
             showLoadingAnimation(preStr = getString(R.string.scanning)) {
                 tvLoading.text = it
@@ -84,12 +83,12 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
 
     private fun setUpAdapter() {
         with(binding) {
-            adapter = ManageMediaGroupAdapter(this@ManageImageActivity, list = allMediaList, false, clickListener = {
+            adapter = ManageMediaGroupAdapter(this@ManageVideoActivity, list = allMediaList, true, clickListener = {
                 setCleanBtn()
             })
             recyclerView.itemAnimator = null
             recyclerView.adapter = adapter
-            val controller = AnimationUtils.loadLayoutAnimation(this@ManageImageActivity, R.anim.recyclerview_animation_controller)
+            val controller = AnimationUtils.loadLayoutAnimation(this@ManageVideoActivity, R.anim.recyclerview_animation_controller)
             recyclerView.layoutAnimation = controller
             recyclerView.scheduleLayoutAnimation()
         }
@@ -107,28 +106,30 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
         try {
             timeTag = System.currentTimeMillis()
             allMediaList.clear()
-            var imageNum = 0
+            var videoNum = 0
 
             val projection = arrayOf(
-                MediaStore.Images.Media.DATE_MODIFIED,
-                MediaStore.Images.Media.DATE_ADDED,
-                MediaStore.Images.Media.DATA,
-                MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.SIZE,
-                MediaStore.Images.Media.MIME_TYPE
+                MediaStore.Video.Media.DATE_MODIFIED,
+                MediaStore.Video.Media.DATE_ADDED,
+                MediaStore.Video.Media.DATA,
+                MediaStore.Video.Media.DISPLAY_NAME,
+                MediaStore.Video.Media.SIZE,
+                MediaStore.Video.Media.MIME_TYPE,
+                MediaStore.Video.Media.DURATION,
             )
 
             contentResolver.query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, "${MediaStore.Images.Media.DATE_ADDED} DESC"
+                MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, "${MediaStore.Video.Media.DATE_ADDED} DESC"
             )?.use { cursor ->
-                val imageList = mutableListOf<FileInfo>()
+                val videoList = mutableListOf<FileInfo>()
 
-                val dateModifiedCol = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)
-                val dateAddedCol = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
-                val dataCol = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                val displayNameCol = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
-                val sizeCol = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)
-                val mimeTypeCol = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE)
+                val dateModifiedCol = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED)
+                val dateAddedCol = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED)
+                val dataCol = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
+                val displayNameCol = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
+                val sizeCol = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
+                val mimeTypeCol = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.MIME_TYPE)
+                val durationCol = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
 
                 while (cursor.moveToNext()) {
                     val dateModified = cursor.getLong(dateModifiedCol) * 1000L
@@ -137,14 +138,15 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
                     val displayName = cursor.getString(displayNameCol)
                     val size = cursor.getLong(sizeCol)
                     val mimeType = cursor.getString(mimeTypeCol)
+                    val duration = cursor.getLong(durationCol)
 
                     val file = File(path)
                     if (file.exists() && file.isFile) {
-                        imageList.add(
+                        videoList.add(
                             FileInfo(
                                 name = displayName,
                                 size = size,
-                                sizeString = Formatter.formatFileSize(this@ManageImageActivity, size),
+                                sizeString = Formatter.formatFileSize(this@ManageVideoActivity, size),
                                 updateTime = dateModified,
                                 addTime = dateAdded,
                                 path = path,
@@ -153,8 +155,8 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
                         )
                     }
                 }
-                imageNum = imageList.size
-                imageList.groupBy { it.timeStr }.forEach { (_, list) ->
+                videoNum = videoList.size
+                videoList.groupBy { it.timeStr }.forEach { (_, list) ->
                     allMediaList.add(MediaInfoParent(children = list.toMutableList(), time = list.first().addTime))
                 }
 
@@ -169,7 +171,7 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
                 if (allMediaList.isEmpty()) {
                     TransitionManager.beginDelayedTransition(binding.root)
                 }
-                binding.num.text = "$imageNum"
+                binding.num.text = "$videoNum"
                 binding.loadingView.isVisible = false
                 binding.bottomView.isVisible = allMediaList.isNotEmpty()
                 binding.emptyView.isVisible = allMediaList.isEmpty()

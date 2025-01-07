@@ -21,7 +21,6 @@ import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
-import com.clean.filecleaner.ui.module.filemanager.image.ManageImageActivity.Companion.allImageList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -112,7 +111,7 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
             }
 
             image, video -> {
-                deleteMediaFiles(allImageList)
+                deleteMediaFiles(allMediaList)
             }
 
             else -> deleteFiles(emptyList<FileInfo>().toMutableList())
@@ -192,7 +191,7 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
         super.onDestroy()
         stopLoadingAnim()
         allFilesContainerList.clear()
-        allImageList.clear()
+        allMediaList.clear()
     }
 
 }

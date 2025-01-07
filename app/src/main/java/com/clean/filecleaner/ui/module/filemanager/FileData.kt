@@ -6,6 +6,7 @@ import java.util.Locale
 
 
 val allFilesContainerList = mutableListOf<FileInfo>()
+val allMediaList = mutableListOf<MediaInfoParent>()
 
 data class FileInfo(
     val name: String = "",
