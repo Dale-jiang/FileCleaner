@@ -21,6 +21,7 @@ import com.clean.filecleaner.ui.module.filemanager.apk.ManageAPKActivity
 import com.clean.filecleaner.ui.module.filemanager.audio.ManageAudioActivity
 import com.clean.filecleaner.ui.module.filemanager.docs.ManageDocsActivity
 import com.clean.filecleaner.ui.module.filemanager.image.ManageImageActivity
+import com.clean.filecleaner.ui.module.filemanager.image.ManageImageActivity.Companion.allImageList
 
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
@@ -119,6 +120,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
             ScreenshotCleanActivity.allScreenshotList.clear()
             DuplicateFileCleanActivity.allDuplicateFileList.clear()
             allFilesContainerList.clear()
+            allImageList.clear()
         }
     }
 

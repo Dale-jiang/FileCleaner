@@ -21,9 +21,7 @@ import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
-import com.clean.filecleaner.ui.module.filemanager.apk.ManageAPKActivity
-import com.clean.filecleaner.ui.module.filemanager.audio.ManageAudioActivity
-import com.clean.filecleaner.ui.module.filemanager.docs.ManageDocsActivity
+import com.clean.filecleaner.ui.module.filemanager.image.ManageImageActivity.Companion.allImageList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -109,16 +107,12 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
 
         when (type) {
 
-            docs -> {
+            docs, apk, audio -> {
                 deleteFiles(allFilesContainerList)
             }
 
-            apk -> {
-                deleteFiles(allFilesContainerList)
-            }
-
-            audio -> {
-                deleteFiles(allFilesContainerList)
+            image, video -> {
+                deleteMediaFiles(allImageList)
             }
 
             else -> deleteFiles(emptyList<FileInfo>().toMutableList())
@@ -132,6 +126,32 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
         binding.ivLoading.stopRotatingWithRotateAnimation()
     }
 
+    private fun deleteMediaFiles(list: MutableList<MediaInfoParent>) {
+        startDeleteTime = System.currentTimeMillis()
+        lifecycleScope.launch(Dispatchers.IO + SupervisorJob()) {
+            val itemsToDelete = list.toList()
+                .flatMap { parent -> parent.children }
+                .filter { it.isSelected }
+            var num = 0
+            itemsToDelete.forEach { item ->
+                val result = deleteItem(item)
+                result.onSuccess {
+                    num++
+                }
+            }
+            list.clear()
+            val delayTime = startDeleteTime + 3000L - System.currentTimeMillis()
+            if (delayTime > 0) {
+                delay(delayTime)
+            }
+            withContext(Dispatchers.Main) {
+                TransitionManager.beginDelayedTransition(binding.root)
+                binding.loadingView.isVisible = false
+                binding.message.text = getString(R.string.files_have_been_deleted, num)
+                stopLoadingAnim()
+            }
+        }
+    }
 
     private fun deleteFiles(files: MutableList<FileInfo>) {
         startDeleteTime = System.currentTimeMillis()
@@ -172,6 +192,7 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
         super.onDestroy()
         stopLoadingAnim()
         allFilesContainerList.clear()
+        allImageList.clear()
     }
 
 }

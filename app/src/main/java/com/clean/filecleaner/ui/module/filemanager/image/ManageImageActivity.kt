@@ -17,6 +17,7 @@ import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
+import com.clean.filecleaner.ui.module.filemanager.FileCleanEndActivity
 import com.clean.filecleaner.ui.module.filemanager.FileInfo
 import com.clean.filecleaner.ui.module.filemanager.MediaInfoParent
 import kotlinx.coroutines.Dispatchers
@@ -58,10 +59,10 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
                 rightBtn = getString(R.string.cancel),
                 cancelable = true,
                 leftClick = {
-//                    startActivity(Intent(this, FileCleanEndActivity::class.java).apply {
-//                        putExtra("FILE_TYPES", FileCleanEndActivity.image)
-//                    })
-//                    finish()
+                    startActivity(Intent(this, FileCleanEndActivity::class.java).apply {
+                        putExtra("FILE_TYPES", FileCleanEndActivity.image)
+                    })
+                    finish()
                 }).show(supportFragmentManager, "CommonDialog")
         }
     }
