@@ -21,6 +21,7 @@ import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
+import com.clean.filecleaner.ui.module.filemanager.apk.ManageAPKActivity
 import com.clean.filecleaner.ui.module.filemanager.docs.ManageDocsActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -111,6 +112,10 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
                 deleteFiles(ManageDocsActivity.allDocsList)
             }
 
+            apk -> {
+                deleteFiles(ManageAPKActivity.allAPKList)
+            }
+
         }
 
     }
@@ -160,6 +165,7 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
         super.onDestroy()
         stopLoadingAnim()
         ManageDocsActivity.allDocsList.clear()
+        ManageAPKActivity.allAPKList.clear()
     }
 
 }

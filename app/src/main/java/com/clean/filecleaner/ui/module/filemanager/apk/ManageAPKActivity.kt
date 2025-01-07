@@ -1,4 +1,4 @@
-package com.clean.filecleaner.ui.module.filemanager.docs
+package com.clean.filecleaner.ui.module.filemanager.apk
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.clean.filecleaner.R
-import com.clean.filecleaner.data.docMatchList
-import com.clean.filecleaner.databinding.ActivityManageDocsBinding
+import com.clean.filecleaner.data.apkMatchList
+import com.clean.filecleaner.databinding.ActivityManageApksBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.opFile
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
@@ -28,24 +28,24 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
+class ManageAPKActivity : BaseActivity<ActivityManageApksBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
-    override fun inflateViewBinding(): ActivityManageDocsBinding = ActivityManageDocsBinding.inflate(layoutInflater)
+    override fun inflateViewBinding(): ActivityManageApksBinding = ActivityManageApksBinding.inflate(layoutInflater)
 
-    private var adapter: ManageDocsAdapter? = null
+    private var adapter: ManageAPKAdapter? = null
     private var timeTag = 0L
 
     companion object {
-        val allDocsList = mutableListOf<FileInfo>()
+        val allAPKList = mutableListOf<FileInfo>()
     }
 
 
     private fun setListeners() {
         onBackPressedDispatcher.addCallback {
             kotlin.runCatching {
-                allDocsList.clear()
+                allAPKList.clear()
             }
-            startActivity(Intent(this@ManageDocsActivity, MainActivity::class.java))
+            startActivity(Intent(this@ManageAPKActivity, MainActivity::class.java))
             finish()
         }
 
@@ -62,7 +62,7 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
                 cancelable = true,
                 leftClick = {
                     startActivity(Intent(this, FileCleanEndActivity::class.java).apply {
-                        putExtra("FILE_TYPES", FileCleanEndActivity.docs)
+                        putExtra("FILE_TYPES", FileCleanEndActivity.apk)
                     })
                     finish()
                 }
@@ -75,7 +75,7 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
         setListeners()
 
         with(binding) {
-            toolbar.title.text = getString(R.string.docs)
+            toolbar.title.text = getString(R.string.apk)
             ivLoading.startRotatingWithRotateAnimation()
             showLoadingAnimation(preStr = getString(R.string.scanning)) {
                 tvLoading.text = it
@@ -83,13 +83,13 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
         }
 
         lifecycleScope.launch {
-            fetchDocsList()
+            fetchAPKList()
         }
     }
 
     private fun setUpAdapter() {
         with(binding) {
-            adapter = ManageDocsAdapter(this@ManageDocsActivity, list = allDocsList,
+            adapter = ManageAPKAdapter(this@ManageAPKActivity, list = allAPKList,
                 clickListener = {
                     opFile(it.path, it.mimetype)
                 }, checkboxListener = {
@@ -97,7 +97,7 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
                 })
             recyclerView.itemAnimator = null
             recyclerView.adapter = adapter
-            val controller = AnimationUtils.loadLayoutAnimation(this@ManageDocsActivity, R.anim.recyclerview_animation_controller)
+            val controller = AnimationUtils.loadLayoutAnimation(this@ManageAPKActivity, R.anim.recyclerview_animation_controller)
             recyclerView.layoutAnimation = controller
             recyclerView.scheduleLayoutAnimation()
         }
@@ -111,10 +111,10 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
         }
     }
 
-    private suspend fun fetchDocsList() = withContext(Dispatchers.IO + SupervisorJob()) {
+    private suspend fun fetchAPKList() = withContext(Dispatchers.IO + SupervisorJob()) {
         try {
             timeTag = System.currentTimeMillis()
-            allDocsList.clear()
+            allAPKList.clear()
 
             val projection = arrayOf(
                 MediaStore.Files.FileColumns.DATE_MODIFIED,
@@ -125,14 +125,14 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
                 MediaStore.Files.FileColumns.DATE_ADDED,
             )
 
-            val placeholders = docMatchList.joinToString(",") { "?" }
+            val placeholders = apkMatchList.joinToString(",") { "?" }
             val selection = "${MediaStore.Files.FileColumns.MIME_TYPE} IN ($placeholders)"
 
             contentResolver.query(
                 MediaStore.Files.getContentUri("external"),
                 projection,
                 selection,
-                docMatchList,
+                apkMatchList,
                 "${MediaStore.Files.FileColumns.DATE_ADDED} DESC"
             )?.use { cursor ->
                 val docList = mutableListOf<FileInfo>()
@@ -158,7 +158,7 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
                             FileInfo(
                                 name = displayName,
                                 size = size,
-                                sizeString = Formatter.formatFileSize(this@ManageDocsActivity, size),
+                                sizeString = Formatter.formatFileSize(this@ManageAPKActivity, size),
                                 updateTime = dateModified,
                                 addTime = dateAdded,
                                 path = path,
@@ -168,7 +168,7 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
                     }
                 }
 
-                allDocsList.addAll(docList)
+                allAPKList.addAll(docList)
             }
 
             val delayTime = timeTag + 2000 - System.currentTimeMillis()
@@ -177,13 +177,13 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
             withContext(Dispatchers.Main) {
 
                 stopLoadingAnim()
-                if (allDocsList.isEmpty()) {
+                if (allAPKList.isEmpty()) {
                     TransitionManager.beginDelayedTransition(binding.root)
                 }
-                binding.num.text = "${allDocsList.size}"
+                binding.num.text = "${allAPKList.size}"
                 binding.loadingView.isVisible = false
-                binding.bottomView.isVisible = allDocsList.isNotEmpty()
-                binding.emptyView.isVisible = allDocsList.isEmpty()
+                binding.bottomView.isVisible = allAPKList.isNotEmpty()
+                binding.emptyView.isVisible = allAPKList.isEmpty()
                 setUpAdapter()
                 setCleanBtn()
             }
