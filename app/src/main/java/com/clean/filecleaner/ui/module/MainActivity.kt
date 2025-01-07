@@ -16,9 +16,11 @@ import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivit
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.clean.junk.viewmodel.allJunkDataList
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
+import com.clean.filecleaner.ui.module.filemanager.allFilesContainerList
 import com.clean.filecleaner.ui.module.filemanager.apk.ManageAPKActivity
 import com.clean.filecleaner.ui.module.filemanager.audio.ManageAudioActivity
 import com.clean.filecleaner.ui.module.filemanager.docs.ManageDocsActivity
+import com.clean.filecleaner.ui.module.filemanager.image.ManageImageActivity
 
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
@@ -83,6 +85,12 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
                 }
             }
 
+            image.setOnClickListener {
+                requestPermissions {
+                    startActivity(Intent(this@MainActivity, ManageImageActivity::class.java))
+                }
+            }
+
         }
     }
 
@@ -110,8 +118,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
             allJunkDataList.clear()
             ScreenshotCleanActivity.allScreenshotList.clear()
             DuplicateFileCleanActivity.allDuplicateFileList.clear()
-            ManageDocsActivity.allDocsList.clear()
-            ManageAPKActivity.allAPKList.clear()
+            allFilesContainerList.clear()
         }
     }
 

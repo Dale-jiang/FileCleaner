@@ -21,6 +21,7 @@ import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.filemanager.FileCleanEndActivity
 import com.clean.filecleaner.ui.module.filemanager.FileInfo
+import com.clean.filecleaner.ui.module.filemanager.allFilesContainerList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -35,15 +36,11 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
     private var adapter: ManageDocsAdapter? = null
     private var timeTag = 0L
 
-    companion object {
-        val allDocsList = mutableListOf<FileInfo>()
-    }
-
 
     private fun setListeners() {
         onBackPressedDispatcher.addCallback {
             kotlin.runCatching {
-                allDocsList.clear()
+                allFilesContainerList.clear()
             }
             startActivity(Intent(this@ManageDocsActivity, MainActivity::class.java))
             finish()
@@ -89,7 +86,7 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
 
     private fun setUpAdapter() {
         with(binding) {
-            adapter = ManageDocsAdapter(this@ManageDocsActivity, list = allDocsList,
+            adapter = ManageDocsAdapter(this@ManageDocsActivity, list = allFilesContainerList,
                 clickListener = {
                     opFile(it.path, it.mimetype)
                 }, checkboxListener = {
@@ -114,7 +111,7 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
     private suspend fun fetchDocsList() = withContext(Dispatchers.IO + SupervisorJob()) {
         try {
             timeTag = System.currentTimeMillis()
-            allDocsList.clear()
+            allFilesContainerList.clear()
 
             val projection = arrayOf(
                 MediaStore.Files.FileColumns.DATE_MODIFIED,
@@ -168,7 +165,7 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
                     }
                 }
 
-                allDocsList.addAll(docList)
+                allFilesContainerList.addAll(docList)
             }
 
             val delayTime = timeTag + 2000 - System.currentTimeMillis()
@@ -177,13 +174,13 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
             withContext(Dispatchers.Main) {
 
                 stopLoadingAnim()
-                if (allDocsList.isEmpty()) {
+                if (allFilesContainerList.isEmpty()) {
                     TransitionManager.beginDelayedTransition(binding.root)
                 }
-                binding.num.text = "${allDocsList.size}"
+                binding.num.text = "${allFilesContainerList.size}"
                 binding.loadingView.isVisible = false
-                binding.bottomView.isVisible = allDocsList.isNotEmpty()
-                binding.emptyView.isVisible = allDocsList.isEmpty()
+                binding.bottomView.isVisible = allFilesContainerList.isNotEmpty()
+                binding.emptyView.isVisible = allFilesContainerList.isEmpty()
                 setUpAdapter()
                 setCleanBtn()
             }

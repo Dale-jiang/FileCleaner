@@ -40,7 +40,7 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
 
     companion object {
         const val docs = "docs"
-        const val iamge = "image"
+        const val image = "image"
         const val video = "video"
         const val audio = "audio"
         const val apk = "apk"
@@ -110,16 +110,18 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
         when (type) {
 
             docs -> {
-                deleteFiles(ManageDocsActivity.allDocsList)
+                deleteFiles(allFilesContainerList)
             }
 
             apk -> {
-                deleteFiles(ManageAPKActivity.allAPKList)
+                deleteFiles(allFilesContainerList)
             }
 
             audio -> {
-                deleteFiles(ManageAudioActivity.allAudioList)
+                deleteFiles(allFilesContainerList)
             }
+
+            else -> deleteFiles(emptyList<FileInfo>().toMutableList())
 
         }
 
@@ -169,9 +171,7 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
     override fun onDestroy() {
         super.onDestroy()
         stopLoadingAnim()
-        ManageDocsActivity.allDocsList.clear()
-        ManageAPKActivity.allAPKList.clear()
-        ManageAudioActivity.allAudioList.clear()
+        allFilesContainerList.clear()
     }
 
 }

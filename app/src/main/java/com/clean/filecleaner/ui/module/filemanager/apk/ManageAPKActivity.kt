@@ -21,6 +21,7 @@ import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.filemanager.FileCleanEndActivity
 import com.clean.filecleaner.ui.module.filemanager.FileInfo
+import com.clean.filecleaner.ui.module.filemanager.allFilesContainerList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -35,15 +36,10 @@ class ManageAPKActivity : BaseActivity<ActivityManageApksBinding>() {
     private var adapter: ManageAPKAdapter? = null
     private var timeTag = 0L
 
-    companion object {
-        val allAPKList = mutableListOf<FileInfo>()
-    }
-
-
     private fun setListeners() {
         onBackPressedDispatcher.addCallback {
             kotlin.runCatching {
-                allAPKList.clear()
+                allFilesContainerList.clear()
             }
             startActivity(Intent(this@ManageAPKActivity, MainActivity::class.java))
             finish()
@@ -89,7 +85,7 @@ class ManageAPKActivity : BaseActivity<ActivityManageApksBinding>() {
 
     private fun setUpAdapter() {
         with(binding) {
-            adapter = ManageAPKAdapter(this@ManageAPKActivity, list = allAPKList,
+            adapter = ManageAPKAdapter(this@ManageAPKActivity, list = allFilesContainerList,
                 clickListener = {
                     opFile(it.path, it.mimetype)
                 }, checkboxListener = {
@@ -114,7 +110,7 @@ class ManageAPKActivity : BaseActivity<ActivityManageApksBinding>() {
     private suspend fun fetchAPKList() = withContext(Dispatchers.IO + SupervisorJob()) {
         try {
             timeTag = System.currentTimeMillis()
-            allAPKList.clear()
+            allFilesContainerList.clear()
 
             val projection = arrayOf(
                 MediaStore.Files.FileColumns.DATE_MODIFIED,
@@ -168,7 +164,7 @@ class ManageAPKActivity : BaseActivity<ActivityManageApksBinding>() {
                     }
                 }
 
-                allAPKList.addAll(docList)
+                allFilesContainerList.addAll(docList)
             }
 
             val delayTime = timeTag + 2000 - System.currentTimeMillis()
@@ -177,13 +173,13 @@ class ManageAPKActivity : BaseActivity<ActivityManageApksBinding>() {
             withContext(Dispatchers.Main) {
 
                 stopLoadingAnim()
-                if (allAPKList.isEmpty()) {
+                if (allFilesContainerList.isEmpty()) {
                     TransitionManager.beginDelayedTransition(binding.root)
                 }
-                binding.num.text = "${allAPKList.size}"
+                binding.num.text = "${allFilesContainerList.size}"
                 binding.loadingView.isVisible = false
-                binding.bottomView.isVisible = allAPKList.isNotEmpty()
-                binding.emptyView.isVisible = allAPKList.isEmpty()
+                binding.bottomView.isVisible = allFilesContainerList.isNotEmpty()
+                binding.emptyView.isVisible = allFilesContainerList.isEmpty()
                 setUpAdapter()
                 setCleanBtn()
             }

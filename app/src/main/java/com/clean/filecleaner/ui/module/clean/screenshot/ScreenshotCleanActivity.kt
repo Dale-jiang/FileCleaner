@@ -207,7 +207,9 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
             withContext(Dispatchers.Main) {
 
                 stopLoadingAnim()
-               // TransitionManager.beginDelayedTransition(binding.root)
+                if (allScreenshotList.isEmpty()) {
+                    TransitionManager.beginDelayedTransition(binding.root)
+                }
                 binding.loadingView.isVisible = false
                 binding.bottomView.isVisible = allScreenshotList.isNotEmpty()
                 binding.emptyView.isVisible = allScreenshotList.isEmpty()

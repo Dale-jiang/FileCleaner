@@ -1,4 +1,4 @@
-package com.clean.filecleaner.ui.module.filemanager.audio
+package com.clean.filecleaner.ui.module.filemanager.image
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,18 +10,15 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.clean.filecleaner.R
-import com.clean.filecleaner.data.audioMatchList
-import com.clean.filecleaner.databinding.ActivityManageAudioBinding
+import com.clean.filecleaner.databinding.ActivityManageImageBinding
 import com.clean.filecleaner.ext.immersiveMode
-import com.clean.filecleaner.ext.opFile
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
-import com.clean.filecleaner.ui.module.filemanager.FileCleanEndActivity
 import com.clean.filecleaner.ui.module.filemanager.FileInfo
-import com.clean.filecleaner.ui.module.filemanager.allFilesContainerList
+import com.clean.filecleaner.ui.module.filemanager.MediaInfoParent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -29,20 +26,24 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class ManageAudioActivity : BaseActivity<ActivityManageAudioBinding>() {
+class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
-    override fun inflateViewBinding(): ActivityManageAudioBinding = ActivityManageAudioBinding.inflate(layoutInflater)
+    override fun inflateViewBinding(): ActivityManageImageBinding = ActivityManageImageBinding.inflate(layoutInflater)
 
-    private var adapter: ManageAudioAdapter? = null
+    private var adapter: ManageMediaGroupAdapter? = null
     private var timeTag = 0L
+
+    companion object {
+        val allImageList = mutableListOf<MediaInfoParent>()
+    }
 
 
     private fun setListeners() {
         onBackPressedDispatcher.addCallback {
             kotlin.runCatching {
-                allFilesContainerList.clear()
+                allImageList.clear()
             }
-            startActivity(Intent(this@ManageAudioActivity, MainActivity::class.java))
+            startActivity(Intent(this@ManageImageActivity, MainActivity::class.java))
             finish()
         }
 
@@ -51,19 +52,17 @@ class ManageAudioActivity : BaseActivity<ActivityManageAudioBinding>() {
         }
 
         binding.btnClean.setOnClickListener {
-            CommonDialog(
-                title = getString(R.string.warning),
+            CommonDialog(title = getString(R.string.warning),
                 message = getString(R.string.do_you_wish_to_delete_this),
                 leftBtn = getString(R.string.delete),
                 rightBtn = getString(R.string.cancel),
                 cancelable = true,
                 leftClick = {
-                    startActivity(Intent(this, FileCleanEndActivity::class.java).apply {
-                        putExtra("FILE_TYPES", FileCleanEndActivity.audio)
-                    })
-                    finish()
-                }
-            ).show(supportFragmentManager, "CommonDialog")
+//                    startActivity(Intent(this, FileCleanEndActivity::class.java).apply {
+//                        putExtra("FILE_TYPES", FileCleanEndActivity.image)
+//                    })
+//                    finish()
+                }).show(supportFragmentManager, "CommonDialog")
         }
     }
 
@@ -86,15 +85,12 @@ class ManageAudioActivity : BaseActivity<ActivityManageAudioBinding>() {
 
     private fun setUpAdapter() {
         with(binding) {
-            adapter = ManageAudioAdapter(this@ManageAudioActivity, list = allFilesContainerList,
-                clickListener = {
-                    opFile(it.path, it.mimetype)
-                }, checkboxListener = {
-                    setCleanBtn()
-                })
+            adapter = ManageMediaGroupAdapter(this@ManageImageActivity, list = allImageList, false, clickListener = {
+                setCleanBtn()
+            })
             recyclerView.itemAnimator = null
             recyclerView.adapter = adapter
-            val controller = AnimationUtils.loadLayoutAnimation(this@ManageAudioActivity, R.anim.recyclerview_animation_controller)
+            val controller = AnimationUtils.loadLayoutAnimation(this@ManageImageActivity, R.anim.recyclerview_animation_controller)
             recyclerView.layoutAnimation = controller
             recyclerView.scheduleLayoutAnimation()
         }
@@ -111,28 +107,21 @@ class ManageAudioActivity : BaseActivity<ActivityManageAudioBinding>() {
     private suspend fun fetchAudioList() = withContext(Dispatchers.IO + SupervisorJob()) {
         try {
             timeTag = System.currentTimeMillis()
-            allFilesContainerList.clear()
+            allImageList.clear()
 
             val projection = arrayOf(
-                MediaStore.Audio.Media.DATE_MODIFIED,
-                MediaStore.Audio.Media.DATE_ADDED,
-                MediaStore.Audio.Media.DATA,
+                MediaStore.Images.Media.DATE_MODIFIED,
+                MediaStore.Images.Media.DATE_ADDED,
+                MediaStore.Images.Media.DATA,
                 MediaStore.Audio.Media.DISPLAY_NAME,
-                MediaStore.Audio.Media.SIZE,
-                MediaStore.Audio.Media.MIME_TYPE
+                MediaStore.Images.Media.SIZE,
+                MediaStore.Images.Media.MIME_TYPE
             )
 
-            val placeholders = audioMatchList.joinToString(",") { "?" }
-            val selection = "${MediaStore.Audio.Media.MIME_TYPE} IN ($placeholders)"
-
             contentResolver.query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                selection,
-                audioMatchList,
-                "${MediaStore.Audio.Media.DATE_ADDED} DESC"
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, "${MediaStore.Images.Media.DATE_ADDED} DESC"
             )?.use { cursor ->
-                val docList = mutableListOf<FileInfo>()
+                val imageList = mutableListOf<FileInfo>()
 
                 val dateModifiedCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_MODIFIED)
                 val dateAddedCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_ADDED)
@@ -151,11 +140,11 @@ class ManageAudioActivity : BaseActivity<ActivityManageAudioBinding>() {
 
                     val file = File(path)
                     if (file.exists() && file.isFile) {
-                        docList.add(
+                        imageList.add(
                             FileInfo(
                                 name = displayName,
                                 size = size,
-                                sizeString = Formatter.formatFileSize(this@ManageAudioActivity, size),
+                                sizeString = Formatter.formatFileSize(this@ManageImageActivity, size),
                                 updateTime = dateModified,
                                 addTime = dateAdded,
                                 path = path,
@@ -165,7 +154,10 @@ class ManageAudioActivity : BaseActivity<ActivityManageAudioBinding>() {
                     }
                 }
 
-                allFilesContainerList.addAll(docList)
+                imageList.groupBy { it.timeStr }.forEach { (_, list) ->
+                    allImageList.add(MediaInfoParent(children = list.toMutableList(), time = list.first().addTime))
+                }
+
             }
 
             val delayTime = timeTag + 2000 - System.currentTimeMillis()
@@ -174,13 +166,13 @@ class ManageAudioActivity : BaseActivity<ActivityManageAudioBinding>() {
             withContext(Dispatchers.Main) {
 
                 stopLoadingAnim()
-                if (allFilesContainerList.isEmpty()) {
+                if (allImageList.isEmpty()) {
                     TransitionManager.beginDelayedTransition(binding.root)
                 }
-                binding.num.text = "${allFilesContainerList.size}"
+                binding.num.text = "${allImageList.size}"
                 binding.loadingView.isVisible = false
-                binding.bottomView.isVisible = allFilesContainerList.isNotEmpty()
-                binding.emptyView.isVisible = allFilesContainerList.isEmpty()
+                binding.bottomView.isVisible = allImageList.isNotEmpty()
+                binding.emptyView.isVisible = allImageList.isEmpty()
                 setUpAdapter()
                 setCleanBtn()
             }
