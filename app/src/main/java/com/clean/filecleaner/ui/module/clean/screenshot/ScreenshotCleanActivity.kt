@@ -40,7 +40,9 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
 
     private fun setBackListener() {
         onBackPressedDispatcher.addCallback {
-            allScreenshotList.clear()
+            kotlin.runCatching {
+                allScreenshotList.clear()
+            }
             startActivity(Intent(this@ScreenshotCleanActivity, MainActivity::class.java))
             finish()
         }
@@ -205,7 +207,7 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
             withContext(Dispatchers.Main) {
 
                 stopLoadingAnim()
-                TransitionManager.beginDelayedTransition(binding.root)
+               // TransitionManager.beginDelayedTransition(binding.root)
                 binding.loadingView.isVisible = false
                 binding.bottomView.isVisible = allScreenshotList.isNotEmpty()
                 binding.emptyView.isVisible = allScreenshotList.isEmpty()

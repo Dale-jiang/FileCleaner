@@ -3,16 +3,17 @@ package com.clean.filecleaner.ui.module.filemanager.docs
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.format.Formatter
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
-import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.docMatchList
 import com.clean.filecleaner.databinding.ActivityManageDocsBinding
 import com.clean.filecleaner.ext.immersiveMode
+import com.clean.filecleaner.ext.opFile
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.BaseActivity
@@ -39,6 +40,9 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
 
     private fun setListeners() {
         onBackPressedDispatcher.addCallback {
+            kotlin.runCatching {
+                allDocsList.clear()
+            }
             startActivity(Intent(this@ManageDocsActivity, MainActivity::class.java))
             finish()
         }
@@ -67,7 +71,9 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
 
     private fun setUpAdapter() {
         with(binding) {
-            adapter = ManageDocsAdapter(this@ManageDocsActivity, list = mutableListOf()) {
+            adapter = ManageDocsAdapter(this@ManageDocsActivity, list = allDocsList) {
+
+                opFile(it.path, it.mimetype)
 
             }
             recyclerView.itemAnimator = null
@@ -88,23 +94,24 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
                 MediaStore.Files.FileColumns.DATA,
                 MediaStore.Files.FileColumns.DISPLAY_NAME,
                 MediaStore.Files.FileColumns.SIZE,
-                MediaStore.Files.FileColumns.MIME_TYPE
+                MediaStore.Files.FileColumns.MIME_TYPE,
+                MediaStore.Files.FileColumns.DATE_ADDED,
             )
 
             val placeholders = docMatchList.joinToString(",") { "?" }
             val selection = "${MediaStore.Files.FileColumns.MIME_TYPE} IN ($placeholders)"
-            val selectionArgs = docMatchList.toTypedArray()
 
             contentResolver.query(
                 MediaStore.Files.getContentUri("external"),
                 projection,
                 selection,
-                selectionArgs,
-                "${MediaStore.Files.FileColumns.SIZE} DESC"
+                docMatchList,
+                "${MediaStore.Files.FileColumns.DATE_ADDED} DESC"
             )?.use { cursor ->
                 val docList = mutableListOf<FileInfo>()
 
                 val dateModifiedCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_MODIFIED)
+                val dateAddedCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_ADDED)
                 val dataCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)
                 val displayNameCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
                 val sizeCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.SIZE)
@@ -112,6 +119,7 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
 
                 while (cursor.moveToNext()) {
                     val dateModified = cursor.getLong(dateModifiedCol) * 1000L
+                    val dateAdded = cursor.getLong(dateAddedCol) * 1000L
                     val path = cursor.getString(dataCol)
                     val displayName = cursor.getString(displayNameCol)
                     val size = cursor.getLong(sizeCol)
@@ -123,9 +131,9 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
                             FileInfo(
                                 name = displayName,
                                 size = size,
-                                sizeString = "",
+                                sizeString = Formatter.formatFileSize(this@ManageDocsActivity, size),
                                 updateTime = dateModified,
-                                addTime = 0L,
+                                addTime = dateAdded,
                                 path = path,
                                 mimetype = mimeType
                             )
@@ -134,7 +142,6 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
                 }
 
                 allDocsList.addAll(docList)
-                LogUtils.e(allDocsList.toString())
             }
 
             val delayTime = timeTag + 2000 - System.currentTimeMillis()
@@ -143,8 +150,8 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
             withContext(Dispatchers.Main) {
 
                 stopLoadingAnim()
-                TransitionManager.beginDelayedTransition(binding.root)
-
+//                TransitionManager.beginDelayedTransition(binding.root)
+                binding.num.text = "${allDocsList.size}"
                 binding.loadingView.isVisible = false
                 binding.bottomView.isVisible = allDocsList.isNotEmpty()
                 binding.emptyView.isVisible = allDocsList.isEmpty()

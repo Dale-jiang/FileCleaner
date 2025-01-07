@@ -11,7 +11,6 @@ import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.transition.TransitionManager
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.databinding.ActivityDuplicateFileCleanBinding
@@ -51,7 +50,9 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
     @SuppressLint("NotifyDataSetChanged")
     private fun setListeners() {
         onBackPressedDispatcher.addCallback {
-            allDuplicateFileList.clear()
+            kotlin.runCatching {
+                allDuplicateFileList.clear()
+            }
             startActivity(Intent(this@DuplicateFileCleanActivity, MainActivity::class.java))
             finish()
         }
@@ -130,7 +131,7 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
                 if (delayTime > 0) delay(delayTime)
 
                 withContext(Dispatchers.Main) {
-                    TransitionManager.beginDelayedTransition(binding.root)
+                    //TransitionManager.beginDelayedTransition(binding.root)
                     binding.loadingView.isVisible = false
                     binding.emptyView.isVisible = allDuplicateFileList.isEmpty()
                     binding.bottomView.isVisible = allDuplicateFileList.isNotEmpty()
@@ -159,7 +160,7 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
                     setCleanBtn()
                 },
                 clickListener = {
-                    opFile(it.filePath)
+                    opFile(it.filePath, it.mimeType)
                 })
 
             recyclerView.itemAnimator = null

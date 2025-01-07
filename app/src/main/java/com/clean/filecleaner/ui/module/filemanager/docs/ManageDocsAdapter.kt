@@ -6,18 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.clean.filecleaner.data.Callback
-import com.clean.filecleaner.databinding.ItemDuplicateFileSubBinding
+import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ItemManageDocsBinding
-import com.clean.filecleaner.databinding.ItemScreenshotSubBinding
-import java.io.File
+import com.clean.filecleaner.ui.module.filemanager.FileInfo
 
 class ManageDocsAdapter(
     private val activity: AppCompatActivity,
-    val list: MutableList<String>,
-    private val clickListener: Callback
+    val list: MutableList<FileInfo>,
+    private val clickListener: (FileInfo) -> Unit
 ) : RecyclerView.Adapter<ManageDocsAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(val binding: ItemManageDocsBinding) : RecyclerView.ViewHolder(binding.root)
@@ -28,26 +24,33 @@ class ManageDocsAdapter(
     }
 
     override fun getItemCount(): Int {
-        return 20
+        return list.size
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         with(holder.binding) {
 
-//            list[holder.layoutPosition].let { item ->
-//
-//                Glide.with(activity)
-//                    .load(File(item.path))
-//                    .transform(CenterCrop(), RoundedCorners(2))
-//                    .into(image)
-//
-//                checkedView.isVisible = item.isSelected
-//
-//                image.setOnClickListener {
-//                    if (item.isSelected) item.deselect() else item.select()
-//                    clickListener.invoke()
-//                }
-//            }
+            list[holder.layoutPosition].let { item ->
+
+                Glide.with(activity)
+                    .load(R.mipmap.mc_file_document)
+                    .centerCrop()
+                    .into(image)
+
+                bottomLine.isVisible = position < list.size - 1
+                name.text = item.name
+                size.text = item.sizeString
+                checkbox.setImageResource(if (item.isSelected) R.mipmap.icon_screenshot_checked else R.mipmap.icon_screenshot_unchecked)
+
+                checkbox.setOnClickListener {
+                    item.isSelected = !item.isSelected
+                    notifyItemChanged(holder.layoutPosition)
+                }
+
+                itemView.setOnClickListener {
+                    clickListener.invoke(item)
+                }
+            }
         }
     }
 }

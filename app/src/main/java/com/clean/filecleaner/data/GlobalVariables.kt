@@ -12,7 +12,7 @@ const val WEB_URL = "WEB_URL"
 const val USER_TERMS = "www.baidu.com"
 const val PRIVACY_POLICY = "www.baidu.com"
 
-val docMatchList = listOf(
+val docMatchList = arrayOf(
     "application/msword",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
@@ -25,6 +25,8 @@ val docMatchList = listOf(
     "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
     "application/pdf"
 )
+
+val apkMatchList = arrayOf("application/vnd.android.package-archive")
 
 /**---------------------SP-----------------------------**/
 const val FIRST_LAUNCH = "FIRST_LAUNCH"

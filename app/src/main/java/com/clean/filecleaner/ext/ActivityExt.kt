@@ -48,7 +48,7 @@ fun AppCompatActivity.immersiveMode(
     }
 }
 
-fun Activity.opFile(path: String) = runCatching {
+fun Activity.opFile(path: String, mimeType: String = "") = runCatching {
     val file = File(path)
 
     if (!file.exists() || file.isDirectory) {
@@ -61,14 +61,18 @@ fun Activity.opFile(path: String) = runCatching {
         "${BuildConfig.APPLICATION_ID}.FileCleanProvider",
         file
     )
-    val extension = MimeTypeMap.getFileExtensionFromUrl(file.toString())
-    val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: "*/*"
 
-    if (mimeType == "application/vnd.android.package-archive" || file.name.endsWith(".apk")) {
+    var mimetypeTemp = mimeType
+    if (mimeType.isEmpty()) {
+        val extension = MimeTypeMap.getFileExtensionFromUrl(file.toString())
+        mimetypeTemp = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: "*/*"
+    }
+
+    if (mimetypeTemp == "application/vnd.android.package-archive" || file.name.endsWith(".apk")) {
         ToastUtils.showLong(getString(R.string.no_permission_to_install))
     } else {
         Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(fileUri, mimeType)
+            setDataAndType(fileUri, mimetypeTemp)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }.also { intent ->
             jumpToSettings = true

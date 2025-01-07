@@ -111,7 +111,7 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
 
             appCacheDataObserver.observe(this@JunkSearchEndActivity) { itemList ->
 
-                TransitionManager.beginDelayedTransition(binding.root)
+               // TransitionManager.beginDelayedTransition(binding.root)
                 binding.btnClean.isVisible = true
 
                 val firstItem = allJunkDataList.firstOrNull() as? TrashItemParent
@@ -143,7 +143,7 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
                 firstItem?.takeIf { it.trashType == JunkType.APP_CACHE }
                     ?.apply {
                         isLoading = false
-                        TransitionManager.beginDelayedTransition(binding.root)
+                    //    TransitionManager.beginDelayedTransition(binding.root)
                         binding.btnClean.isVisible = true
                         mAdapter.notifyItemChanged(0)
                     }
@@ -153,7 +153,7 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
                 val firstItem = allJunkDataList.firstOrNull() as? TrashItemParent
                 if (firstItem?.trashType == JunkType.APP_CACHE) {
                     firstItem.isLoading = true
-                    TransitionManager.beginDelayedTransition(binding.root)
+                   // TransitionManager.beginDelayedTransition(binding.root)
                     binding.btnClean.isVisible = false
                     mAdapter.notifyItemChanged(0)
                 }

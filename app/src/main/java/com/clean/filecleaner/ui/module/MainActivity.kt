@@ -14,6 +14,7 @@ import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
+import com.clean.filecleaner.ui.module.clean.junk.viewmodel.allJunkDataList
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
 import com.clean.filecleaner.ui.module.filemanager.docs.ManageDocsActivity
 
@@ -24,6 +25,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun onResume() {
         super.onResume()
         setStorageInfo()
+        resetGlobalList()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -86,6 +88,16 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun onDestroy() {
         super.onDestroy()
         binding.btnClean.clearAnimation()
+        resetGlobalList()
+    }
+
+    private fun resetGlobalList() {
+        runCatching {
+            allJunkDataList.clear()
+            ScreenshotCleanActivity.allScreenshotList.clear()
+            DuplicateFileCleanActivity.allDuplicateFileList.clear()
+            ManageDocsActivity.allDocsList.clear()
+        }
     }
 
 }

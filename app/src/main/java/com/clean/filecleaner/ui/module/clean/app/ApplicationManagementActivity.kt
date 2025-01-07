@@ -135,7 +135,7 @@ class ApplicationManagementActivity : BaseActivity<ActivityApplicationManagement
             if (delayTime > 0) delay(delayTime)
 
             withContext(Dispatchers.Main) {
-                TransitionManager.beginDelayedTransition(binding.root)
+//                TransitionManager.beginDelayedTransition(binding.root)
                 binding.loadingView.isVisible = false
                 setUpAdapter(finalList.toMutableList())
 
