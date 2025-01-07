@@ -214,6 +214,7 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
                 binding.bottomView.isVisible = allScreenshotList.isNotEmpty()
                 binding.emptyView.isVisible = allScreenshotList.isEmpty()
                 setUpAdapter()
+                setUpCleanBtn()
             }
         } catch (e: Exception) {
             e.printStackTrace()
