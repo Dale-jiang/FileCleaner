@@ -2,26 +2,40 @@ package com.clean.filecleaner.ui.module.filemanager.docs
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
+import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.R
+import com.clean.filecleaner.data.docMatchList
 import com.clean.filecleaner.databinding.ActivityManageDocsBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
+import com.clean.filecleaner.ui.module.filemanager.FileInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 
 class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
     override fun inflateViewBinding(): ActivityManageDocsBinding = ActivityManageDocsBinding.inflate(layoutInflater)
 
     private var adapter: ManageDocsAdapter? = null
+    private var timeTag = 0L
+
+    companion object {
+        val allDocsList = mutableListOf<FileInfo>()
+    }
+
 
     private fun setListeners() {
         onBackPressedDispatcher.addCallback {
@@ -47,12 +61,7 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
         }
 
         lifecycleScope.launch {
-            delay(3000L)
-            stopLoadingAnim()
-            TransitionManager.beginDelayedTransition(binding.root)
-            binding.loadingView.isVisible = false
-            binding.bottomView.isVisible = true
-            setUpAdapter()
+            fetchDocsList()
         }
     }
 
@@ -69,6 +78,84 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
         }
     }
 
+    private suspend fun fetchDocsList() = withContext(Dispatchers.IO + SupervisorJob()) {
+        try {
+            timeTag = System.currentTimeMillis()
+            allDocsList.clear()
+
+            val projection = arrayOf(
+                MediaStore.Files.FileColumns.DATE_MODIFIED,
+                MediaStore.Files.FileColumns.DATA,
+                MediaStore.Files.FileColumns.DISPLAY_NAME,
+                MediaStore.Files.FileColumns.SIZE,
+                MediaStore.Files.FileColumns.MIME_TYPE
+            )
+
+            val placeholders = docMatchList.joinToString(",") { "?" }
+            val selection = "${MediaStore.Files.FileColumns.MIME_TYPE} IN ($placeholders)"
+            val selectionArgs = docMatchList.toTypedArray()
+
+            contentResolver.query(
+                MediaStore.Files.getContentUri("external"),
+                projection,
+                selection,
+                selectionArgs,
+                "${MediaStore.Files.FileColumns.SIZE} DESC"
+            )?.use { cursor ->
+                val docList = mutableListOf<FileInfo>()
+
+                val dateModifiedCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATE_MODIFIED)
+                val dataCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)
+                val displayNameCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
+                val sizeCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.SIZE)
+                val mimeTypeCol = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE)
+
+                while (cursor.moveToNext()) {
+                    val dateModified = cursor.getLong(dateModifiedCol) * 1000L
+                    val path = cursor.getString(dataCol)
+                    val displayName = cursor.getString(displayNameCol)
+                    val size = cursor.getLong(sizeCol)
+                    val mimeType = cursor.getString(mimeTypeCol)
+
+                    val file = File(path)
+                    if (file.exists() && file.isFile) {
+                        docList.add(
+                            FileInfo(
+                                name = displayName,
+                                size = size,
+                                sizeString = "",
+                                updateTime = dateModified,
+                                addTime = 0L,
+                                path = path,
+                                mimetype = mimeType
+                            )
+                        )
+                    }
+                }
+
+                allDocsList.addAll(docList)
+                LogUtils.e(allDocsList.toString())
+            }
+
+            val delayTime = timeTag + 2000 - System.currentTimeMillis()
+            if (delayTime > 0) delay(delayTime)
+
+            withContext(Dispatchers.Main) {
+
+                stopLoadingAnim()
+                TransitionManager.beginDelayedTransition(binding.root)
+
+                binding.loadingView.isVisible = false
+                binding.bottomView.isVisible = allDocsList.isNotEmpty()
+                binding.emptyView.isVisible = allDocsList.isEmpty()
+
+                setUpAdapter()
+            }
+
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
 
     override fun stopLoadingAnim() {
         super.stopLoadingAnim()

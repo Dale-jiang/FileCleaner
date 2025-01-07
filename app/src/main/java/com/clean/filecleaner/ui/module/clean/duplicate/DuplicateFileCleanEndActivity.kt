@@ -22,7 +22,6 @@ import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity.Companion.allDuplicateFileList
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
-import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity.Companion.allScreenshotList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -110,7 +109,7 @@ class DuplicateFileCleanEndActivity : StoragePermissionBaseActivity<ActivityDupl
                     num++
                 }
             }
-            allScreenshotList.clear()
+            allDuplicateFileList.clear()
             val delayTime = startDeleteTime + 3000L - System.currentTimeMillis()
             if (delayTime > 0) {
                 delay(delayTime)

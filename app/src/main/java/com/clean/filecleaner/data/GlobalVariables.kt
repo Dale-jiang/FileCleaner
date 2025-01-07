@@ -22,7 +22,8 @@ val docMatchList = listOf(
     "application/vnd.ms-powerpoint",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     "application/vnd.openxmlformats-officedocument.presentationml.template",
-    "application/vnd.openxmlformats-officedocument.presentationml.slideshow"
+    "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
+    "application/pdf"
 )
 
 /**---------------------SP-----------------------------**/
