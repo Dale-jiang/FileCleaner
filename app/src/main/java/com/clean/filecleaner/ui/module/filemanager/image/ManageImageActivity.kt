@@ -71,7 +71,7 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
         setListeners()
 
         with(binding) {
-            toolbar.title.text = getString(R.string.audio)
+            toolbar.title.text = getString(R.string.image)
             ivLoading.startRotatingWithRotateAnimation()
             showLoadingAnimation(preStr = getString(R.string.scanning)) {
                 tvLoading.text = it
@@ -98,7 +98,7 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
 
     private fun setCleanBtn() {
         adapter?.list?.let { itemList ->
-            val isEnabled = itemList.any { c -> c.isSelected }
+            val isEnabled = itemList.any { c -> c.children.any { it.isSelected } }
             binding.btnClean.isEnabled = isEnabled
             binding.btnClean.alpha = if (isEnabled) 1f else 0.4f
         }
@@ -108,6 +108,7 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
         try {
             timeTag = System.currentTimeMillis()
             allImageList.clear()
+            var imageNum = 0
 
             val projection = arrayOf(
                 MediaStore.Images.Media.DATE_MODIFIED,
@@ -153,7 +154,7 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
                         )
                     }
                 }
-
+                imageNum = imageList.size
                 imageList.groupBy { it.timeStr }.forEach { (_, list) ->
                     allImageList.add(MediaInfoParent(children = list.toMutableList(), time = list.first().addTime))
                 }
@@ -169,7 +170,7 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
                 if (allImageList.isEmpty()) {
                     TransitionManager.beginDelayedTransition(binding.root)
                 }
-                binding.num.text = "${allImageList.size}"
+                binding.num.text = "$imageNum"
                 binding.loadingView.isVisible = false
                 binding.bottomView.isVisible = allImageList.isNotEmpty()
                 binding.emptyView.isVisible = allImageList.isEmpty()
