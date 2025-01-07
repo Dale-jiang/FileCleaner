@@ -354,7 +354,7 @@
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginTop="13dp"
                         android:layout_marginBottom="13dp"
-                        android:text="Audio"
+                        android:text="@string/audio"
                         android:textColor="#FF292D35"
                         android:textSize="13dp"
                         android:theme="@style/Sansita"

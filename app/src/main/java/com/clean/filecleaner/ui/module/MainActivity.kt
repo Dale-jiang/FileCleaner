@@ -17,6 +17,7 @@ import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.clean.junk.viewmodel.allJunkDataList
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
 import com.clean.filecleaner.ui.module.filemanager.apk.ManageAPKActivity
+import com.clean.filecleaner.ui.module.filemanager.audio.ManageAudioActivity
 import com.clean.filecleaner.ui.module.filemanager.docs.ManageDocsActivity
 
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
@@ -73,6 +74,12 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
             apk.setOnClickListener {
                 requestPermissions {
                     startActivity(Intent(this@MainActivity, ManageAPKActivity::class.java))
+                }
+            }
+
+            audio.setOnClickListener {
+                requestPermissions {
+                    startActivity(Intent(this@MainActivity, ManageAudioActivity::class.java))
                 }
             }
 

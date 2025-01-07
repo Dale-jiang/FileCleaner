@@ -23,10 +23,33 @@ val docMatchList = arrayOf(
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     "application/vnd.openxmlformats-officedocument.presentationml.template",
     "application/vnd.openxmlformats-officedocument.presentationml.slideshow",
-    "application/pdf"
+    "application/pdf",
+    "text/plain",
+    "application/rtf",
+    "text/html",
+    "application/xml",
+    "text/xml",
+    "text/csv"
 )
 
 val apkMatchList = arrayOf("application/vnd.android.package-archive")
+
+val audioMatchList = arrayOf(
+    "audio/3gpp",      // 3gp
+    "audio/mpeg",      // mp3
+    "audio/ogg",       // ogg
+    "audio/flac",      // flac
+    "audio/midi",      // mid
+    "audio/x-midi",    // mid alternative
+    "audio/wav",       // wav
+    "audio/x-wav",     // wav alternative
+    "audio/mp4",       // m4a
+    "audio/x-m4a",     // m4a alternative
+    "audio/aac",       // aac
+    "audio/x-ms-wma",  // wma
+    "audio/aiff",      // aiff
+    "audio/x-aiff"     // aiff alternative
+)
 
 /**---------------------SP-----------------------------**/
 const val FIRST_LAUNCH = "FIRST_LAUNCH"

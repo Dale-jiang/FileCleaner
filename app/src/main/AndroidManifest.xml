@@ -225,6 +225,11 @@
             android:configChanges="density|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.module.filemanager.audio.ManageAudioActivity"
+            android:configChanges="density|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.FileCleanProvider"

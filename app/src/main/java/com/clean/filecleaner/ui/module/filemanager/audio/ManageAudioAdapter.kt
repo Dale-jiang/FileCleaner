@@ -1,4 +1,4 @@
-package com.clean.filecleaner.ui.module.filemanager.apk
+package com.clean.filecleaner.ui.module.filemanager.audio
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,15 +9,14 @@ import com.bumptech.glide.Glide
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.databinding.ItemManageDocsBinding
-import com.clean.filecleaner.ext.getApkLogo
 import com.clean.filecleaner.ui.module.filemanager.FileInfo
 
-class ManageAPKAdapter(
+class ManageAudioAdapter(
     private val activity: AppCompatActivity,
     val list: MutableList<FileInfo>,
     private val clickListener: (FileInfo) -> Unit,
     private val checkboxListener: Callback
-) : RecyclerView.Adapter<ManageAPKAdapter.ItemViewHolder>() {
+) : RecyclerView.Adapter<ManageAudioAdapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(val binding: ItemManageDocsBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -36,9 +35,9 @@ class ManageAPKAdapter(
             list[holder.layoutPosition].let { item ->
 
                 Glide.with(activity)
-                    .load(item.path.getApkLogo())
+                    .load(R.mipmap.mc_file_audio)
                     .centerCrop()
-                    .placeholder(R.mipmap.mc_file_script)
+                    .placeholder(R.mipmap.mc_file_unknown)
                     .into(image)
 
                 bottomLine.isVisible = position < list.size - 1
