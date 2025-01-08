@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ItemMediaGroupBinding
@@ -22,7 +23,7 @@ class ManageMediaGroupAdapter(
                 val item = list[position]
                 item.isSelected = item.children.all { it.isSelected }
                 clickListener.invoke()
-                notifyItemChanged(position)
+                updateSelectionUI(item)
             }
         }
 
@@ -31,16 +32,21 @@ class ManageMediaGroupAdapter(
                 adapter = subAdapter
                 setRecycledViewPool(viewPool)
                 setHasFixedSize(true)
+                isNestedScrollingEnabled = false
                 itemAnimator = null
+                (binding.recyclerView.layoutManager as? GridLayoutManager)?.apply {
+                    isItemPrefetchEnabled = true
+                    initialPrefetchItemCount = 10
+                }
+
             }
         }
 
         @SuppressLint("NotifyDataSetChanged")
         fun bind(item: MediaInfoParent) {
             binding.tvDate.text = item.timeStr
-            binding.ivChecked.setImageResource(
-                if (item.isSelected) R.mipmap.icon_screenshot_checked else R.mipmap.icon_screenshot_unchecked
-            )
+            updateSelectionUI(item)
+
             subAdapter.list.apply {
                 clear()
                 addAll(item.children)
@@ -50,11 +56,18 @@ class ManageMediaGroupAdapter(
             binding.ivChecked.setOnClickListener {
                 item.isSelected = !item.isSelected
                 subAdapter.list.forEach { it.isSelected = item.isSelected }
-                notifyItemChanged(layoutPosition)
+                updateSelectionUI(item)
                 subAdapter.notifyDataSetChanged()
                 clickListener.invoke()
             }
 
+        }
+
+        private fun updateSelectionUI(item: MediaInfoParent) {
+            binding.ivChecked.setImageResource(
+                if (item.isSelected) R.mipmap.icon_screenshot_checked
+                else R.mipmap.icon_screenshot_unchecked
+            )
         }
     }
 
@@ -71,6 +84,5 @@ class ManageMediaGroupAdapter(
         val item = list[position]
         holder.bind(item)
     }
-
 
 }

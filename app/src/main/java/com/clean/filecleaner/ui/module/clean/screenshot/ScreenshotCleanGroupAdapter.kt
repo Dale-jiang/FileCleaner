@@ -22,7 +22,9 @@ class ScreenshotCleanGroupAdapter(
                 val item = list[position]
                 item.isSelected = item.children.all { it.isSelected }
                 clickListener.invoke()
-                notifyItemChanged(position)
+                binding.ivChecked.setImageResource(
+                    if (item.isSelected) R.mipmap.icon_screenshot_checked else R.mipmap.icon_screenshot_unchecked
+                )
             }
         }
 
@@ -50,7 +52,11 @@ class ScreenshotCleanGroupAdapter(
             binding.ivChecked.setOnClickListener {
                 if (item.isSelected) item.deselect() else item.select()
                 subAdapter.list.forEach { if (item.isSelected) it.select() else it.deselect() }
-                notifyItemChanged(layoutPosition)
+
+                binding.ivChecked.setImageResource(
+                    if (item.isSelected) R.mipmap.icon_screenshot_checked else R.mipmap.icon_screenshot_unchecked
+                )
+             //   notifyItemChanged(layoutPosition)
                 subAdapter.notifyDataSetChanged()
                 clickListener.invoke()
             }

@@ -43,6 +43,7 @@ class ScreenshotCleanSubAdapter(
 
                 image.setOnClickListener {
                     if (item.isSelected) item.deselect() else item.select()
+                    notifyItemChanged(holder.layoutPosition)
                     clickListener.invoke()
                 }
             }

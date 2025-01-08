@@ -7,13 +7,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.SizeUtils
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.databinding.ItemMediaSubBinding
 import com.clean.filecleaner.ext.opFile
-import java.io.File
 
 class ManageMediaSubAdapter(
     private val activity: AppCompatActivity,
@@ -21,6 +18,8 @@ class ManageMediaSubAdapter(
     private val isVideo: Boolean,
     private val clickListener: Callback
 ) : RecyclerView.Adapter<ManageMediaSubAdapter.ItemViewHolder>() {
+
+    private val size = SizeUtils.dp2px(76f)
 
     inner class ItemViewHolder(val binding: ItemMediaSubBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -39,8 +38,10 @@ class ManageMediaSubAdapter(
             list[holder.layoutPosition].let { item ->
 
                 Glide.with(activity)
-                    .load(File(item.path))
-                    .transform(CenterCrop(), RoundedCorners(SizeUtils.dp2px(2f)))
+                    .load(item.path)
+                    .placeholder(R.drawable.shape_bg_white_0)
+                    .override(size, size)
+//                    .transform(CenterCrop(), RoundedCorners(SizeUtils.dp2px(2f)))
                     .into(image)
 
                 videoPlay.isVisible = isVideo
@@ -50,6 +51,7 @@ class ManageMediaSubAdapter(
 
                 checkbox.setOnClickListener {
                     item.isSelected = !item.isSelected
+                    notifyItemChanged(holder.layoutPosition)
                     clickListener()
                 }
 
