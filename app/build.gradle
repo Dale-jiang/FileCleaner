@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id 'kotlin-parcelize'
     id 'stringfog'
+    //id 'com.google.gms.google-services'
+    //id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -69,4 +71,42 @@ dependencies {
     implementation libs.lottie
     //https://github.com/Blankj/AndroidUtilCode?tab=readme-ov-file
     implementation libs.utilcodex
+
+    //admob
+    implementation(libs.play.services.ads)
+    implementation libs.facebook
+    implementation libs.pangle
+    implementation(libs.applovin)
+    implementation(libs.mintegral)
+
+    //Liftoff
+    implementation(libs.vungle)
+
+    //unit
+    implementation(libs.unity.ads)
+    implementation(libs.unity)
+
+    //ironsource
+    implementation(libs.ironsource)
+
+    implementation libs.installreferrer
+    implementation libs.play.services.ads.identifier
+
+    // UMP https://developers.google.com/admob/android/privacy
+    implementation libs.user.messaging.platform
+
+    // okhttp
+    implementation platform(libs.okhttp.bom)
+    implementation libs.okhttp
+    implementation libs.logging.interceptor
+
+    // facebook
+    implementation libs.facebook.android.sdk
+
+    // Firebase
+    implementation platform(libs.firebase.bom)
+    implementation libs.firebase.analytics
+    implementation libs.firebase.config
+    implementation libs.firebase.messaging
+//    implementation libs.firebase.crashlytics
 }
