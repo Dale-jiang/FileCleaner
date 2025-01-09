@@ -20,6 +20,10 @@ class AdWithNative(private val adLocation: String?, private val adConfigDetails:
     private var adLoadTime: Long = System.currentTimeMillis()
     var posId = ""
 
+    override fun getAdLocation(): String {
+        return adLocation ?: "ø"
+    }
+
     override fun getAdConfigDetail(): AdConfigDetails? {
         return adConfigDetails
     }
@@ -33,7 +37,7 @@ class AdWithNative(private val adLocation: String?, private val adConfigDetails:
                 adLoadTime = System.currentTimeMillis()
                 ad.setOnPaidEventListener {
                     // PostUtils.postCustomEvent("cm_ad_impression", hashMapOf("ad_pos_id" to posId))
-                    AdUtils.onPaidEventListener(it, ad.responseInfo)
+                    AdUtils.onPaidEventListener(it, ad.responseInfo, this@AdWithNative)
                 }
                 onLoaded(true, "")
             }

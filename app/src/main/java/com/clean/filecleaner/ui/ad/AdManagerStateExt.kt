@@ -3,9 +3,9 @@ package com.clean.filecleaner.ui.ad
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.getFirInstallTime
+import com.clean.filecleaner.report.reporter.CloakRepository.cloakResult
+import com.clean.filecleaner.report.reporter.ReferrerRepository.installReferrerStr
 import com.clean.filecleaner.utils.AppPreferences.appInstallTime
-import com.clean.filecleaner.utils.AppPreferences.cloakResult
-import com.clean.filecleaner.utils.AppPreferences.installReferrerStr
 import com.clean.filecleaner.utils.AppPreferences.isUnusualUser
 import com.clean.filecleaner.utils.AppPreferences.unusualAdClickCount
 import com.clean.filecleaner.utils.AppPreferences.unusualAdShowCount

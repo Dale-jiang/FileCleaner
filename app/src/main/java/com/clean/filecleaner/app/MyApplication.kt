@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.ProcessUtils
 import com.clean.filecleaner.BuildConfig
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.initRemoteConfig
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.utils.AppLifeHelper
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Firebase
@@ -22,7 +23,7 @@ class MyApplication : Application() {
             MobileAds.initialize(this)
             Firebase.initialize(this)
             Firebase.initRemoteConfig()
-            //TbaHelper.getAllUserInfo()
+            DataReportingUtils.getAllInfos()
         }
     }
 

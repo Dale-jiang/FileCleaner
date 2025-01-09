@@ -25,6 +25,10 @@ class AdWithFullScreen(val adLocation: String?, private val adConfigDetails: AdC
     private var realAd: Any? = null
     private var adLoadTime: Long = System.currentTimeMillis()
 
+    override fun getAdLocation(): String {
+        return adLocation ?: ""
+    }
+
     override fun getAdConfigDetail(): AdConfigDetails? {
         return adConfigDetails
     }
@@ -51,7 +55,7 @@ class AdWithFullScreen(val adLocation: String?, private val adConfigDetails: AdC
                 adLoadTime = System.currentTimeMillis()
                 realAd = openAd
                 openAd.setOnPaidEventListener {
-                    AdUtils.onPaidEventListener(it, openAd.responseInfo)
+                    AdUtils.onPaidEventListener(it, openAd.responseInfo, this@AdWithFullScreen)
                 }
                 onLoaded(true, null)
             }
@@ -72,7 +76,7 @@ class AdWithFullScreen(val adLocation: String?, private val adConfigDetails: AdC
                 adLoadTime = System.currentTimeMillis()
                 realAd = interstitialAd
                 interstitialAd.setOnPaidEventListener {
-                    AdUtils.onPaidEventListener(it, interstitialAd.responseInfo)
+                    AdUtils.onPaidEventListener(it, interstitialAd.responseInfo, this@AdWithFullScreen)
                 }
                 onLoaded(true, null)
             }

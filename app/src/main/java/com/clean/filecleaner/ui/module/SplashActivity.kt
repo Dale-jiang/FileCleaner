@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.clean.filecleaner.databinding.ActivitySplashBinding
 import com.clean.filecleaner.ext.immersiveMode
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.canShow
 import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
@@ -23,6 +24,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun inflateViewBinding(): ActivitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
 
     override fun initView(savedInstanceState: Bundle?) {
+
+        DataReportingUtils.postSessionEvent()
 
         adManagerState.fcLaunchState.loadAd(this)
 

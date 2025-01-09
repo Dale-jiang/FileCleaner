@@ -6,7 +6,7 @@ import com.clean.filecleaner.data.app
 
 object AppPreferences {
 
-    private val prefs: SharedPreferences by lazy {
+    val prefs: SharedPreferences by lazy {
         app.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
     }
 
@@ -17,6 +17,6 @@ object AppPreferences {
     var unusualAdShowCount by prefs.prefDelegate(0)
     var isUnusualUser by prefs.prefDelegate(false)
 
-    var cloakResult by prefs.prefDelegate("")
-    var installReferrerStr by prefs.prefDelegate("")
+    var distinctId by prefs.prefDelegate("")
+
 }

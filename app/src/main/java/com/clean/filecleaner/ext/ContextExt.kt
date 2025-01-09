@@ -96,3 +96,7 @@ private fun getStorageSizeByStatFs(): Pair<Long, Long> {
 fun Context.getFirInstallTime(): Long {
     return runCatching { this.packageManager.getPackageInfo(this.packageName, 0).firstInstallTime }.getOrDefault(0L)
 }
+
+fun Context.getLastUpdateTime(): Long {
+    return runCatching { this.packageManager.getPackageInfo(app.packageName, 0).lastUpdateTime }.getOrDefault(0L)
+}
