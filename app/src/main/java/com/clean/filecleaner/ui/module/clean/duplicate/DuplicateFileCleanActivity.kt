@@ -9,8 +9,10 @@ import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.transition.TransitionManager
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.databinding.ActivityDuplicateFileCleanBinding
@@ -119,6 +121,7 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
         with(binding) {
             toolbar.title.text = getString(R.string.duplicate_files)
             toolbar.ivRight.setImageResource(R.drawable.svg_duplicate_filter)
+            toolbar.ivRight.isInvisible = true
             ivLoading.startRotatingWithRotateAnimation()
             showLoadingAnimation(preStr = getString(R.string.scanning)) {
                 tvLoading.text = it
@@ -131,8 +134,11 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
                 if (delayTime > 0) delay(delayTime)
 
                 withContext(Dispatchers.Main) {
-                    //TransitionManager.beginDelayedTransition(binding.root)
+                    if (allDuplicateFileList.isEmpty()) {
+                        TransitionManager.beginDelayedTransition(binding.root)
+                    }
                     binding.loadingView.isVisible = false
+                    binding.toolbar.ivRight.isInvisible = allDuplicateFileList.isEmpty()
                     binding.emptyView.isVisible = allDuplicateFileList.isEmpty()
                     binding.bottomView.isVisible = allDuplicateFileList.isNotEmpty()
                     setUpAdapter()
