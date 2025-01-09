@@ -89,13 +89,19 @@ class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndB
     override fun initView(savedInstanceState: Bundle?) {
         with(binding) {
             toolbar.title.text = getString(R.string.clean)
-            message.text = cleanSize
-            ivLoading.startRotatingWithRotateAnimation()
-            showLoadingAnimation(preStr = getString(R.string.cleaning)) {
-                tvLoading.text = it
-            }
+            if (cleanSize.isEmpty()) {
+                title.text = getString(R.string.no_junk_found)
+                binding.loadingView.isVisible = false
+            } else {
+                message.text = cleanSize
+                title.text = getString(R.string.clean_finished)
+                ivLoading.startRotatingWithRotateAnimation()
+                showLoadingAnimation(preStr = getString(R.string.cleaning)) {
+                    tvLoading.text = it
+                }
 
-            deleteJunk()
+                deleteJunk()
+            }
 
         }
         initBackListeners()

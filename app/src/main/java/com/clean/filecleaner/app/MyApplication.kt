@@ -3,11 +3,13 @@ package com.clean.filecleaner.app
 import android.app.Application
 import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ProcessUtils
-import com.blankj.utilcode.util.SPStaticUtils
-import com.blankj.utilcode.util.SPUtils
 import com.clean.filecleaner.BuildConfig
 import com.clean.filecleaner.data.app
+import com.clean.filecleaner.ext.initRemoteConfig
 import com.clean.filecleaner.utils.AppLifeHelper
+import com.google.android.gms.ads.MobileAds
+import com.google.firebase.Firebase
+import com.google.firebase.initialize
 
 class MyApplication : Application() {
 
@@ -17,7 +19,10 @@ class MyApplication : Application() {
         if (ProcessUtils.isMainProcess()) {
             AppLifeHelper.init(this)
             LogUtils.getConfig().setLogSwitch(BuildConfig.DEBUG)
-            SPStaticUtils.setDefaultSPUtils(SPUtils.getInstance("File_cleaner"))
+            MobileAds.initialize(this)
+            Firebase.initialize(this)
+            Firebase.initRemoteConfig()
+            //TbaHelper.getAllUserInfo()
         }
     }
 

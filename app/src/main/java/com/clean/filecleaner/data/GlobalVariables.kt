@@ -50,7 +50,3 @@ val audioMatchList = arrayOf(
     "audio/aiff",      // aiff
     "audio/x-aiff"     // aiff alternative
 )
-
-/**---------------------SP-----------------------------**/
-const val FIRST_LAUNCH = "FIRST_LAUNCH"
-const val LAST_CLEAN_CACHE_TIME = "lastCleanCacheTime"

@@ -10,6 +10,7 @@ import com.clean.filecleaner.ext.canInteractive
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.SettingTipsActivity
 import com.clean.filecleaner.ui.module.SplashActivity
+import com.ironsource.mediationsdk.IronSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -69,10 +70,16 @@ object AppLifeHelper {
 
         override fun onActivityResumed(activity: Activity) {
             LogUtils.d(TAG, "Activity resumed: ${activity.localClassName}")
+            runCatching {
+                IronSource.onResume(activity)
+            }
         }
 
         override fun onActivityPaused(activity: Activity) {
             LogUtils.d(TAG, "Activity paused: ${activity.localClassName}")
+            runCatching {
+                IronSource.onPause(activity)
+            }
         }
 
         override fun onActivityStopped(activity: Activity) {

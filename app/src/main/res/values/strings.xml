@@ -1,4 +1,9 @@
 <resources>
+
+    <string name="fb_id">wwww</string>
+    <string name="fb_token">wwwww</string>
+    <string name="admob_id">ca-app-pub-3940256099942544~3347511713</string>
+
     <string name="app_name">FileCleaner</string>
     <string name="splash_loading_tips">Loading, thank you for your patience.</string>
     <string name="make_sure_this_option_is_enabled">Make sure this option is enabled.</string>
@@ -66,4 +71,6 @@
     <string name="files">files</string>
     <string name="audio">Audio</string>
     <string name="used">Size Used: %1$s</string>
+    <string name="no_junk_found">NO Junk Found</string>
+    <string name="ads_loading">Ads Loading...</string>
 </resources>

@@ -92,3 +92,7 @@ private fun getStorageSizeByStatFs(): Pair<Long, Long> {
     val usedSize = (totalBlocks - availableBlocks) * blockSize
     return Pair(totalSize, usedSize)
 }
+
+fun Context.getFirInstallTime(): Long {
+    return runCatching { this.packageManager.getPackageInfo(this.packageName, 0).firstInstallTime }.getOrDefault(0L)
+}

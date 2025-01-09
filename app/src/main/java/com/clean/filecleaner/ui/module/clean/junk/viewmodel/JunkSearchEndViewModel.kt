@@ -14,8 +14,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.AppUtils
-import com.blankj.utilcode.util.SPStaticUtils
-import com.clean.filecleaner.data.LAST_CLEAN_CACHE_TIME
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.calculateDirectorySizeSafely
 import com.clean.filecleaner.ext.getApplicationIconDrawable
@@ -25,6 +23,7 @@ import com.clean.filecleaner.ext.hasUsagePermissions
 import com.clean.filecleaner.ext.isGrantAndroidData
 import com.clean.filecleaner.ui.module.clean.junk.bean.TrashItemCache
 import com.clean.filecleaner.utils.AndroidVersionUtils
+import com.clean.filecleaner.utils.AppPreferences.lastCleanCacheTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
@@ -52,7 +51,7 @@ class JunkSearchEndViewModel : ViewModel() {
             return@runCatching mutableListOf()
         }
         // 例如距离上次清理不足 3 分钟就不再扫描
-        if (System.currentTimeMillis() - SPStaticUtils.getLong(LAST_CLEAN_CACHE_TIME) < 4 * 60 * 1000) {
+        if (System.currentTimeMillis() - lastCleanCacheTime < 4 * 60 * 1000) {
             resetCacheViewObserver.postValue(false)
             return@runCatching mutableListOf()
         }

@@ -107,7 +107,7 @@ class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
                         if (it == JunkType.TEMP_FILES) {
                             delay(100L)
                             if (allJunkDataList.isEmpty()) {
-                                startActivity(Intent(this@JunkSearchActivity, JunkSearchEndActivity::class.java))
+                                startActivity(Intent(this@JunkSearchActivity, JunkCleanEndActivity::class.java))
                                 finish()
                             } else {
                                 startActivity(Intent(this@JunkSearchActivity, JunkSearchEndActivity::class.java))
@@ -118,7 +118,8 @@ class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
                         adapter.list.forEach { data -> data.isLoading = false }
                         adapter.notifyDataSetChanged()
                         delay(500L)
-                        // toActivity<CleanResultActivity>(true)
+                        startActivity(Intent(this@JunkSearchActivity, JunkCleanEndActivity::class.java))
+                        finish()
                     }
 
                 }

@@ -11,23 +11,21 @@ import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
-import androidx.transition.TransitionManager
-import com.blankj.utilcode.util.SPStaticUtils
 import com.clean.filecleaner.R
-import com.clean.filecleaner.data.LAST_CLEAN_CACHE_TIME
 import com.clean.filecleaner.databinding.ActivityJunkSearchEndBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ui.module.AppCacheTipsActivity
 import com.clean.filecleaner.ui.module.MainActivity
-import com.clean.filecleaner.ui.module.dialog.CachePermissionRequestDialog
-import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.clean.junk.adapter.JunkSearchEndAdapter
 import com.clean.filecleaner.ui.module.clean.junk.bean.JunkType
 import com.clean.filecleaner.ui.module.clean.junk.bean.TrashItemParent
 import com.clean.filecleaner.ui.module.clean.junk.viewmodel.JunkSearchEndViewModel
 import com.clean.filecleaner.ui.module.clean.junk.viewmodel.allJunkDataList
+import com.clean.filecleaner.ui.module.dialog.CachePermissionRequestDialog
+import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
+import com.clean.filecleaner.utils.AppPreferences.lastCleanCacheTime
 
 class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBinding>() {
 
@@ -43,11 +41,11 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
     }
 
     override fun above12LauncherEnd() {
-        SPStaticUtils.put(LAST_CLEAN_CACHE_TIME, System.currentTimeMillis())
+        lastCleanCacheTime = System.currentTimeMillis()
         startActivity(Intent(this, JunkCleanEndActivity::class.java).apply {
-            if (selectJunkSize > 0) {
-                putExtra("MESSAGE", getString(R.string.clean_end_tips, binding.junkSize.text))
-            }
+//            if (selectJunkSize > 0) {
+            putExtra("MESSAGE", getString(R.string.clean_end_tips, binding.junkSize.text))
+//            }
         })
         finish()
     }
@@ -93,9 +91,9 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
                 above12Launcher.launch(Intent(StorageManager.ACTION_CLEAR_APP_CACHE))
             } else {
                 startActivity(Intent(this, JunkCleanEndActivity::class.java).apply {
-                    if (selectJunkSize > 0) {
-                        putExtra("MESSAGE", getString(R.string.clean_end_tips, binding.junkSize.text))
-                    }
+//                    if (selectJunkSize > 0) {
+                    putExtra("MESSAGE", getString(R.string.clean_end_tips, binding.junkSize.text))
+//                    }
                 })
 
                 finish()
@@ -111,7 +109,7 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
 
             appCacheDataObserver.observe(this@JunkSearchEndActivity) { itemList ->
 
-               // TransitionManager.beginDelayedTransition(binding.root)
+                // TransitionManager.beginDelayedTransition(binding.root)
                 binding.btnClean.isVisible = true
 
                 val firstItem = allJunkDataList.firstOrNull() as? TrashItemParent
@@ -143,7 +141,7 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
                 firstItem?.takeIf { it.trashType == JunkType.APP_CACHE }
                     ?.apply {
                         isLoading = false
-                    //    TransitionManager.beginDelayedTransition(binding.root)
+                        //    TransitionManager.beginDelayedTransition(binding.root)
                         binding.btnClean.isVisible = true
                         mAdapter.notifyItemChanged(0)
                     }
@@ -153,7 +151,7 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
                 val firstItem = allJunkDataList.firstOrNull() as? TrashItemParent
                 if (firstItem?.trashType == JunkType.APP_CACHE) {
                     firstItem.isLoading = true
-                   // TransitionManager.beginDelayedTransition(binding.root)
+                    // TransitionManager.beginDelayedTransition(binding.root)
                     binding.btnClean.isVisible = false
                     mAdapter.notifyItemChanged(0)
                 }
