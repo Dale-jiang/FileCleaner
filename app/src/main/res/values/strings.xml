@@ -4,7 +4,7 @@
     <string name="fb_token">wwwww</string>
     <string name="admob_id">ca-app-pub-3940256099942544~3347511713</string>
 
-    <string name="app_name">FileCleaner</string>
+    <string name="app_name">File Cleaner</string>
     <string name="splash_loading_tips">Loading, thank you for your patience.</string>
     <string name="make_sure_this_option_is_enabled">Make sure this option is enabled.</string>
     <string name="how_to_do">How To Do</string>
