@@ -17,6 +17,7 @@ import com.clean.filecleaner.utils.AppPreferences.prefs
 import com.clean.filecleaner.utils.prefDelegate
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 
 object ReferrerRepository {
 
@@ -65,17 +66,19 @@ object ReferrerRepository {
         ReportingIOScope.launch {
             val parameters = buildCommonParams()
             parameters.apply {
-                put("piggy", app.getLastUpdateTime())
-                put("oat", app.getFirInstallTime())
-                put("aching", referrerInfo?.installBeginTimestampServerSeconds ?: 0L)
-                put("ted", referrerInfo?.referrerClickTimestampServerSeconds ?: 0L)
-                put("jostle", referrerInfo?.installBeginTimestampSeconds ?: 0L)
-                put("godfrey", referrerInfo?.referrerClickTimestampSeconds ?: 0L)
-                put("kickoff", if (enableLimitAdTracker) "leprosy" else "spitfire")
-                put("aberrate", WebSettings.getDefaultUserAgent(app) ?: "")
-                put("everyday", referrerInfo?.installVersion ?: "")
-                put("aver", referrerInfo?.installReferrer ?: "")
-                put("goose", "build/${Build.ID}")
+                put("tweedy", JSONObject().apply {
+                    put("piggy", app.getLastUpdateTime())
+                    put("oat", app.getFirInstallTime())
+                    put("aching", referrerInfo?.installBeginTimestampServerSeconds ?: 0L)
+                    put("ted", referrerInfo?.referrerClickTimestampServerSeconds ?: 0L)
+                    put("jostle", referrerInfo?.installBeginTimestampSeconds ?: 0L)
+                    put("godfrey", referrerInfo?.referrerClickTimestampSeconds ?: 0L)
+                    put("kickoff", if (enableLimitAdTracker) "leprosy" else "spitfire")
+                    put("aberrate", WebSettings.getDefaultUserAgent(app) ?: "")
+                    put("everyday", referrerInfo?.installVersion ?: "")
+                    put("aver", referrerInfo?.installReferrer ?: "")
+                    put("goose", "build/${Build.ID}")
+                })
             }
             runRequest(parameters.toString(), "logInstallEvent")
         }
