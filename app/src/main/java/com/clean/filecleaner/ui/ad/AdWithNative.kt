@@ -20,8 +20,8 @@ class AdWithNative(private val adLocation: String?, private val adConfigDetails:
     private var adLoadTime: Long = System.currentTimeMillis()
     var posId = ""
 
-    override fun getAdLocation(): String {
-        return adLocation ?: "ø"
+    override fun getAdLocationStr(): String {
+        return adLocation ?: ""
     }
 
     override fun getAdConfigDetail(): AdConfigDetails? {

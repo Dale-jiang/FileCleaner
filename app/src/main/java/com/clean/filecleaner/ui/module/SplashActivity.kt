@@ -25,9 +25,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
 
-        DataReportingUtils.postSessionEvent()
-
         adManagerState.fcLaunchState.loadAd(this)
+        DataReportingUtils.postSessionEvent()
+        DataReportingUtils.postCustomEvent("loading_page")
 
         startTimer(step = { interval, job ->
             if (adManagerState.fcLaunchState.canShow() && interval > 20) {

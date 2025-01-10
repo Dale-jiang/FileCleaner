@@ -26,7 +26,7 @@ object AdImpressionReporter {
                     put("sac", getAdTypeName(ad.getAdConfigDetail()?.type ?: ""))
                     put("subvert", ad.getAdConfigDetail()?.id ?: "")
                     put("caught", ad.getAdConfigDetail()?.platform ?: "admob")
-                    put("glue", ad.getAdLocation())
+                    put("glue", ad.getAdLocationStr())
                     put("zinnia", getAdapterClassName(responseInfo))
                     put("boot", adValue.currencyCode)
                     put("butene", adValue.valueMicros)

@@ -81,6 +81,7 @@ object EventReporter {
             put("penitent", Build.MANUFACTURER ?: "")
             put("youd", BuildConfig.VERSION_NAME)
             put("diem", Build.VERSION.RELEASE ?: "")
+            put("dahlia", "1")
 
         }
     }

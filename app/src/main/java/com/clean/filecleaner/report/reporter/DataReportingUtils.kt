@@ -20,7 +20,7 @@ object DataReportingUtils {
         AdImpressionReporter.postAdImpression(adValue, responseInfo, ad)
     }
 
-    fun eventPost(event: String, params: HashMap<String, Any?> = hashMapOf()) {
+    fun postCustomEvent(event: String, params: HashMap<String, Any?> = hashMapOf()) {
         EventReporter.eventPost(event, params)
     }
 

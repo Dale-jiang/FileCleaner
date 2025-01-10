@@ -25,7 +25,7 @@ class AdWithFullScreen(val adLocation: String?, private val adConfigDetails: AdC
     private var realAd: Any? = null
     private var adLoadTime: Long = System.currentTimeMillis()
 
-    override fun getAdLocation(): String {
+    override fun getAdLocationStr(): String {
         return adLocation ?: ""
     }
 

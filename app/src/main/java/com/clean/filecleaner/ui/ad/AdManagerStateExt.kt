@@ -80,7 +80,7 @@ fun AdManagerState.hasReachedUnusualAdLimit(): Boolean {
 }
 
 fun AdManagerState.isBlocked() = when {
-    userCloConfig == 1 && cloakResult == "engineer" -> true
+    userCloConfig == 1 && cloakResult == "mackinaw" -> true
     userRefConfig == 0 -> false
     else -> !buyUserTags.any { installReferrerStr.contains(it, ignoreCase = true) }
 }
