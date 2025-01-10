@@ -57,12 +57,15 @@ object EventReporter {
 
     private fun postEvent(event: String, params: HashMap<String, Any?>) {
         ReportingIOScope.launch {
+
             val jsonObj = buildCommonParams().apply {
                 put("bluegill", event)
-                put(event, JSONObject().apply {
-                    params.forEach { (k, v) -> put("${k}<college", v) }
-                })
             }
+
+            params.forEach { (t, u) ->
+                jsonObj.put("$t<college", u)
+            }
+
             runRequest(jsonObj.toString(), event)
         }
     }

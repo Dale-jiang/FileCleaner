@@ -173,11 +173,17 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
         try {
             timeTag = System.currentTimeMillis()
             allScreenshotList.clear()
-            val directoryName = if (AndroidVersionUtils.isAndroid10OrAbove()) {
-                Environment.DIRECTORY_SCREENSHOTS
-            } else {
-                "Screenshots"
+
+            val possibleScreenshotDirectories = mutableListOf(
+                "Screenshot",
+                "Screenshots",
+                "ScreenCaptures",
+                //"截屏"
+            )
+            if (AndroidVersionUtils.isAndroid10OrAbove()) {
+                possibleScreenshotDirectories.add(Environment.DIRECTORY_SCREENSHOTS)
             }
+
             val projection = arrayOf(
                 MediaStore.Images.Media.DATE_MODIFIED,
                 MediaStore.Images.Media.DATA,
@@ -185,8 +191,11 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
                 MediaStore.Images.Media.SIZE
             )
             val imgList = mutableListOf<ScreenshotCleanSub>()
-            val selection = "${MediaStore.Images.Media.BUCKET_DISPLAY_NAME} = ?"
-            val selectionArgs = arrayOf(directoryName)
+
+            val selection = possibleScreenshotDirectories.joinToString(" OR ") {
+                "${MediaStore.Images.Media.RELATIVE_PATH} LIKE ?"
+            }
+            val selectionArgs = possibleScreenshotDirectories.map { "%${it}/%" }.toTypedArray()
 
             contentResolver.query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
