@@ -69,7 +69,6 @@ fun AdManagerState.updateUnusualAdInfo(isFullAd: Boolean, isClick: Boolean) {
 }
 
 fun AdManagerState.hasReachedUnusualAdLimit(): Boolean {
-//    return true
     if (isUnusualUser) return true
     val hasReachedLimit =
         unusualAdClickCount >= abnormalAdConfig.maxClick || unusualAdShowCount >= abnormalAdConfig.maxShow

@@ -12,6 +12,11 @@
         layout="@layout/layout_toolbar" />
 
     <FrameLayout
+        android:id="@+id/ad_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

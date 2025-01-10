@@ -79,6 +79,7 @@ class ManageImageActivity : BaseActivity<ActivityManageImageBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
 
         adManagerState.fcResultIntState.loadAd(this)
+        adManagerState.fcResultNatState.loadAd(this)
 
         setListeners()
 

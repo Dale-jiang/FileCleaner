@@ -22,11 +22,14 @@ import com.clean.filecleaner.ext.opFile
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.IAd
 import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.canShow
 import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
 import com.clean.filecleaner.ui.ad.loadAd
 import com.clean.filecleaner.ui.ad.showFullScreenAd
+import com.clean.filecleaner.ui.ad.showNativeAd
+import com.clean.filecleaner.ui.ad.waitAdLoading
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
@@ -59,7 +62,7 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
     @SuppressLint("NotifyDataSetChanged")
     private fun setListeners() {
 
-        binding.loadingView.setOnClickListener {  }
+        binding.loadingView.setOnClickListener { }
 
         onBackPressedDispatcher.addCallback {
             kotlin.runCatching {
@@ -127,6 +130,7 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
     override fun initView(savedInstanceState: Bundle?) {
 
         adManagerState.fcResultIntState.loadAd(this@DuplicateFileCleanActivity)
+        adManagerState.fcResultNatState.loadAd(this@DuplicateFileCleanActivity)
 
         setListeners()
 
@@ -156,6 +160,7 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
                         binding.bottomView.isVisible = allDuplicateFileList.isNotEmpty()
                         setUpAdapter()
                         setCleanBtn()
+                        nativeAdShow()
                     }
                 }
             }
@@ -342,9 +347,29 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
         }
     }
 
+
+    private var ad: IAd? = null
+    private fun nativeAdShow() {
+        if (adManagerState.hasReachedUnusualAdLimit()) return
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_scan_nat"))
+        val adState = adManagerState.fcScanNatState
+        adState.waitAdLoading(this) {
+            lifecycleScope.launch {
+                while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) delay(210L)
+                if (adState.canShow()) {
+                    ad?.destroy()
+                    adState.showNativeAd(this@DuplicateFileCleanActivity, binding.adContainer, "fc_scan_nat") {
+                        ad = it
+                    }
+                }
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         stopLoadingAnim()
+        ad?.destroy()
     }
 
 }

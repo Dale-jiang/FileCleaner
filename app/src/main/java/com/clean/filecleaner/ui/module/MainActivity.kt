@@ -60,6 +60,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
         with(binding) {
 
             adManagerState.fcBackScanIntState.loadAd(this@MainActivity)
+            adManagerState.fcScanNatState.loadAd(this@MainActivity)
 
             setStorageInfo()
 

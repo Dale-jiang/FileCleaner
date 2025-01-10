@@ -20,11 +20,14 @@ import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.IAd
 import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.canShow
 import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
 import com.clean.filecleaner.ui.ad.loadAd
 import com.clean.filecleaner.ui.ad.showFullScreenAd
+import com.clean.filecleaner.ui.ad.showNativeAd
+import com.clean.filecleaner.ui.ad.waitAdLoading
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
@@ -90,6 +93,7 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
 
         adManagerState.fcResultIntState.loadAd(this@ScreenshotCleanActivity)
+        adManagerState.fcResultNatState.loadAd(this@ScreenshotCleanActivity)
 
         setBackListener()
 
@@ -229,6 +233,7 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
                     binding.emptyView.isVisible = allScreenshotList.isEmpty()
                     setUpAdapter()
                     setUpCleanBtn()
+                    nativeAdShow()
                 }
             }
         } catch (e: Exception) {
@@ -257,8 +262,28 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
         }
     }
 
+    private var ad: IAd? = null
+    private fun nativeAdShow() {
+        if (adManagerState.hasReachedUnusualAdLimit()) return
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_scan_nat"))
+        val adState = adManagerState.fcScanNatState
+        adState.waitAdLoading(this) {
+            lifecycleScope.launch {
+                while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) delay(210L)
+                if (adState.canShow()) {
+                    ad?.destroy()
+                    adState.showNativeAd(this@ScreenshotCleanActivity, binding.adContainer, "fc_scan_nat") {
+                        ad = it
+                    }
+                }
+            }
+        }
+    }
+
+
     override fun onDestroy() {
         super.onDestroy()
+        ad?.destroy()
         stopLoadingAnim()
     }
 

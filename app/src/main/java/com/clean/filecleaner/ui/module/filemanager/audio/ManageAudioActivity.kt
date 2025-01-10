@@ -80,6 +80,7 @@ class ManageAudioActivity : BaseActivity<ActivityManageAudioBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
 
         adManagerState.fcResultIntState.loadAd(this)
+        adManagerState.fcResultNatState.loadAd(this)
 
         setListeners()
 

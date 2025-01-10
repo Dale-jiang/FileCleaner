@@ -18,12 +18,15 @@ import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.IAd
 import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.canShow
 import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
 import com.clean.filecleaner.ui.ad.isBlocked
 import com.clean.filecleaner.ui.ad.loadAd
 import com.clean.filecleaner.ui.ad.showFullScreenAd
+import com.clean.filecleaner.ui.ad.showNativeAd
+import com.clean.filecleaner.ui.ad.waitAdLoading
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
@@ -125,6 +128,7 @@ class ScreenshotCleanEndActivity : StoragePermissionBaseActivity<ActivityScreens
                     TransitionManager.beginDelayedTransition(binding.root)
                     binding.loadingView.isVisible = false
                     stopLoadingAnim()
+                    nativeAdShow()
                 }
             }
         }
@@ -155,9 +159,29 @@ class ScreenshotCleanEndActivity : StoragePermissionBaseActivity<ActivityScreens
         }
     }
 
+    private var ad: IAd? = null
+    private fun nativeAdShow() {
+        if (adManagerState.hasReachedUnusualAdLimit()) return
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_result_nat"))
+        val adState = adManagerState.fcResultNatState
+        adState.waitAdLoading(this) {
+            lifecycleScope.launch {
+                while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) delay(210L)
+                if (adState.canShow()) {
+                    ad?.destroy()
+                    adState.showNativeAd(this@ScreenshotCleanEndActivity, binding.adContainer, "fc_result_nat") {
+                        ad = it
+                    }
+                }
+            }
+        }
+    }
+
+
     override fun onDestroy() {
         super.onDestroy()
         stopLoadingAnim()
+        ad?.destroy()
         allScreenshotList.clear()
     }
 

@@ -175,7 +175,7 @@ class JunkCleanEndActivity : StoragePermissionBaseActivity<ActivityJunkCleanEndB
     private fun nativeAdShow() {
         if (adManagerState.hasReachedUnusualAdLimit()) return
         DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_result_nat"))
-        val adState = adManagerState.fcMainNatState
+        val adState = adManagerState.fcResultNatState
         adState.waitAdLoading(this) {
             lifecycleScope.launch {
                 while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) delay(210L)

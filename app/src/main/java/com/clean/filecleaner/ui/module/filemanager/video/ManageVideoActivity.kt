@@ -54,7 +54,7 @@ class ManageVideoActivity : BaseActivity<ActivityManageVideoBinding>() {
             finish()
         }
 
-        binding.loadingView.setOnClickListener {  }
+        binding.loadingView.setOnClickListener { }
 
         binding.toolbar.ivLeft.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -78,6 +78,7 @@ class ManageVideoActivity : BaseActivity<ActivityManageVideoBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
 
         adManagerState.fcResultIntState.loadAd(this)
+        adManagerState.fcResultNatState.loadAd(this)
 
         setListeners()
 
