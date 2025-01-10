@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
@@ -99,7 +100,7 @@ class AdWithFullScreen(val adLocation: String?, private val adConfigDetails: AdC
             }
 
             override fun onAdClicked() {
-                //  PostUtils.postCustomEvent("v_ad_click")
+                DataReportingUtils.postCustomEvent("ad_click_v")
                 adManagerState.updateUnusualAdInfo(isFullAd = true, isClick = true)
             }
 

@@ -29,6 +29,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         DataReportingUtils.postSessionEvent()
         DataReportingUtils.postCustomEvent("loading_page")
+        if (!adManagerState.hasReachedUnusualAdLimit()){
+            DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_launch"))
+        }
 
         if (hasRequestUMP) {
             startLoading()

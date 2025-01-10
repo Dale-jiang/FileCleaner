@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.dialog.AdLoadingDialog
 import kotlinx.coroutines.delay
@@ -95,8 +96,7 @@ fun AdWithFullScreenState.showFullScreenAd(activity: BaseActivity<*>, posId: Str
                     dialog.dismiss()
                 }
                 ad.showAd(activity, null, onClose)
-
-                //PostUtils.postCustomEvent("cm_ad_impression", hashMapOf("ad_pos_id" to posId))
+                DataReportingUtils.postCustomEvent("fc_ad_impression", hashMapOf("ad_pos_id" to posId))
             } else {
                 onClose.invoke()
                 return@launch
