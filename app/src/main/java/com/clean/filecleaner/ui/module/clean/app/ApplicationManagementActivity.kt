@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
 import com.clean.filecleaner.R
@@ -19,6 +20,12 @@ import com.clean.filecleaner.ext.hasUsagePermissions
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
+import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.canShow
+import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
+import com.clean.filecleaner.ui.ad.loadAd
+import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
@@ -53,6 +60,8 @@ class ApplicationManagementActivity : BaseActivity<ActivityApplicationManagement
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+
+        adManagerState.fcResultIntState.loadAd(this@ApplicationManagementActivity)
 
         setBackListener()
         getInstalledApps()
@@ -133,11 +142,27 @@ class ApplicationManagementActivity : BaseActivity<ActivityApplicationManagement
             if (delayTime > 0) delay(delayTime)
 
             withContext(Dispatchers.Main) {
-//                TransitionManager.beginDelayedTransition(binding.root)
-                binding.loadingView.isVisible = false
-                setUpAdapter(finalList.toMutableList())
-
+                fullScreenAdShow {
+                    binding.loadingView.isVisible = false
+                    setUpAdapter(finalList.toMutableList())
+                }
             }
+        }
+    }
+
+    private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
+        if (adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_scan_int"))
+        val adState = adManagerState.fcBackScanIntState
+        if (!adState.canShow()) {
+            adState.loadAd(this)
+            return@runCatching onComplete()
+        }
+        lifecycleScope.launch {
+            while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                delay(200L)
+            }
+            adState.showFullScreenAd(this@ApplicationManagementActivity, "fc_scan_int") { onComplete() }
         }
     }
 

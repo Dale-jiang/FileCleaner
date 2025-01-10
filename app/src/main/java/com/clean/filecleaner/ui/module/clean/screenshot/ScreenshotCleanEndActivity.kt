@@ -6,6 +6,7 @@ import android.media.MediaScannerConnection
 import android.os.Bundle
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.blankj.utilcode.util.LogUtils
@@ -16,6 +17,13 @@ import com.clean.filecleaner.databinding.ActivityScreenshotCleanEndBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
+import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.canShow
+import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
+import com.clean.filecleaner.ui.ad.isBlocked
+import com.clean.filecleaner.ui.ad.loadAd
+import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
@@ -113,9 +121,11 @@ class ScreenshotCleanEndActivity : StoragePermissionBaseActivity<ActivityScreens
                 delay(delayTime)
             }
             withContext(Dispatchers.Main) {
-                TransitionManager.beginDelayedTransition(binding.root)
-                binding.loadingView.isVisible = false
-                stopLoadingAnim()
+                fullScreenAdShow {
+                    TransitionManager.beginDelayedTransition(binding.root)
+                    binding.loadingView.isVisible = false
+                    stopLoadingAnim()
+                }
             }
         }
     }
@@ -129,6 +139,21 @@ class ScreenshotCleanEndActivity : StoragePermissionBaseActivity<ActivityScreens
         LogUtils.e(it.message)
     }
 
+    private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
+        if (adManagerState.isBlocked() || adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_result_int"))
+        val adState = adManagerState.fcResultIntState
+        if (!adState.canShow()) {
+            adState.loadAd(this)
+            return@runCatching onComplete()
+        }
+        lifecycleScope.launch {
+            while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                delay(200L)
+            }
+            adState.showFullScreenAd(this@ScreenshotCleanEndActivity, "fc_result_int") { onComplete() }
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()

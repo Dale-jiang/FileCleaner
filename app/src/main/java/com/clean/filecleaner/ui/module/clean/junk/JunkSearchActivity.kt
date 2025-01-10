@@ -7,11 +7,18 @@ import android.text.format.Formatter.formatFileSize
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.ToastUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ActivityJunkSearchBinding
 import com.clean.filecleaner.ext.immersiveMode
+import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.canShow
+import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
+import com.clean.filecleaner.ui.ad.loadAd
+import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.clean.junk.adapter.JunkSearchAdapter
 import com.clean.filecleaner.ui.module.clean.junk.bean.JunkSearchItem
@@ -62,6 +69,8 @@ class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
 
         with(binding) {
 
+            adManagerState.fcResultIntState.loadAd(this@JunkSearchActivity)
+
             recyclerView.itemAnimator = null
             recyclerView.adapter = adapter
             val controller = AnimationUtils.loadLayoutAnimation(this@JunkSearchActivity, R.anim.recyclerview_animation_controller)
@@ -106,26 +115,47 @@ class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
 
                         if (it == JunkType.TEMP_FILES) {
                             delay(100L)
-                            if (allJunkDataList.isEmpty()) {
-                                startActivity(Intent(this@JunkSearchActivity, JunkSearchEndActivity::class.java))
-                                finish()
-                            } else {
-                                startActivity(Intent(this@JunkSearchActivity, JunkSearchEndActivity::class.java))
-                                finish()
+                            fullScreenAdShow {
+                                if (allJunkDataList.isEmpty()) {
+                                    startActivity(Intent(this@JunkSearchActivity, JunkSearchEndActivity::class.java))
+                                    finish()
+                                } else {
+                                    startActivity(Intent(this@JunkSearchActivity, JunkSearchEndActivity::class.java))
+                                    finish()
+                                }
                             }
                         }
                     } ?: run {
                         adapter.list.forEach { data -> data.isLoading = false }
                         adapter.notifyDataSetChanged()
                         delay(500L)
-                        startActivity(Intent(this@JunkSearchActivity, JunkSearchEndActivity::class.java))
-                        finish()
+                        fullScreenAdShow {
+                            startActivity(Intent(this@JunkSearchActivity, JunkSearchEndActivity::class.java))
+                            finish()
+                        }
                     }
 
                 }
             }
         }
 
+    }
+
+
+    private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
+        if (adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_scan_int"))
+        val adState = adManagerState.fcBackScanIntState
+        if (!adState.canShow()) {
+            adState.loadAd(this)
+            return@runCatching onComplete()
+        }
+        lifecycleScope.launch {
+            while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                delay(200L)
+            }
+            adState.showFullScreenAd(this@JunkSearchActivity, "fc_scan_int") { onComplete() }
+        }
     }
 
 

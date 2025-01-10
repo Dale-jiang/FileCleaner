@@ -10,6 +10,8 @@ import com.clean.filecleaner.ext.animateToProgressWithValueAnimator
 import com.clean.filecleaner.ext.getStorageSizeInfo
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startScaleAnimation
+import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.loadAd
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
@@ -37,6 +39,8 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
 
         with(binding) {
+
+            adManagerState.fcBackScanIntState.loadAd(this@MainActivity)
 
             setStorageInfo()
 

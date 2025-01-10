@@ -11,6 +11,7 @@ import androidx.activity.addCallback
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.clean.filecleaner.R
@@ -18,6 +19,12 @@ import com.clean.filecleaner.databinding.ActivityScreenshotCleanBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
+import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.canShow
+import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
+import com.clean.filecleaner.ui.ad.loadAd
+import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
@@ -41,6 +48,9 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
     }
 
     private fun setBackListener() {
+
+        binding.loadingView.setOnClickListener { }
+
         onBackPressedDispatcher.addCallback {
             kotlin.runCatching {
                 allScreenshotList.clear()
@@ -78,6 +88,8 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+
+        adManagerState.fcResultIntState.loadAd(this@ScreenshotCleanActivity)
 
         setBackListener()
 
@@ -207,16 +219,17 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
             if (delayTime > 0) delay(delayTime)
 
             withContext(Dispatchers.Main) {
-
-                stopLoadingAnim()
-                if (allScreenshotList.isEmpty()) {
-                    TransitionManager.beginDelayedTransition(binding.root)
+                fullScreenAdShow {
+                    stopLoadingAnim()
+                    if (allScreenshotList.isEmpty()) {
+                        TransitionManager.beginDelayedTransition(binding.root)
+                    }
+                    binding.loadingView.isVisible = false
+                    binding.bottomView.isVisible = allScreenshotList.isNotEmpty()
+                    binding.emptyView.isVisible = allScreenshotList.isEmpty()
+                    setUpAdapter()
+                    setUpCleanBtn()
                 }
-                binding.loadingView.isVisible = false
-                binding.bottomView.isVisible = allScreenshotList.isNotEmpty()
-                binding.emptyView.isVisible = allScreenshotList.isEmpty()
-                setUpAdapter()
-                setUpCleanBtn()
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -226,6 +239,22 @@ class ScreenshotCleanActivity : BaseActivity<ActivityScreenshotCleanBinding>() {
     override fun stopLoadingAnim() {
         super.stopLoadingAnim()
         binding.ivLoading.stopRotatingWithRotateAnimation()
+    }
+
+    private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
+        if (adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_scan_int"))
+        val adState = adManagerState.fcBackScanIntState
+        if (!adState.canShow()) {
+            adState.loadAd(this)
+            return@runCatching onComplete()
+        }
+        lifecycleScope.launch {
+            while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                delay(200L)
+            }
+            adState.showFullScreenAd(this@ScreenshotCleanActivity, "fc_scan_int") { onComplete() }
+        }
     }
 
     override fun onDestroy() {

@@ -11,6 +11,7 @@ import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.clean.filecleaner.R
@@ -20,6 +21,12 @@ import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.opFile
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
+import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.canShow
+import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
+import com.clean.filecleaner.ui.ad.loadAd
+import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
@@ -51,6 +58,9 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
 
     @SuppressLint("NotifyDataSetChanged")
     private fun setListeners() {
+
+        binding.loadingView.setOnClickListener {  }
+
         onBackPressedDispatcher.addCallback {
             kotlin.runCatching {
                 allDuplicateFileList.clear()
@@ -116,6 +126,8 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
 
     override fun initView(savedInstanceState: Bundle?) {
 
+        adManagerState.fcResultIntState.loadAd(this@DuplicateFileCleanActivity)
+
         setListeners()
 
         with(binding) {
@@ -134,15 +146,17 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
                 if (delayTime > 0) delay(delayTime)
 
                 withContext(Dispatchers.Main) {
-                    if (allDuplicateFileList.isEmpty()) {
-                        TransitionManager.beginDelayedTransition(binding.root)
+                    fullScreenAdShow {
+                        if (allDuplicateFileList.isEmpty()) {
+                            TransitionManager.beginDelayedTransition(binding.root)
+                        }
+                        binding.loadingView.isVisible = false
+                        binding.toolbar.ivRight.isInvisible = allDuplicateFileList.isEmpty()
+                        binding.emptyView.isVisible = allDuplicateFileList.isEmpty()
+                        binding.bottomView.isVisible = allDuplicateFileList.isNotEmpty()
+                        setUpAdapter()
+                        setCleanBtn()
                     }
-                    binding.loadingView.isVisible = false
-                    binding.toolbar.ivRight.isInvisible = allDuplicateFileList.isEmpty()
-                    binding.emptyView.isVisible = allDuplicateFileList.isEmpty()
-                    binding.bottomView.isVisible = allDuplicateFileList.isNotEmpty()
-                    setUpAdapter()
-                    setCleanBtn()
                 }
             }
         }
@@ -310,6 +324,22 @@ class DuplicateFileCleanActivity : BaseActivity<ActivityDuplicateFileCleanBindin
     }.getOrElse { e ->
         e.printStackTrace()
         emptyList()
+    }
+
+    private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
+        if (adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_scan_int"))
+        val adState = adManagerState.fcBackScanIntState
+        if (!adState.canShow()) {
+            adState.loadAd(this)
+            return@runCatching onComplete()
+        }
+        lifecycleScope.launch {
+            while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                delay(200L)
+            }
+            adState.showFullScreenAd(this@DuplicateFileCleanActivity, "fc_scan_int") { onComplete() }
+        }
     }
 
     override fun onDestroy() {

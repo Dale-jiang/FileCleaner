@@ -9,6 +9,7 @@ import androidx.activity.addCallback
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
 import com.clean.filecleaner.R
@@ -18,6 +19,12 @@ import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.opFile
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
+import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.canShow
+import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
+import com.clean.filecleaner.ui.ad.loadAd
+import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
@@ -48,6 +55,8 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
             finish()
         }
 
+        binding.loadingView.setOnClickListener {  }
+
         binding.toolbar.ivLeft.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -70,6 +79,8 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
     }
 
     override fun initView(savedInstanceState: Bundle?) {
+
+        adManagerState.fcResultIntState.loadAd(this)
 
         setListeners()
 
@@ -175,16 +186,18 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
 
             withContext(Dispatchers.Main) {
 
-                stopLoadingAnim()
-                if (allFilesContainerList.isEmpty()) {
-                    TransitionManager.beginDelayedTransition(binding.root)
+                fullScreenAdShow {
+                    stopLoadingAnim()
+                    if (allFilesContainerList.isEmpty()) {
+                        TransitionManager.beginDelayedTransition(binding.root)
+                    }
+                    binding.num.text = "${allFilesContainerList.size}"
+                    binding.loadingView.isVisible = false
+                    binding.bottomView.isVisible = allFilesContainerList.isNotEmpty()
+                    binding.emptyView.isVisible = allFilesContainerList.isEmpty()
+                    setUpAdapter()
+                    setCleanBtn()
                 }
-                binding.num.text = "${allFilesContainerList.size}"
-                binding.loadingView.isVisible = false
-                binding.bottomView.isVisible = allFilesContainerList.isNotEmpty()
-                binding.emptyView.isVisible = allFilesContainerList.isEmpty()
-                setUpAdapter()
-                setCleanBtn()
             }
 
         } catch (e: Throwable) {
@@ -195,6 +208,22 @@ class ManageDocsActivity : BaseActivity<ActivityManageDocsBinding>() {
     override fun stopLoadingAnim() {
         super.stopLoadingAnim()
         binding.ivLoading.stopRotatingWithRotateAnimation()
+    }
+
+    private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
+        if (adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_scan_int"))
+        val adState = adManagerState.fcBackScanIntState
+        if (!adState.canShow()) {
+            adState.loadAd(this)
+            return@runCatching onComplete()
+        }
+        lifecycleScope.launch {
+            while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                delay(200L)
+            }
+            adState.showFullScreenAd(this@ManageDocsActivity, "fc_scan_int") { onComplete() }
+        }
     }
 
     override fun onDestroy() {
