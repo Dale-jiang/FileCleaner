@@ -70,6 +70,7 @@ class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
         with(binding) {
 
             adManagerState.fcResultIntState.loadAd(this@JunkSearchActivity)
+            adManagerState.fcScanNatState.loadAd(this@JunkSearchActivity)
 
             recyclerView.itemAnimator = null
             recyclerView.adapter = adapter

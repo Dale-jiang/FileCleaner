@@ -11,9 +11,19 @@ import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ActivityJunkSearchEndBinding
 import com.clean.filecleaner.ext.immersiveMode
+import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.IAd
+import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.canShow
+import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
+import com.clean.filecleaner.ui.ad.loadAd
+import com.clean.filecleaner.ui.ad.showNativeAd
+import com.clean.filecleaner.ui.ad.waitAdLoading
 import com.clean.filecleaner.ui.module.AppCacheTipsActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.clean.junk.adapter.JunkSearchEndAdapter
@@ -26,6 +36,8 @@ import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
 import com.clean.filecleaner.utils.AppPreferences.lastCleanCacheTime
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBinding>() {
 
@@ -76,6 +88,9 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
 
     @SuppressLint("NotifyDataSetChanged")
     override fun initView(savedInstanceState: Bundle?) {
+
+        adManagerState.fcResultNatState.loadAd(this)
+        nativeAdShow()
 
         setUpAdapter()
         initBackListeners()
@@ -229,6 +244,29 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
                 })
             }
         }
+    }
+
+    private var ad: IAd? = null
+    private fun nativeAdShow() {
+        if (adManagerState.hasReachedUnusualAdLimit()) return
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_scan_nat"))
+        val adState = adManagerState.fcScanNatState
+        adState.waitAdLoading(this) {
+            lifecycleScope.launch {
+                while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) delay(210L)
+                if (adState.canShow()) {
+                    ad?.destroy()
+                    adState.showNativeAd(this@JunkSearchEndActivity, binding.adContainer, "fc_scan_nat") {
+                        ad = it
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ad?.destroy()
     }
 
 }

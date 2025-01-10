@@ -4,6 +4,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.getFirInstallTime
 import com.clean.filecleaner.report.reporter.CloakRepository.cloakResult
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.report.reporter.ReferrerRepository.installReferrerStr
 import com.clean.filecleaner.utils.AppPreferences.appInstallTime
 import com.clean.filecleaner.utils.AppPreferences.isUnusualUser
@@ -68,11 +69,12 @@ fun AdManagerState.updateUnusualAdInfo(isFullAd: Boolean, isClick: Boolean) {
 }
 
 fun AdManagerState.hasReachedUnusualAdLimit(): Boolean {
+//    return true
     if (isUnusualUser) return true
     val hasReachedLimit =
         unusualAdClickCount >= abnormalAdConfig.maxClick || unusualAdShowCount >= abnormalAdConfig.maxShow
     if (hasReachedLimit) {
-        //   TbaHelper.eventPost("ad_abnormal_user")
+        DataReportingUtils.postCustomEvent("ad_abnormal_user")
         isUnusualUser = true
         return true
     }
