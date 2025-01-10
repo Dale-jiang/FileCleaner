@@ -1,9 +1,13 @@
 package com.clean.filecleaner.ui.ad
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
+import com.clean.filecleaner.databinding.ViewNativeAdBinding
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
@@ -36,7 +40,7 @@ class AdWithNative(private val adLocation: String?, private val adConfigDetails:
                 nativeAd = ad
                 adLoadTime = System.currentTimeMillis()
                 ad.setOnPaidEventListener {
-                    // PostUtils.postCustomEvent("cm_ad_impression", hashMapOf("ad_pos_id" to posId))
+                    DataReportingUtils.postCustomEvent("fc_ad_impression", hashMapOf("ad_pos_id" to posId))
                     AdUtils.onPaidEventListener(it, ad.responseInfo, this@AdWithNative)
                 }
                 onLoaded(true, "")
@@ -44,7 +48,7 @@ class AdWithNative(private val adLocation: String?, private val adConfigDetails:
             withAdListener(object : AdListener() {
                 override fun onAdFailedToLoad(e: LoadAdError) = onLoaded(false, e.message)
                 override fun onAdClicked() {
-//                    PostUtils.postCustomEvent("n_ad_click")
+                    DataReportingUtils.postCustomEvent("ad_click_n")
                     adManagerState.updateUnusualAdInfo(isFullAd = false, isClick = true)
                 }
             })
@@ -55,7 +59,40 @@ class AdWithNative(private val adLocation: String?, private val adConfigDetails:
 
     override fun showAd(activity: BaseActivity<*>, parent: ViewGroup?, onClose: () -> Unit) {
 
-        // TODO:
+        nativeAd?.let { ad ->
+            val binding = ViewNativeAdBinding.inflate(LayoutInflater.from(activity), parent, false)
+            binding.viewNativeAd.apply {
+                iconView = binding.logo.apply {
+                    setImageDrawable(ad.icon?.drawable)
+                }
+                mediaView = binding.mediaView.apply {
+                    mediaContent = ad.mediaContent
+                    setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                }
+                headlineView = binding.name.apply {
+                    text = ad.headline.orEmpty()
+                }
+
+                bodyView = binding.subName.apply {
+                    text = ad.body.orEmpty()
+                }
+
+                callToActionView = binding.btnAction.apply {
+                    text = ad.callToAction.orEmpty()
+                }
+                setNativeAd(ad)
+            }
+
+            parent?.apply {
+                removeAllViews()
+                addView(binding.root)
+            }
+
+            adManagerState.updateUnusualAdInfo(isFullAd = false, isClick = false)
+
+            LogUtils.d("$adLocation - ${adConfigDetails?.type} - ${adConfigDetails?.id} show success (nativeAd)")
+        }
+
 
     }
 
