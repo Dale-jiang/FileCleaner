@@ -10,6 +10,7 @@ object AppPreferences {
         app.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
     }
 
+    var hasRequestUMP by prefs.prefDelegate(false)
     var isFirstLaunch by prefs.prefDelegate(true)
     var lastCleanCacheTime by prefs.prefDelegate(0L)
     var appInstallTime by prefs.prefDelegate(0L)

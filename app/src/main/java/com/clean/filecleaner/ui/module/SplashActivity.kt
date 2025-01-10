@@ -14,7 +14,9 @@ import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
 import com.clean.filecleaner.ui.ad.loadAd
 import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.base.BaseActivity
+import com.clean.filecleaner.utils.AppPreferences.hasRequestUMP
 import com.clean.filecleaner.utils.AppPreferences.isFirstLaunch
+import com.clean.filecleaner.utils.UMPUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -25,10 +27,21 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
 
-        adManagerState.fcLaunchState.loadAd(this)
         DataReportingUtils.postSessionEvent()
         DataReportingUtils.postCustomEvent("loading_page")
 
+        if (hasRequestUMP) {
+            startLoading()
+        } else {
+            UMPUtils.requestUMPInfo(this) {
+                hasRequestUMP = true
+                startLoading()
+            }
+        }
+    }
+
+    private fun startLoading() {
+        adManagerState.fcLaunchState.loadAd(this)
         startTimer(step = { interval, job ->
             if (adManagerState.fcLaunchState.canShow() && interval > 20) {
 
@@ -46,8 +59,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         })
-
     }
+
 
     private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
         if (adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()
