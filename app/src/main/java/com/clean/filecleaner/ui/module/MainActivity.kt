@@ -4,14 +4,22 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.format.Formatter.formatFileSize
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ActivityMainBinding
 import com.clean.filecleaner.ext.animateToProgressWithValueAnimator
 import com.clean.filecleaner.ext.getStorageSizeInfo
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startScaleAnimation
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.canShow
+import com.clean.filecleaner.ui.ad.canShowBackAd
+import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
+import com.clean.filecleaner.ui.ad.isBlocked
 import com.clean.filecleaner.ui.ad.loadAd
+import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
@@ -25,6 +33,8 @@ import com.clean.filecleaner.ui.module.filemanager.audio.ManageAudioActivity
 import com.clean.filecleaner.ui.module.filemanager.docs.ManageDocsActivity
 import com.clean.filecleaner.ui.module.filemanager.image.ManageImageActivity
 import com.clean.filecleaner.ui.module.filemanager.video.ManageVideoActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
@@ -32,8 +42,13 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
     override fun onResume() {
         super.onResume()
-        setStorageInfo()
-        resetGlobalList()
+        if (canShowBackAd) {
+            canShowBackAd = false
+            fullScreenAdShow {
+                setStorageInfo()
+                resetGlobalList()
+            }
+        }
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -48,26 +63,31 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
             btnClean.setOnClickListener {
                 requestPermissions {
+                    canShowBackAd = true
                     startActivity(Intent(this@MainActivity, JunkSearchActivity::class.java))
                 }
             }
 
             btnSetting.setOnClickListener {
+                canShowBackAd = true
                 startActivity(Intent(this@MainActivity, SettingActivity::class.java))
             }
 
             appManager.setOnClickListener {
+                canShowBackAd = true
                 startActivity(Intent(this@MainActivity, ApplicationManagementActivity::class.java))
             }
 
             screenshot.setOnClickListener {
                 requestPermissions {
+                    canShowBackAd = true
                     startActivity(Intent(this@MainActivity, ScreenshotCleanActivity::class.java))
                 }
             }
 
             duplicateFiles.setOnClickListener {
                 requestPermissions {
+                    canShowBackAd = true
                     startActivity(Intent(this@MainActivity, DuplicateFileCleanActivity::class.java))
                 }
             }
@@ -75,30 +95,35 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
             docs.setOnClickListener {
                 requestPermissions {
+                    canShowBackAd = true
                     startActivity(Intent(this@MainActivity, ManageDocsActivity::class.java))
                 }
             }
 
             apk.setOnClickListener {
                 requestPermissions {
+                    canShowBackAd = true
                     startActivity(Intent(this@MainActivity, ManageAPKActivity::class.java))
                 }
             }
 
             audio.setOnClickListener {
                 requestPermissions {
+                    canShowBackAd = true
                     startActivity(Intent(this@MainActivity, ManageAudioActivity::class.java))
                 }
             }
 
             image.setOnClickListener {
                 requestPermissions {
+                    canShowBackAd = true
                     startActivity(Intent(this@MainActivity, ManageImageActivity::class.java))
                 }
             }
 
             video.setOnClickListener {
                 requestPermissions {
+                    canShowBackAd = true
                     startActivity(Intent(this@MainActivity, ManageVideoActivity::class.java))
                 }
             }
@@ -118,6 +143,23 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
                 getString(R.string.storage_of_used, formatFileSize(this@MainActivity, storageInfo.second), formatFileSize(this@MainActivity, storageInfo.first))
         }
     }
+
+    private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
+        if (adManagerState.isBlocked() || adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_back_int"))
+        val adState = adManagerState.fcBackScanIntState
+        if (!adState.canShow()) {
+            adState.loadAd(this)
+            return@runCatching onComplete()
+        }
+        lifecycleScope.launch {
+            while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                delay(200L)
+            }
+            adState.showFullScreenAd(this@MainActivity, "fc_back_int") { onComplete() }
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

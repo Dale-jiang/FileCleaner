@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName
 
 val buyUserTags by lazy { arrayOf("fb4a", "instagram", "ig4a", "gclid", "not%20set", "youtubeads", "%7B%22", "adjust", "bytedance") }
 
-var userRefConfig = 1
-var userCloConfig = 1
+var userRefConfig = 0
+var userCloConfig = 0
 var abnormalAdConfig = AdAbnormalConfig(open = 1, type = 1, interval = 24, maxShow = 20, maxClick = 12)
 var canShowBackAd = false
 val adManagerState by lazy { AdManagerState() }

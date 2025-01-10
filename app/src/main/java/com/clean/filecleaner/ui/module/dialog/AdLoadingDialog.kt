@@ -33,7 +33,7 @@ class AdLoadingDialog : DialogFragment() {
         dialog?.window?.decorView?.background = null
         dialog?.window?.apply {
             setGravity(Gravity.CENTER)
-            setLayout(ScreenUtils.getScreenWidth() - SizeUtils.dp2px(30f), ViewGroup.LayoutParams.WRAP_CONTENT)
+            setLayout(ScreenUtils.getScreenWidth() - SizeUtils.dp2px(50f), ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
 

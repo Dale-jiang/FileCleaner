@@ -7,6 +7,7 @@ import android.os.Bundle
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.canInteractive
+import com.clean.filecleaner.ui.ad.canShowBackAd
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.SettingTipsActivity
 import com.clean.filecleaner.ui.module.SplashActivity
@@ -101,6 +102,7 @@ object AppLifeHelper {
                                 }
                             }
                         }
+                        canShowBackAd = false
                         needHotRestart = true
                     } catch (e: CancellationException) {
                         LogUtils.d(TAG, "Finish job was cancelled")
