@@ -29,7 +29,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         DataReportingUtils.postSessionEvent()
         DataReportingUtils.postCustomEvent("loading_page")
-        if (!adManagerState.hasReachedUnusualAdLimit()){
+        if (!adManagerState.hasReachedUnusualAdLimit()) {
             DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_launch"))
         }
 
@@ -49,6 +49,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             if (adManagerState.fcLaunchState.canShow() && interval > 20) {
 
                 job?.cancel()
+                adManagerState.fcMainNatState.loadAd(this)
 
                 fullScreenAdShow {
                     isFirstLaunch = false
@@ -74,7 +75,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         }
         lifecycleScope.launch {
             while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                delay(200L)
+                delay(210L)
             }
             adState.showFullScreenAd(this@SplashActivity, "fc_launch", false) { onComplete() }
         }

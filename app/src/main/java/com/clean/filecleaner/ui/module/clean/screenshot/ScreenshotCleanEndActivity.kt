@@ -149,7 +149,7 @@ class ScreenshotCleanEndActivity : StoragePermissionBaseActivity<ActivityScreens
         }
         lifecycleScope.launch {
             while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                delay(200L)
+                delay(210L)
             }
             adState.showFullScreenAd(this@ScreenshotCleanEndActivity, "fc_result_int") { onComplete() }
         }

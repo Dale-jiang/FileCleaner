@@ -154,7 +154,7 @@ class DuplicateFileCleanEndActivity : StoragePermissionBaseActivity<ActivityDupl
         }
         lifecycleScope.launch {
             while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                delay(200L)
+                delay(210L)
             }
             adState.showFullScreenAd(this@DuplicateFileCleanEndActivity, "fc_result_int") { onComplete() }
         }

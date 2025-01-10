@@ -160,7 +160,7 @@ class ApplicationManagementActivity : BaseActivity<ActivityApplicationManagement
         }
         lifecycleScope.launch {
             while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                delay(200L)
+                delay(210L)
             }
             adState.showFullScreenAd(this@ApplicationManagementActivity, "fc_scan_int") { onComplete() }
         }

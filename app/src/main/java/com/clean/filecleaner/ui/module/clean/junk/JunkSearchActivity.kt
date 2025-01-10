@@ -152,7 +152,7 @@ class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
         }
         lifecycleScope.launch {
             while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                delay(200L)
+                delay(210L)
             }
             adState.showFullScreenAd(this@JunkSearchActivity, "fc_scan_int") { onComplete() }
         }

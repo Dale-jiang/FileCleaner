@@ -206,7 +206,7 @@ class FileCleanEndActivity : StoragePermissionBaseActivity<ActivityFileCleanEndB
         }
         lifecycleScope.launch {
             while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                delay(200L)
+                delay(210L)
             }
             adState.showFullScreenAd(this@FileCleanEndActivity, "fc_result_int") { onComplete() }
         }

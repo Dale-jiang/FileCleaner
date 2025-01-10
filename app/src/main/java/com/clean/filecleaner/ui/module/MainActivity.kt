@@ -13,6 +13,7 @@ import com.clean.filecleaner.ext.getStorageSizeInfo
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startScaleAnimation
 import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.IAd
 import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.canShow
 import com.clean.filecleaner.ui.ad.canShowBackAd
@@ -20,6 +21,8 @@ import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
 import com.clean.filecleaner.ui.ad.isBlocked
 import com.clean.filecleaner.ui.ad.loadAd
 import com.clean.filecleaner.ui.ad.showFullScreenAd
+import com.clean.filecleaner.ui.ad.showNativeAd
+import com.clean.filecleaner.ui.ad.waitAdLoading
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
@@ -47,8 +50,9 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
             fullScreenAdShow {
                 setStorageInfo()
                 resetGlobalList()
+                nativeAdShow()
             }
-        }
+        } else nativeAdShow()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -144,6 +148,24 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
         }
     }
 
+    private var ad: IAd? = null
+    private fun nativeAdShow() {
+        if (adManagerState.hasReachedUnusualAdLimit()) return
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_main_nat"))
+        val adState = adManagerState.fcMainNatState
+        adState.waitAdLoading(this) {
+            lifecycleScope.launch {
+                while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) delay(210L)
+                if (adState.canShow()) {
+                    ad?.destroy()
+                    adState.showNativeAd(this@MainActivity, binding.adContainer, "fc_main_nat") {
+                        ad = it
+                    }
+                }
+            }
+        }
+    }
+
     private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
         if (adManagerState.isBlocked() || adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()
         DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_back_int"))
@@ -154,7 +176,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
         }
         lifecycleScope.launch {
             while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                delay(200L)
+                delay(210L)
             }
             adState.showFullScreenAd(this@MainActivity, "fc_back_int") { onComplete() }
         }
@@ -164,6 +186,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun onDestroy() {
         super.onDestroy()
         binding.btnClean.clearAnimation()
+        ad?.destroy()
         resetGlobalList()
     }
 

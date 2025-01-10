@@ -141,10 +141,16 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <FrameLayout
+                android:id="@+id/ad_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="12dp">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/app_manager"

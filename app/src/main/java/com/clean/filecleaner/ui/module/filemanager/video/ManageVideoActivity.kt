@@ -215,7 +215,7 @@ class ManageVideoActivity : BaseActivity<ActivityManageVideoBinding>() {
         }
         lifecycleScope.launch {
             while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-                delay(200L)
+                delay(210L)
             }
             adState.showFullScreenAd(this@ManageVideoActivity, "fc_scan_int") { onComplete() }
         }

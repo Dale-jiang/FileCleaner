@@ -2,14 +2,12 @@ package com.clean.filecleaner.ui.ad
 
 import android.content.Context
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ui.base.BaseActivity
 
-fun AdWithNativeState.canShow(activity: BaseActivity<*>): Boolean {
-    return realAdList.isNotEmpty() &&
-            activity.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
+fun AdWithNativeState.canShow(): Boolean {
+    return realAdList.isNotEmpty()
 }
 
 fun AdWithNativeState.initAdConfigDetails(list: List<AdConfigDetails>?) {
