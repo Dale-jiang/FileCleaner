@@ -68,10 +68,10 @@ class JunkSearchEndActivity : JunkSearchEndBaseActivity<ActivityJunkSearchEndBin
             CommonDialog(
                 title = getString(R.string.app_name),
                 message = getString(R.string.junk_exit_tips),
-                leftBtn = getString(R.string.exit),
-                rightBtn = getString(R.string.cancel),
+                rightBtn = getString(R.string.exit),
+                leftBtn = getString(R.string.cancel),
                 cancelable = true,
-                leftClick = {
+                rightClick = {
                     allJunkDataList.clear()
                     startActivity(Intent(this@JunkSearchEndActivity, MainActivity::class.java))
                     finish()

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 
 val buyUserTags by lazy { arrayOf("fb4a", "instagram", "ig4a", "gclid", "not%20set", "youtubeads", "%7B%22", "adjust", "bytedance") }
 
-var userRefConfig = 1
+var userRefConfig = 0
 var userCloConfig = 1
 var abnormalAdConfig = AdAbnormalConfig(open = 1, type = 1, interval = 24, maxShow = 20, maxClick = 12)
 var canShowBackAd = false
@@ -17,11 +17,18 @@ val local_ad_json = """
     {
       "fc_launch": [
         {
-          "yuvceh": "ca-app-pub-3940256099942544/9257395921",
+          "yuvceh": "ca-app-pub-3940256099942544/9257395921xxx",
           "suwf": "admob",
           "cxuaw": "op",
           "caiuh": 13800,
           "aiuhca": 3
+        },
+        {
+          "yuvceh": "ca-app-pub-3940256099942544/9257395921",
+          "suwf": "admob",
+          "cxuaw": "op",
+          "caiuh": 13800,
+          "aiuhca": 2
         }
       ],
         "fc_backscan_int": [

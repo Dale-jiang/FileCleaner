@@ -22,7 +22,7 @@
     </style>
 
     <style name="Sansita">
-        <item name="android:fontFamily">@font/sansita</item>
+        <item name="android:fontFamily">@font/sansation_regular</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
@@ -32,7 +32,7 @@
     </style>
 
     <style name="SansitaBold">
-        <item name="android:fontFamily">@font/sansita</item>
+        <item name="android:fontFamily">@font/sansation_regular</item>
         <item name="android:textStyle">bold</item>
         <item name="android:includeFontPadding">false</item>
     </style>

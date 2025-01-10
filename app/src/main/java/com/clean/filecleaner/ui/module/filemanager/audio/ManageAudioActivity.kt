@@ -64,10 +64,10 @@ class ManageAudioActivity : BaseActivity<ActivityManageAudioBinding>() {
             CommonDialog(
                 title = getString(R.string.warning),
                 message = getString(R.string.do_you_wish_to_delete_this),
-                leftBtn = getString(R.string.delete),
-                rightBtn = getString(R.string.cancel),
+                rightBtn = getString(R.string.delete),
+                leftBtn = getString(R.string.cancel),
                 cancelable = true,
-                leftClick = {
+                rightClick = {
                     startActivity(Intent(this, FileCleanEndActivity::class.java).apply {
                         putExtra("FILE_TYPES", FileCleanEndActivity.audio)
                     })
