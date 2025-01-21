@@ -60,7 +60,7 @@
 
     <LinearLayout
         android:id="@+id/traffic"
-        android:layout_width="160dp"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="horizontal"
@@ -69,7 +69,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:gravity="center"
             android:text="@string/net_traffic"
             android:textColor="@color/white"
@@ -78,9 +77,8 @@
             tools:ignore="HardcodedText,NestedWeights,SpUsage" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 
