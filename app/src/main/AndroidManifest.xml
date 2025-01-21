@@ -18,6 +18,9 @@
         tools:ignore="ProtectedPermissions" />
 
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
@@ -248,6 +251,14 @@
         <meta-data
             android:name="com.facebook.sdk.ClientToken"
             android:value="@string/fb_token" />
+
+        <service
+            android:name=".ui.module.notification.BarService"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="To display network usage in the Notification Center, we need to use a foreground service." />
+        </service>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

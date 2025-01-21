@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/clean"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@mipmap/ic_bar_notice_clean" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="@string/clean"
+            android:textColor="@color/color_text"
+            android:textSize="12dp"
+            android:theme="@style/SansitaBold"
+            tools:ignore="SpUsage" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/screenshot"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@mipmap/ic_bar_notice_screenshot" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="@string/screenshot"
+            android:textColor="@color/color_text"
+            android:textSize="12dp"
+            android:theme="@style/SansitaBold"
+            tools:ignore="HardcodedText,SpUsage" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#EEEEEE" />
+
+    <LinearLayout
+        android:id="@+id/traffic"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="6dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Net Traffic"
+            android:textColor="@color/color_text"
+            android:textSize="12dp"
+            android:theme="@style/SansitaBold"
+            tools:ignore="HardcodedText,NestedWeights,SpUsage" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/speed_desc_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="2.65MB"
+                android:textColor="#FF9E49"
+                android:textSize="11dp"
+                android:theme="@style/SansitaBold"
+                app:drawableLeftCompat="@drawable/svg_net_down"
+                tools:ignore="HardcodedText,SpUsage" />
+
+            <TextView
+                android:id="@+id/speed_desc_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="2.65MB"
+                android:textColor="#5DC070"
+                android:textSize="11dp"
+                android:theme="@style/SansitaBold"
+                app:drawableLeftCompat="@drawable/svg_net_up"
+                tools:ignore="HardcodedText,SpUsage" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

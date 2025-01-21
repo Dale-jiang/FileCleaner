@@ -20,4 +20,6 @@ object AppPreferences {
 
     var distinctId by prefs.prefDelegate("")
 
+    var firstCountryCode by prefs.prefDelegate("")
+
 }
