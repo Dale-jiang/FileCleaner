@@ -8,6 +8,7 @@ import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.initRemoteConfig
 import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter
+import com.clean.filecleaner.ui.module.notification.notificationService
 import com.clean.filecleaner.utils.AppLifeHelper
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.Firebase
@@ -26,6 +27,7 @@ class MyApplication : Application() {
             Firebase.initRemoteConfig()
             BarNotificationCenter.init(this)
             DataReportingUtils.getAllInfos()
+            notificationService.initialize()
         }
     }
 

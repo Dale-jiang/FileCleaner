@@ -1,16 +1,22 @@
 package com.clean.filecleaner.ui.module
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.text.format.Formatter.formatFileSize
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.clean.filecleaner.R
+import com.clean.filecleaner.data.app
 import com.clean.filecleaner.databinding.ActivityMainBinding
 import com.clean.filecleaner.ext.animateToProgressWithValueAnimator
 import com.clean.filecleaner.ext.getStorageSizeInfo
 import com.clean.filecleaner.ext.immersiveMode
+import com.clean.filecleaner.ext.isGrantedNotification
 import com.clean.filecleaner.ext.startScaleAnimation
 import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.ad.IAd
@@ -29,6 +35,7 @@ import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivit
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.clean.junk.viewmodel.allJunkDataList
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
+import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.filemanager.allFilesContainerList
 import com.clean.filecleaner.ui.module.filemanager.allMediaList
 import com.clean.filecleaner.ui.module.filemanager.apk.ManageAPKActivity
@@ -36,12 +43,28 @@ import com.clean.filecleaner.ui.module.filemanager.audio.ManageAudioActivity
 import com.clean.filecleaner.ui.module.filemanager.docs.ManageDocsActivity
 import com.clean.filecleaner.ui.module.filemanager.image.ManageImageActivity
 import com.clean.filecleaner.ui.module.filemanager.video.ManageVideoActivity
+import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.FUNCTION_TYPE
+import com.clean.filecleaner.ui.module.notification.BaseBarFunction
+import com.clean.filecleaner.ui.module.notification.FuncClean
+import com.clean.filecleaner.ui.module.notification.FuncScreenShot
+import com.clean.filecleaner.utils.AndroidVersionUtils
+import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
     override fun inflateViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+    private val barFunction by lazy { intent?.getParcelableExtra<BaseBarFunction>(FUNCTION_TYPE) }
+    private var hasRequestedNotification = false
+    private val notificationLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        }
+    private val notificationSetLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            jumpToSettings = false
+        }
 
     override fun onResume() {
         super.onResume()
@@ -63,8 +86,8 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
             adManagerState.fcScanNatState.loadAd(this@MainActivity)
 
             setStorageInfo()
-
             btnClean.startScaleAnimation()
+            checkNotification()
 
             btnClean.setOnClickListener {
                 requestPermissions {
@@ -164,6 +187,43 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
                     }
                 }
             }
+        }
+    }
+
+    private fun checkNotification() {
+        when (barFunction) {
+            FuncScreenShot -> binding.screenshot.performClick()
+            FuncClean -> binding.btnClean.performClick()
+            else -> requestNotification()
+        }
+    }
+
+    private fun requestNotification() = runCatching {
+        if (isGrantedNotification()) return@runCatching
+        if (hasRequestedNotification) return@runCatching
+        hasRequestedNotification = true
+        if (AndroidVersionUtils.isAndroid13OrAbove() && ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.POST_NOTIFICATIONS)) {
+            notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            CommonDialog(
+                title = getString(R.string.confirm),
+                message = getString(R.string.turn_on_notifications),
+                rightBtn = getString(R.string.grant),
+                rightClick = {
+                    jumpToSettings = true
+                    notificationSetLauncher.launch(getNoticeSetPageIntent())
+                },
+                leftBtn = getString(R.string.cancel), leftClick = {})
+        }
+    }
+
+
+    private fun getNoticeSetPageIntent(): Intent {
+        return if (AndroidVersionUtils.isAndroid8OrAbove()) {
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply { putExtra(Settings.EXTRA_APP_PACKAGE, app.packageName) }
+        } else Intent("android.settings.APP_NOTIFICATION_SETTINGS").apply {
+            putExtra("app_package", this@MainActivity.packageName)
+            putExtra("app_uid", this@MainActivity.applicationInfo.uid)
         }
     }
 

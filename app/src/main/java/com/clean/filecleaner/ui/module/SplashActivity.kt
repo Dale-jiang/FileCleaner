@@ -30,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun setupImmersiveMode() = immersiveMode()
@@ -41,6 +42,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private val notificationLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+
+        if (isGrantedNotification()) {
+            BarNotificationCenter.init(this)
+        }
+
         hasClickPermission = true
         if (countDownTimerIsEnd) {
             if (adManagerState.fcLaunchState.canShow()) {

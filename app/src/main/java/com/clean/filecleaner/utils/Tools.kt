@@ -6,12 +6,45 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Process
 import android.os.storage.StorageManager
+import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.hasUsagePermissions
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 
 object Tools {
+
+    fun startTickerFlow(
+        scope: CoroutineScope,
+        firstDelay: Long,
+        interval: Long,
+        onTick: () -> Unit,
+        dispatcher: CoroutineDispatcher = Dispatchers.Main
+    ): Job {
+        return scope.launch(dispatcher) {
+            try {
+                delay(firstDelay)
+                flow {
+                    while (isActive) {
+                        emit(Unit)
+                        delay(interval)
+                    }
+                }.flowOn(Dispatchers.IO).collect { onTick() }
+            } catch (e: Exception) {
+                LogUtils.e("Ticker flow encountered an error: ${e.message}")
+            }
+        }
+    }
+
 
     private val googleApps = arrayOf(
         "com.google.android.calendar",

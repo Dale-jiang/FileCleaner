@@ -73,4 +73,6 @@
     <string name="used">Size Used: %1$s</string>
     <string name="no_junk_found">NO Junk Found</string>
     <string name="ads_loading">Ads Loading...</string>
+    <string name="confirm">Confirm</string>
+    <string name="turn_on_notifications">Turn on notifications to stay informed about important updates.</string>
 </resources>
