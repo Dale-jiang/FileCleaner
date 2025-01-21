@@ -192,8 +192,20 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
     private fun checkNotification() {
         when (barFunction) {
-            FuncScreenShot -> binding.screenshot.performClick()
-            FuncClean -> binding.btnClean.performClick()
+            FuncScreenShot -> {
+                requestPermissions {
+                    canShowBackAd = true
+                    startActivity(Intent(this@MainActivity, ScreenshotCleanActivity::class.java))
+                }
+            }
+
+            FuncClean -> {
+                requestPermissions {
+                    canShowBackAd = true
+                    startActivity(Intent(this@MainActivity, JunkSearchActivity::class.java))
+                }
+            }
+
             else -> requestNotification()
         }
     }

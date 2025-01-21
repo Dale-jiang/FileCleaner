@@ -95,10 +95,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 job?.cancel()
                 adManagerState.fcMainNatState.loadAd(this)
 
-                fullScreenAdShow {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
-                }
+                fullScreenAdShow { toNextPage() }
 
             }
         }, end = {
