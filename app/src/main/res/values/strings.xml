@@ -75,4 +75,5 @@
     <string name="ads_loading">Ads Loading...</string>
     <string name="confirm">Confirm</string>
     <string name="turn_on_notifications">Turn on notifications to stay informed about important updates.</string>
+    <string name="net_traffic">Net Traffic</string>
 </resources>

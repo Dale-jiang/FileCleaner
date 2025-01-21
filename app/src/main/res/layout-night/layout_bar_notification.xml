@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:text="@string/clean"
-            android:textColor="@color/color_text"
+            android:textColor="@color/white"
             android:textSize="12dp"
             android:theme="@style/SansitaBold"
             tools:ignore="SpUsage" />
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:text="@string/screenshot"
-            android:textColor="@color/color_text"
+            android:textColor="@color/white"
             android:textSize="12dp"
             android:theme="@style/SansitaBold"
             tools:ignore="HardcodedText,SpUsage" />
@@ -72,7 +72,7 @@
             android:layout_marginStart="10dp"
             android:gravity="center"
             android:text="@string/net_traffic"
-            android:textColor="@color/color_text"
+            android:textColor="@color/white"
             android:textSize="12dp"
             android:theme="@style/SansitaBold"
             tools:ignore="HardcodedText,NestedWeights,SpUsage" />

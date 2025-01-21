@@ -225,7 +225,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
                     jumpToSettings = true
                     notificationSetLauncher.launch(getNoticeSetPageIntent())
                 },
-                leftBtn = getString(R.string.cancel), leftClick = {})
+                leftBtn = getString(R.string.cancel), leftClick = {}).show(supportFragmentManager, "requestNotification")
         }
     }
 

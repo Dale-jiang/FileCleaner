@@ -86,7 +86,7 @@ object BarNotificationCenter {
             putExtra(FUNCTION_TYPE, function)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
-        PendingIntent.getActivity(app, Random.nextInt(2200, 8200), intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        PendingIntent.getActivity(app, Random.nextInt(2200, 8200), intent, PendingIntent.FLAG_IMMUTABLE)
     }
 
     private fun createNotificationChannel() = run {

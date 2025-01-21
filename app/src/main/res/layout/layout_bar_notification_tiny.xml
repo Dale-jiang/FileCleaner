@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:gravity="center"
-            android:text="Net Traffic"
+            android:text="@string/net_traffic"
             android:textColor="@color/color_text"
             android:textSize="12dp"
             android:theme="@style/SansitaBold"
