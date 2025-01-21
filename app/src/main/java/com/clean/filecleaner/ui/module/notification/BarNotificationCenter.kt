@@ -24,13 +24,13 @@ import kotlin.random.Random
 object BarNotificationCenter {
 
     private const val TAG = "BarNotificationCenter"
-    private const val FUNCTION_TYPE = "FUNCTION_TYPE"
     private const val NOTIFICATION_CHANNEL: String = "FILE_CLEANER_MAIN"
+    const val FUNCTION_TYPE = "FUNCTION_TYPE"
 
     private val firstCountry by lazy { getFirstCountryCode() }
     private val IS_KOREAN by lazy { isKorean() }
 
-    private fun isKorean() = firstCountry == "KR" && isSamsungDevice()
+    fun isKorean() = firstCountry == "KR" && isSamsungDevice()
 
     private fun isSamsungDevice(): Boolean {
         return Build.MANUFACTURER.equals("Samsung", ignoreCase = true)

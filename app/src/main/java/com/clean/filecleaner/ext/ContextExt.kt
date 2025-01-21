@@ -10,9 +10,11 @@ import android.os.Environment
 import android.os.PowerManager
 import android.os.StatFs
 import android.os.storage.StorageManager
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.data.storagePermissions
+import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid10OrAbove
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid11OrAbove
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid12OrAbove
@@ -99,4 +101,11 @@ fun Context.getFirInstallTime(): Long {
 
 fun Context.getLastUpdateTime(): Long {
     return runCatching { this.packageManager.getPackageInfo(app.packageName, 0).lastUpdateTime }.getOrDefault(0L)
+}
+
+
+fun Context.isGrantedNotification() = run {
+    if (AndroidVersionUtils.isAndroid13OrAbove()) {
+        ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+    } else NotificationManagerCompat.from(this).areNotificationsEnabled()
 }
