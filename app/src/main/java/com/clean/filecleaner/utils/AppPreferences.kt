@@ -24,6 +24,10 @@ object AppPreferences {
 
     var firstCountryCode by prefs.prefDelegate("")
 
+    var total001Revenue by prefs.prefDelegate(0.0)
+    var topPercentDatetime by prefs.prefDelegate(0L)
+    var topPercentRevenue by prefs.prefDelegate(0.0)
+
 
 //    fun getNotificationShowCounts(baseReminder: BaseReminder): Int {
 //        return if (TimeUtils.isToday(getNotificationLashShow(baseReminder))) prefs.getInt("${baseReminder.reminderName}_reminder_amounts", 0) else 0

@@ -17,6 +17,7 @@ class PreferenceDelegate<T>(
             is Long -> preferences.getLong(property.name, defaultValue) as T
             is Float -> preferences.getFloat(property.name, defaultValue) as T
             is String -> preferences.getString(property.name, defaultValue) as T
+            is Double -> preferences.getFloat(property.name, defaultValue.toFloat()) as T
             else -> throw IllegalArgumentException("Unsupported type")
         }
     }
@@ -29,6 +30,7 @@ class PreferenceDelegate<T>(
                 is Long -> putLong(property.name, value)
                 is Float -> putFloat(property.name, value)
                 is String -> putString(property.name, value)
+                is Double -> putFloat(property.name, value.toFloat())
                 else -> throw IllegalArgumentException("Unsupported type")
             }
             apply()

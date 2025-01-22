@@ -3,6 +3,7 @@ package com.clean.filecleaner.ui.ad
 import android.os.Bundle
 import com.clean.filecleaner.BuildConfig
 import com.clean.filecleaner.report.DataReportingConfig
+import com.clean.filecleaner.report.reporter.AdLTVReporter
 import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.google.android.gms.ads.AdValue
 import com.google.android.gms.ads.ResponseInfo
@@ -27,12 +28,11 @@ object AdUtils {
                 })
 
             }
+
+            AdLTVReporter.post(revenue)
+
         }
 
-    }
-
-    fun logAdLoadResult(success: Boolean, msg: String?) {
-        // TODO:  
     }
 
 }

@@ -2,6 +2,8 @@ package com.clean.filecleaner.ext
 
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.BuildConfig
+import com.clean.filecleaner.report.reporter.AdLTVReporter
+import com.clean.filecleaner.report.reporter.AdLTVReporter.revenuePercentList
 import com.clean.filecleaner.ui.ad.abnormalAdConfig
 import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.initData
@@ -101,11 +103,29 @@ fun Firebase.initRemoteConfig() {
     }
 
 
+     fun fetchTopPercentConf() = runCatching {
+        val json = remoteConfig["FIleCleaner_toppercent"].asString()
+        if (json.isBlank()) return@runCatching
+        JSONObject(json).apply {
+            AdLTVReporter.run {
+                revenuePercentList = mutableListOf(
+                    optDouble("fc_adltv_top50", 0.0),
+                    optDouble("fc_adltv_top40", 0.0),
+                    optDouble("fc_adltv_top30", 0.0),
+                    optDouble("fc_adltv_top20", 0.0),
+                    optDouble("fc_adltv_top10", 0.0),
+                )
+            }
+        }
+    }
+
+
     fun getAllConfigs() {
         getAdConfig()
         getAdAbnormalConfig()
         getUserConf()
         getNoticeConfig()
+        fetchTopPercentConf()
     }
 
 
