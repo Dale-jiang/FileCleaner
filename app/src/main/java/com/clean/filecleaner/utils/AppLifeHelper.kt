@@ -33,10 +33,12 @@ object AppLifeHelper {
     private var foregroundActivityCount = 0
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
+    private val callbacks by lazy { AppLifecycleCallbacks() }
+
     fun isAppForeground(): Boolean = foregroundActivityCount > 0
 
     fun init(application: Application) {
-        application.registerActivityLifecycleCallbacks(AppLifecycleCallbacks())
+        application.registerActivityLifecycleCallbacks(callbacks)
         LogUtils.d(TAG, "AppLifeHelper initialized")
     }
 
