@@ -57,7 +57,7 @@ class NotificationService {
 
     private fun beginBackgroundTasks() {
         startTickerFlow(bgScope, 70_000L, 120_000L, onTick = {
-            //  NotificationHelper.displayNotification(TaskReminder)
+            NotificationCenter.displayNotification(TaskReminder)
         })
     }
 
@@ -65,7 +65,7 @@ class NotificationService {
         override fun onReceive(context: Context?, intent: Intent?) {
             bgScope.launch {
                 delay(1200L)
-                //  NotificationHelper.displayNotification(UserPresenceReminder)
+                NotificationCenter.displayNotification(UserPresenceReminder)
             }
         }
     }
@@ -77,21 +77,14 @@ class NotificationService {
                     bgScope.launch {
                         delay(1200L)
                         if (intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)) return@launch
-                        val packageName = intent.dataString?.substring(8).orEmpty()
-                        if (packageName.isNotEmpty()) {
-                            //  NotificationHelper.displayNotification(UninstallReminder)
-                        }
+                        NotificationCenter.displayNotification(UninstallReminder)
                     }
                 }
 
                 Intent.ACTION_PACKAGE_ADDED -> {
                     bgScope.launch {
                         delay(1200L)
-                        val packageName = intent.dataString?.substring(8).orEmpty()
-//                        if (packageName.isNotEmpty()) NotificationHelper.lastAppLabel = packageName.getAppLabel()
-//                        if (NotificationHelper.lastAppLabel.isNotEmpty()) {
-//                            NotificationHelper.displayNotification(InstallReminder)
-//                        }
+                        NotificationCenter.displayNotification(InstallReminder)
                     }
                 }
             }

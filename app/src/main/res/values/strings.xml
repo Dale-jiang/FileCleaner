@@ -76,4 +76,33 @@
     <string name="confirm">Confirm</string>
     <string name="turn_on_notifications">Turn on notifications to stay informed about important updates.</string>
     <string name="net_traffic">Net Traffic</string>
+
+
+    <string name="notice_btn_clean_time">Clean</string>
+    <string name="notice_message_clean_time_1">Free up space fast!</string>
+    <string name="notice_message_clean_time_2">Clean junk instantly!</string>
+    <string name="notice_message_clean_time_3">Clear unnecessary files!</string>
+
+
+    <string name="notice_btn_clean_unlock">Clean</string>
+    <string name="notice_message_clean_unlock_1">Free up space instantly!</string>
+    <string name="notice_message_clean_unlock_2">Clear junk files fast!</string>
+    <string name="notice_message_clean_unlock_3">One tap to clean up!</string>
+    <string name="notice_message_clean_unlock_4">Optimize storage now!</string>
+    <string name="notice_message_clean_unlock_5">Speed up your device!</string>
+
+    <string name="notice_btn_clean_uninstall">Clean</string>
+    <string name="notice_message_clean_uninstall_1">Erase junk in seconds!</string>
+    <string name="notice_message_clean_uninstall_2">Remove leftovers now!</string>
+    <string name="notice_message_clean_uninstall_3">Clear traces instantly!</string>
+    <string name="notice_message_clean_uninstall_4">Reclaim space fast!</string>
+    <string name="notice_message_clean_uninstall_5">Delete unused files!</string>
+
+    <string name="notice_btn_clean_install">Clean</string>
+    <string name="notice_message_clean_install_1">Clean junk in seconds!</string>
+    <string name="notice_message_clean_install_2">Remove leftovers now!</string>
+    <string name="notice_message_clean_install_3">Wipe traces instantly!</string>
+    <string name="notice_message_clean_install_4">Gain space fast!</string>
+    <string name="notice_message_clean_install_5">Delete unused files!</string>
+
 </resources>

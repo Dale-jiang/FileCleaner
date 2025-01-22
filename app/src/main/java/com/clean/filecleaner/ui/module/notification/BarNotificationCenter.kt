@@ -27,13 +27,15 @@ object BarNotificationCenter {
     private const val TAG = "BarNotificationCenter"
     private const val NOTIFICATION_CHANNEL: String = "FILE_CLEANER_MAIN"
     const val FUNCTION_TYPE = "FUNCTION_TYPE"
+    const val REMINDER_TYPE = "REMINDER_TYPE"
+    const val NOTICE_INFO_ITEM = "NOTICE_INFO_ITEM"
 
     private val firstCountry by lazy { getFirstCountryCode() }
     private val IS_KOREAN by lazy { isKorean() }
 
     fun isKorean() = firstCountry == "KR" && isSamsungDevice()
 
-    private fun isSamsungDevice(): Boolean {
+    fun isSamsungDevice(): Boolean {
         return Build.MANUFACTURER.equals("Samsung", ignoreCase = true)
     }
 

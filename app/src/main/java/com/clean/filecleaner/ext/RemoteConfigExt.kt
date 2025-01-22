@@ -8,6 +8,9 @@ import com.clean.filecleaner.ui.ad.initData
 import com.clean.filecleaner.ui.ad.local_ad_json
 import com.clean.filecleaner.ui.ad.userCloConfig
 import com.clean.filecleaner.ui.ad.userRefConfig
+import com.clean.filecleaner.ui.module.notification.BarNotificationCenter
+import com.clean.filecleaner.ui.module.notification.NotificationCenter
+import com.clean.filecleaner.ui.module.notification.NotificationConfig
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.get
 import com.google.firebase.remoteconfig.remoteConfig
@@ -25,16 +28,11 @@ val mRemoteConfig by lazy {
 }
 
 data class AdAbnormalConfig(
-    @SerializedName("augfauk")
-    val open: Int,
-    @SerializedName("veasv")
-    val type: Int,
-    @SerializedName("tebvs")
-    val interval: Int,
-    @SerializedName("xwaea")
-    val maxShow: Int,
-    @SerializedName("ijrtfh")
-    val maxClick: Int
+    @SerializedName("augfauk") val open: Int,
+    @SerializedName("veasv") val type: Int,
+    @SerializedName("tebvs") val interval: Int,
+    @SerializedName("xwaea") val maxShow: Int,
+    @SerializedName("ijrtfh") val maxClick: Int
 )
 
 fun Firebase.initRemoteConfig() {
@@ -78,14 +76,42 @@ fun Firebase.initRemoteConfig() {
         }
     }
 
+
+    fun getNoticeConfig() {
+        val isSamsung = BarNotificationCenter.isSamsungDevice()
+        runCatching {
+            val json = mRemoteConfig[if (isSamsung) "samsungpop" else "fc_pop"].asString()
+            if (json.isNotEmpty()) {
+                NotificationCenter.noticeConfig = Gson().fromJson(json, NotificationConfig::class.java)
+            } else {
+                NotificationCenter.noticeConfig = if (isSamsung) {
+                    NotificationConfig(1, 30, 35, 10, 15, 30, 5, 30, 5)
+                } else {
+                    NotificationConfig(1, 30, 40, 10, 20, 30, 10, 30, 10)
+                }
+            }
+        }.onFailure {
+            NotificationCenter.noticeConfig = if (isSamsung) {
+                NotificationConfig(1, 30, 35, 10, 15, 30, 5, 30, 5)
+            } else {
+                NotificationConfig(1, 30, 40, 10, 20, 30, 10, 30, 10)
+            }
+        }
+
+    }
+
+
     fun getAllConfigs() {
         getAdConfig()
         getAdAbnormalConfig()
         getUserConf()
+        getNoticeConfig()
     }
+
 
     if (BuildConfig.DEBUG) {
         adManagerState.initData()
+        getNoticeConfig()
     } else {
         getAllConfigs()
         mRemoteConfig.fetchAndActivate().addOnSuccessListener { getAllConfigs() }
