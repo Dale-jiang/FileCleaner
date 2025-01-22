@@ -157,7 +157,7 @@ object NotificationCenter {
     @SuppressLint("MissingPermission")
     private fun showNotification(baseReminder: BaseReminder, infoItem: NotificationInfo) {
         createNotificationChannel()
-        val pendingIntent = goSplashPendingIntent(baseReminder, infoItem)
+        val pendingIntent = toSplashPendingIntent(baseReminder, infoItem)
         val builder = NotificationCompat.Builder(app, NOTIFICATION_CHANNEL)
             .setSmallIcon(R.drawable.svg_clean_tiny)
             .setGroupSummary(false)
@@ -192,10 +192,10 @@ object NotificationCenter {
         }
     }
 
-    private fun goSplashPendingIntent(baseReminder: BaseReminder, infoItem: NotificationInfo) = run {
-        return@run PendingIntent.getActivity(app, Random.nextInt(2200, 8200), Intent(app, SplashActivity::class.java).apply {
-            putExtra(REMINDER_TYPE, baseReminder)
-            putExtra(FUNCTION_TYPE, infoItem.function)
+    private fun toSplashPendingIntent(baseReminder: BaseReminder, infoItem: NotificationInfo): PendingIntent {
+        return PendingIntent.getActivity(app, Random.nextInt(2200, 8200), Intent(app, SplashActivity::class.java).apply {
+//            putExtra(REMINDER_TYPE, baseReminder)
+//            putExtra(FUNCTION_TYPE, infoItem.function)
             putExtra(NOTICE_INFO_ITEM, infoItem)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }, PendingIntent.FLAG_IMMUTABLE)

@@ -6,8 +6,10 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import com.clean.filecleaner.data.app
 import com.clean.filecleaner.databinding.ActivitySplashBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.isGrantedNotification
@@ -20,9 +22,11 @@ import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.FUNCTION_TYPE
+import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.NOTICE_INFO_ITEM
 import com.clean.filecleaner.ui.module.notification.BaseBarFunction
 import com.clean.filecleaner.ui.module.notification.FuncClean
 import com.clean.filecleaner.ui.module.notification.FuncScreenShot
+import com.clean.filecleaner.ui.module.notification.NotificationInfo
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppPreferences.hasRequestUMP
 import com.clean.filecleaner.utils.UMPUtils
@@ -36,6 +40,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun setupImmersiveMode() = immersiveMode()
     override fun inflateViewBinding(): ActivitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
 
+    //    private val reminder by lazy { intent?.getParcelableExtra<BaseReminder>(REMINDER_TYPE) }
+    private val mNoticeInfo by lazy { intent?.getParcelableExtra<NotificationInfo>(NOTICE_INFO_ITEM) }
     private val barFunction by lazy { intent?.getParcelableExtra<BaseBarFunction>(FUNCTION_TYPE) }
     private var hasClickPermission = false
     private var countDownTimerIsEnd = false
@@ -85,6 +91,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 startLoading()
             }
         }
+
+        closeNotice()
     }
 
     private fun startLoading() {
@@ -109,10 +117,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
 
     private fun toNextPage() {
-        when (barFunction) {
+        val function = if (barFunction == null) mNoticeInfo?.function else barFunction
+        when (function) {
             FuncScreenShot, FuncClean -> {
                 startActivity(Intent(this, MainActivity::class.java).apply {
-                    putExtra(FUNCTION_TYPE, barFunction)
+                    putExtra(FUNCTION_TYPE, function)
                 })
                 finish()
             }
@@ -124,6 +133,13 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         }
     }
 
+    private fun closeNotice() {
+        runCatching {
+            mNoticeInfo?.apply {
+                NotificationManagerCompat.from(app).cancel(notificationId)
+            }
+        }
+    }
 
     private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
         if (adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()

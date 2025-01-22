@@ -65,6 +65,7 @@ object AppLifeHelper {
                     return
                 }
 
+                if (activity is SplashActivity) return
                 launchSplashActivity(activity)
             }
         }
