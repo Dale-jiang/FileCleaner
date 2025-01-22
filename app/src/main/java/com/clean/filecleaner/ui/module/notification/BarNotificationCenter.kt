@@ -16,6 +16,7 @@ import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ui.module.SplashActivity
+import com.clean.filecleaner.ui.module.notification.NotificationService.Companion.frontNoticeHasDelete
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppPreferences.firstCountryCode
 import java.util.Locale
@@ -47,7 +48,7 @@ object BarNotificationCenter {
 
 
     fun init(context: Context) {
-        if (IS_KOREAN) return
+        if (IS_KOREAN || frontNoticeHasDelete) return
         if (context is Application && AndroidVersionUtils.isAndroid12OrAbove()) {
             updateNotice()
         } else {
@@ -107,13 +108,15 @@ object BarNotificationCenter {
 
         createNotificationChannel()
 
+        val deleteIntent = PendingIntent.getBroadcast(app, 0, Intent(app, BarNotificationDeleteReceiver::class.java), PendingIntent.FLAG_IMMUTABLE)
+
         val builder = NotificationCompat.Builder(app, NOTIFICATION_CHANNEL)
             .setSmallIcon(R.drawable.svg_clean_tiny)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setOnlyAlertOnce(true)
             .setSound(null)
-            .setOngoing(false)
+            .setDeleteIntent(deleteIntent)
 
         val bigRemoteViews = getRemoteViews(true)
 

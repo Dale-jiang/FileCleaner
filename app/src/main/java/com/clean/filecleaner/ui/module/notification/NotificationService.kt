@@ -23,6 +23,7 @@ class NotificationService {
     companion object {
         private val bgScope by lazy { CoroutineScope(Dispatchers.IO + SupervisorJob() + CoroutineExceptionHandler { _, error -> LogUtils.e("Error: ${error.message}") }) }
         val uiScope by lazy { CoroutineScope(Dispatchers.Main + SupervisorJob() + CoroutineExceptionHandler { _, error -> LogUtils.e("Error: ${error.message}") }) }
+        var frontNoticeHasDelete = false
     }
 
     fun initialize() {
@@ -44,7 +45,7 @@ class NotificationService {
     private fun trackTraffic() {
         startTickerFlow(bgScope, 1200L, 4000L, onTick = {
             TrafficUtils.updateTotalTraffic()
-            if (!isKorean()) BarNotificationCenter.updateNotice()
+            if (!isKorean() && !frontNoticeHasDelete) BarNotificationCenter.updateNotice()
         })
     }
 

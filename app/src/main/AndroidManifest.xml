@@ -260,6 +260,10 @@
                 android:value="To display network usage in the Notification Center, we need to use a foreground service." />
         </service>
 
+        <receiver
+            android:name=".ui.module.notification.BarNotificationDeleteReceiver"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_id" />
