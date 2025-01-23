@@ -59,5 +59,21 @@
         android:textSize="14sp"
         android:theme="@style/Sansita" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/notice_set"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/item_setting_bg"
+        android:drawableEnd="@drawable/more_arrow"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:text="@string/notification_settings"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:theme="@style/Sansita"
+        android:visibility="visible" />
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

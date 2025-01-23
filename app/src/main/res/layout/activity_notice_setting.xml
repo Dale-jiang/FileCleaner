@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/item_setting_bg"
+        android:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/notice_set"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingStart="15dp"
+            android:text="@string/network_traffic_monitoring"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:theme="@style/Sansita"
+            android:visibility="visible" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/traffic_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="17dp"
+            app:thumbTint="#F6F8F7"
+            app:trackTint="@color/colorPrimary" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

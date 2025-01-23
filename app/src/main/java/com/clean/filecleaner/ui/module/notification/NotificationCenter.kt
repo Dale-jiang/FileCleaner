@@ -18,7 +18,6 @@ import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.loadAd
 import com.clean.filecleaner.ui.module.SplashActivity
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.NOTICE_INFO_ITEM
-import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.isKorean
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppLifeHelper
 import com.clean.filecleaner.utils.AppPreferences
@@ -77,9 +76,9 @@ object NotificationCenter {
             return false
         }
 
-        if (isKorean()) {
-            return false
-        }
+//        if (isKorean()) {
+//            return false
+//        }
 
 //        if (isExceedFirstInstall(baseReminder).not()) {
 //            "${baseWake.wakeName} no exceed first".debugLogger(TAG)
@@ -144,13 +143,24 @@ object NotificationCenter {
     private fun postNoticeInfo(baseReminder: BaseReminder) {
         DataReportingUtils.postCustomEvent("PopAllTrig")
         when (baseReminder) {
-            InstallReminder -> { DataReportingUtils.postCustomEvent("PopAddTrig")}
-            TaskReminder -> { DataReportingUtils.postCustomEvent("PopTimerTrig")}
-            UninstallReminder -> { DataReportingUtils.postCustomEvent("PopUniqueTrig")}
-            UserPresenceReminder -> { DataReportingUtils.postCustomEvent("PopUnlockTrig")}
+            InstallReminder -> {
+                DataReportingUtils.postCustomEvent("PopAddTrig")
+            }
+
+            TaskReminder -> {
+                DataReportingUtils.postCustomEvent("PopTimerTrig")
+            }
+
+            UninstallReminder -> {
+                DataReportingUtils.postCustomEvent("PopUniqueTrig")
+            }
+
+            UserPresenceReminder -> {
+                DataReportingUtils.postCustomEvent("PopUnlockTrig")
+            }
         }
 
-        if (app.isDarkMode()){
+        if (app.isDarkMode()) {
             DataReportingUtils.postCustomEvent("PopDarkTrig")
         }
     }

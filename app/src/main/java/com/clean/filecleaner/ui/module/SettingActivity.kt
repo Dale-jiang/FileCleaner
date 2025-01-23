@@ -40,6 +40,10 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
                 })
             }
 
+            noticeSet.setOnClickListener {
+                startActivity(Intent(this@SettingActivity, NoticeSettingActivity::class.java))
+            }
+
         }
 
 

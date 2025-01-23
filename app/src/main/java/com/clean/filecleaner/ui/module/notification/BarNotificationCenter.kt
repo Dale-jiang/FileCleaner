@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
@@ -18,6 +19,7 @@ import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ui.module.SplashActivity
 import com.clean.filecleaner.ui.module.notification.NotificationService.Companion.frontNoticeHasDelete
 import com.clean.filecleaner.utils.AndroidVersionUtils
+import com.clean.filecleaner.utils.AppPreferences
 import com.clean.filecleaner.utils.AppPreferences.firstCountryCode
 import java.util.Locale
 import kotlin.random.Random
@@ -33,7 +35,7 @@ object BarNotificationCenter {
     private val firstCountry by lazy { getFirstCountryCode() }
     private val IS_KOREAN by lazy { isKorean() }
 
-    fun isKorean() = firstCountry == "KR" && isSamsungDevice()
+    private fun isKorean() = firstCountry == "KR" && isSamsungDevice()
 
     fun isSamsungDevice(): Boolean {
         return Build.MANUFACTURER.equals("Samsung", ignoreCase = true)
@@ -69,6 +71,15 @@ object BarNotificationCenter {
         val uploadSpeed = TrafficUtils.formatTraffic(TrafficUtils.currentTxSpeed)
 
         return RemoteViews(app.packageName, layoutResId).apply {
+
+            if (AppPreferences.networkTrafficSwitch){
+                setViewVisibility(R.id.line,View.VISIBLE)
+                setViewVisibility(R.id.traffic,View.VISIBLE)
+            }else{
+                setViewVisibility(R.id.line,View.GONE)
+                setViewVisibility(R.id.traffic,View.GONE)
+            }
+
             setSpeedLayout(downloadSpeed, uploadSpeed)
             setOnClickPendingIntents()
         }

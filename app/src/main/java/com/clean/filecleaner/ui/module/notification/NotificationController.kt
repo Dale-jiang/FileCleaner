@@ -7,7 +7,7 @@ import android.content.IntentFilter
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.report.reporter.DataReportingUtils
-import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.isKorean
+import com.clean.filecleaner.utils.AppPreferences
 import com.clean.filecleaner.utils.Tools.startTickerFlow
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -44,8 +44,10 @@ class NotificationService {
 
     private fun trackTraffic() {
         startTickerFlow(bgScope, 1200L, 4000L, onTick = {
-            TrafficUtils.updateTotalTraffic()
-            if (!isKorean() && !frontNoticeHasDelete) BarNotificationCenter.updateNotice()
+            if (AppPreferences.networkTrafficSwitch && !frontNoticeHasDelete) {
+                TrafficUtils.updateTotalTraffic()
+                BarNotificationCenter.updateNotice()
+            }
         })
     }
 

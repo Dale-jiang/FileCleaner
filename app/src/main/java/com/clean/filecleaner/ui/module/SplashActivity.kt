@@ -85,7 +85,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_launch"))
         }
 
-        if (BarNotificationCenter.isKorean().not() && isGrantedNotification().not() && AndroidVersionUtils.isAndroid13OrAbove()) {
+        if (isGrantedNotification().not() && AndroidVersionUtils.isAndroid13OrAbove()) {
             notificationLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
         } else {
             hasClickPermission = true
@@ -148,14 +148,14 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         }
 
         mNoticeInfo?.apply {
-            when(this.reminder){
+            when (this.reminder) {
                 InstallReminder -> DataReportingUtils.postCustomEvent("PopAddClick")
-                TaskReminder ->DataReportingUtils.postCustomEvent("PopTimerClick")
+                TaskReminder -> DataReportingUtils.postCustomEvent("PopTimerClick")
                 UninstallReminder -> DataReportingUtils.postCustomEvent("PopUniqueClick")
                 UserPresenceReminder -> DataReportingUtils.postCustomEvent("PopUnlockClick")
             }
 
-            if (app.isDarkMode()){
+            if (app.isDarkMode()) {
                 DataReportingUtils.postCustomEvent("PopDarkClick")
             }
         }

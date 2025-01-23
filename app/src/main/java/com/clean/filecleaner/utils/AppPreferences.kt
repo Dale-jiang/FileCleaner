@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.blankj.utilcode.util.TimeUtils
 import com.clean.filecleaner.data.app
+import com.clean.filecleaner.ui.module.notification.BarNotificationCenter
 import com.clean.filecleaner.ui.module.notification.BaseReminder
 
 object AppPreferences {
@@ -27,6 +28,8 @@ object AppPreferences {
     var total001Revenue by prefs.prefDelegate(0.0)
     var topPercentDatetime by prefs.prefDelegate(0L)
     var topPercentRevenue by prefs.prefDelegate(0.0)
+
+    var networkTrafficSwitch by prefs.prefDelegate(!BarNotificationCenter.isSamsungDevice())
 
 
 //    fun getNotificationShowCounts(baseReminder: BaseReminder): Int {
