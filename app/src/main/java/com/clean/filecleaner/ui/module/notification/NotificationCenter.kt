@@ -11,13 +11,13 @@ import androidx.core.app.NotificationManagerCompat
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.data.app
+import com.clean.filecleaner.ext.isDarkMode
 import com.clean.filecleaner.ext.isGrantedNotification
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.loadAd
 import com.clean.filecleaner.ui.module.SplashActivity
-import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.FUNCTION_TYPE
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.NOTICE_INFO_ITEM
-import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.REMINDER_TYPE
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.isKorean
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppLifeHelper
@@ -58,16 +58,20 @@ object NotificationCenter {
     fun canShow(baseReminder: BaseReminder): Boolean {
 
         if (AppLifeHelper.isAppForeground()) {
+            DataReportingUtils.postCustomEvent("FGOn")
             return false
         }
+        DataReportingUtils.postCustomEvent("BGOn")
 
         if (null == noticeConfig) {
             return false
         }
 
         if (noticeConfig?.isOpen == 0) {
+            DataReportingUtils.postCustomEvent("SwitchOff")
             return false
         }
+        DataReportingUtils.postCustomEvent("SwitchOn")
 
         if (app.isGrantedNotification().not()) {
             return false
@@ -88,8 +92,12 @@ object NotificationCenter {
         }
         if (isExceedInterval(baseReminder).not()) {
             LogUtils.d("${baseReminder.reminderName} no exceed interval")
+            DataReportingUtils.postCustomEvent("IntvOff")
             return false
         }
+
+        DataReportingUtils.postCustomEvent("IntvOn")
+
         LogUtils.d("${baseReminder.reminderName} can show!")
         return true
     }
@@ -127,10 +135,24 @@ object NotificationCenter {
 
     fun displayNotification(baseReminder: BaseReminder) {
         if (canShow(baseReminder).not()) return
-        //  Event.post("popup_up", hashMapOf("top" to baseReminder.reminderName))
+        postNoticeInfo(baseReminder)
         NotificationService.uiScope.launch { adManagerState.fcLaunchState.loadAd() }
         val infoItem = getNoticeInfo(baseReminder)
         showNotification(baseReminder, infoItem)
+    }
+
+    private fun postNoticeInfo(baseReminder: BaseReminder) {
+        DataReportingUtils.postCustomEvent("PopAllTrig")
+        when (baseReminder) {
+            InstallReminder -> { DataReportingUtils.postCustomEvent("PopAddTrig")}
+            TaskReminder -> { DataReportingUtils.postCustomEvent("PopTimerTrig")}
+            UninstallReminder -> { DataReportingUtils.postCustomEvent("PopUniqueTrig")}
+            UserPresenceReminder -> { DataReportingUtils.postCustomEvent("PopUnlockTrig")}
+        }
+
+        if (app.isDarkMode()){
+            DataReportingUtils.postCustomEvent("PopDarkTrig")
+        }
     }
 
     private fun getNoticeInfo(baseReminder: BaseReminder): NotificationInfo {

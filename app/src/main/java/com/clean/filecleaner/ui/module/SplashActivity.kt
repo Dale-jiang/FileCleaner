@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.databinding.ActivitySplashBinding
 import com.clean.filecleaner.ext.immersiveMode
+import com.clean.filecleaner.ext.isDarkMode
 import com.clean.filecleaner.ext.isGrantedNotification
 import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.ad.adManagerState
@@ -26,7 +27,11 @@ import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.NOTICE
 import com.clean.filecleaner.ui.module.notification.BaseBarFunction
 import com.clean.filecleaner.ui.module.notification.FuncClean
 import com.clean.filecleaner.ui.module.notification.FuncScreenShot
+import com.clean.filecleaner.ui.module.notification.InstallReminder
 import com.clean.filecleaner.ui.module.notification.NotificationInfo
+import com.clean.filecleaner.ui.module.notification.TaskReminder
+import com.clean.filecleaner.ui.module.notification.UninstallReminder
+import com.clean.filecleaner.ui.module.notification.UserPresenceReminder
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppPreferences.hasRequestUMP
 import com.clean.filecleaner.utils.UMPUtils
@@ -51,6 +56,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         if (isGrantedNotification()) {
             BarNotificationCenter.init(this)
+            DataReportingUtils.postCustomEvent("PermYes")
+        } else {
+            DataReportingUtils.postCustomEvent("PermNo")
         }
 
         hasClickPermission = true
@@ -66,7 +74,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
 
         DataReportingUtils.postSessionEvent()
-        DataReportingUtils.postCustomEvent("loading_page")
+        DataReportingUtils.postCustomEvent("LoadPage")
 
         lifecycleScope.launch(Dispatchers.IO) {
             delay(3000L)
@@ -134,6 +142,25 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     }
 
     private fun closeNotice() {
+
+        if (barFunction != null || mNoticeInfo != null) {
+            DataReportingUtils.postCustomEvent("PopAllClick")
+        }
+
+        mNoticeInfo?.apply {
+            when(this.reminder){
+                InstallReminder -> DataReportingUtils.postCustomEvent("PopAddClick")
+                TaskReminder ->DataReportingUtils.postCustomEvent("PopTimerClick")
+                UninstallReminder -> DataReportingUtils.postCustomEvent("PopUniqueClick")
+                UserPresenceReminder -> DataReportingUtils.postCustomEvent("PopUnlockClick")
+            }
+
+            if (app.isDarkMode()){
+                DataReportingUtils.postCustomEvent("PopDarkClick")
+            }
+        }
+
+
         runCatching {
             mNoticeInfo?.apply {
                 NotificationManagerCompat.from(app).cancel(notificationId)

@@ -51,12 +51,13 @@ class NotificationService {
 
     private fun initiateSession() {
         startTickerFlow(bgScope, 1500L, 15 * 60000L, onTick = {
-            DataReportingUtils.postCustomEvent("session_b")
+            DataReportingUtils.postCustomEvent("SessBack")
         })
     }
 
     private fun beginBackgroundTasks() {
         startTickerFlow(bgScope, 70_000L, 120_000L, onTick = {
+            DataReportingUtils.postCustomEvent("PopDetect")
             NotificationCenter.displayNotification(TaskReminder)
         })
     }

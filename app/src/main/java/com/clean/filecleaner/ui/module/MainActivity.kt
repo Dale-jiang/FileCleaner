@@ -60,9 +60,19 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     private var hasRequestedNotification = false
     private val notificationLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (isGrantedNotification()){
+                DataReportingUtils.postCustomEvent("PermYes")
+            }else{
+                DataReportingUtils.postCustomEvent("PermNo")
+            }
         }
     private val notificationSetLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (isGrantedNotification()){
+                DataReportingUtils.postCustomEvent("PermYes")
+            }else{
+                DataReportingUtils.postCustomEvent("PermNo")
+            }
             jumpToSettings = false
         }
 

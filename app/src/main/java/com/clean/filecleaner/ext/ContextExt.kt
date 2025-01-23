@@ -5,6 +5,7 @@ import android.app.Application
 import android.app.usage.StorageStatsManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Environment
 import android.os.PowerManager
@@ -108,4 +109,12 @@ fun Context.isGrantedNotification() = run {
     if (AndroidVersionUtils.isAndroid13OrAbove()) {
         ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
     } else NotificationManagerCompat.from(this).areNotificationsEnabled()
+}
+
+fun Context.isDarkMode() = run {
+    try {
+        (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+    } catch (e: Exception) {
+        false
+    }
 }
