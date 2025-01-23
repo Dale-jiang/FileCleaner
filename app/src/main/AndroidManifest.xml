@@ -265,6 +265,14 @@
                 android:value="To display network usage in the Notification Center, we need to use a foreground service." />
         </service>
 
+        <service
+            android:name=".notification.FirebaseMsgService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <receiver
             android:name=".ui.module.notification.BarNotificationDeleteReceiver"
             android:exported="false" />
