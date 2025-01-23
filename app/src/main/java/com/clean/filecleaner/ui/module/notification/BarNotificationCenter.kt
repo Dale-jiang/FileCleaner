@@ -52,7 +52,8 @@ object BarNotificationCenter {
 
 
     fun init(context: Context) {
-        if (IS_KOREAN || frontNoticeHasDelete) return
+//        if (IS_KOREAN || frontNoticeHasDelete) return
+        if (frontNoticeHasDelete) return
         if (context is Application && AndroidVersionUtils.isAndroid12OrAbove()) {
             updateNotice()
         } else {
@@ -72,12 +73,12 @@ object BarNotificationCenter {
 
         return RemoteViews(app.packageName, layoutResId).apply {
 
-            if (AppPreferences.networkTrafficSwitch){
-                setViewVisibility(R.id.line,View.VISIBLE)
-                setViewVisibility(R.id.traffic,View.VISIBLE)
-            }else{
-                setViewVisibility(R.id.line,View.GONE)
-                setViewVisibility(R.id.traffic,View.GONE)
+            if (AppPreferences.networkTrafficSwitch) {
+                setViewVisibility(R.id.line, View.VISIBLE)
+                setViewVisibility(R.id.traffic, View.VISIBLE)
+            } else {
+                setViewVisibility(R.id.line, View.GONE)
+                setViewVisibility(R.id.traffic, View.GONE)
             }
 
             setSpeedLayout(downloadSpeed, uploadSpeed)
