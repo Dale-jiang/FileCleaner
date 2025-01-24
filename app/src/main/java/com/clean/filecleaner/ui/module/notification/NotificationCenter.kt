@@ -28,24 +28,24 @@ object NotificationCenter {
 
     private val cleanInfos by lazy {
         listOf(
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_time_1, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_time_2, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_time_3, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_unlock_1, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_unlock_2, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_unlock_3, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_unlock_4, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_unlock_5, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_uninstall_1, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_uninstall_2, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_uninstall_3, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_uninstall_4, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_uninstall_5, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_install_1, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_install_2, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_install_3, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_install_4, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12001),
-            NotificationInfo(R.mipmap.ic_bar_notice_clean, R.string.notice_message_clean_install_5, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12001),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_1, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_2, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_3, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_1, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_2, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_3, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_4, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_5, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_1, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_2, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_3, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_4, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_5, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_1, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_2, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_3, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_4, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_5, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004),
         )
     }
 
@@ -215,7 +215,7 @@ object NotificationCenter {
     }
 
     private fun getRemoteViews(infoItem: NotificationInfo, pendingIntent: PendingIntent, size: Int): RemoteViews {
-        val layoutResId = if (2 == size) R.layout.layout_notification_large else if (1 == size) R.layout.layout_notification_middle else R.layout.layout_bar_notification_tiny
+        val layoutResId = if (2 == size) R.layout.layout_notification_large else if (1 == size) R.layout.layout_notification_middle else R.layout.layout_notification_tiny
         return RemoteViews(app.packageName, layoutResId).apply {
             setOnClickPendingIntent(R.id.view_root, pendingIntent)
             if (2 == size) setImageViewResource(R.id.image, infoItem.icon)
