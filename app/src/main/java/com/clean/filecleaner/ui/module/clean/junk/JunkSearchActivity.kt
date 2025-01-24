@@ -95,7 +95,8 @@ class JunkSearchActivity : BaseActivity<ActivityJunkSearchBinding>() {
                     data.size += item.fileSize
                     adapter.notifyItemChanged(it)
                 }
-                val totalSize = viewModel.junkDetailsTempList.sumOf { it.fileSize }
+                val temp = ArrayList(viewModel.junkDetailsTempList)
+                val totalSize = temp.sumOf { it.fileSize }
                 val formattedSize = formatFileSize(this@JunkSearchActivity, totalSize)
                 binding.junkSize.text = formattedSize
             }
