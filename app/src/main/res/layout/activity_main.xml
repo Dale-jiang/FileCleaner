@@ -151,7 +151,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp">
-
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/app_manager"
                     android:layout_width="100dp"
@@ -183,8 +182,6 @@
                         android:theme="@style/SansitaBold" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
-
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/duplicate_files"
                     android:layout_width="100dp"
@@ -216,7 +213,6 @@
                         android:theme="@style/SansitaBold" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:id="@+id/screenshot"
                     android:layout_width="100dp"
@@ -243,6 +239,106 @@
                         android:layout_marginHorizontal="5dp"
                         android:layout_marginTop="10dp"
                         android:text="@string/screenshot"
+                        android:textColor="#FF292D35"
+                        android:textSize="13sp"
+                        android:theme="@style/SansitaBold" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/recent_app"
+                    android:layout_width="100dp"
+                    android:layout_height="128dp"
+                    android:background="@drawable/shape_btn_function_bg_28"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/big_file"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        app:srcCompat="@mipmap/icon_app_manager" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/recent_app"
+                        android:textColor="#FF292D35"
+                        android:textSize="13sp"
+                        android:theme="@style/SansitaBold" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/big_file"
+                    android:layout_width="100dp"
+                    android:layout_height="128dp"
+                    android:background="@drawable/shape_btn_function_bg_28"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/empty_folder"
+                    app:layout_constraintStart_toEndOf="@+id/recent_app"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center_horizontal"
+                        app:srcCompat="@mipmap/icon_duplicate_files" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/big_file"
+                        android:textColor="#FF292D35"
+                        android:textSize="13sp"
+                        android:theme="@style/SansitaBold" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/empty_folder"
+                    android:layout_width="100dp"
+                    android:layout_height="128dp"
+                    android:background="@drawable/shape_btn_function_bg_28"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/big_file"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="25dp"
+                        android:gravity="center_horizontal"
+                        app:srcCompat="@mipmap/icon_screenshot" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/empty_folder"
                         android:textColor="#FF292D35"
                         android:textSize="13sp"
                         android:theme="@style/SansitaBold" />
@@ -479,6 +575,9 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -106,5 +106,8 @@
     <string name="notice_message_clean_install_5">Delete unused files!</string>
     <string name="notification_settings">Notification Settings</string>
     <string name="network_traffic_monitoring">Network Traffic Monitoring</string>
+    <string name="empty_folder">Empty Folder</string>
+    <string name="recent_app">Recent App</string>
+    <string name="big_file">Big File</string>
 
 </resources>

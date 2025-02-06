@@ -209,8 +209,8 @@ object NotificationCenter {
         }
         runCatching {
             NotificationManagerCompat.from(app).notify(infoItem.notificationId, builder.build())
-            AppPreferences.updateNotificationLashShow(baseReminder)
             AppPreferences.updateNotificationShowCounts(baseReminder)
+            AppPreferences.updateNotificationLashShow(baseReminder)
         }
     }
 

@@ -32,6 +32,7 @@ import com.clean.filecleaner.ui.ad.waitAdLoading
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
+import com.clean.filecleaner.ui.module.clean.empty.EmptyFoldersCleanActivity
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.clean.junk.viewmodel.allJunkDataList
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
@@ -127,6 +128,21 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
                 requestPermissions {
                     canShowBackAd = true
                     startActivity(Intent(this@MainActivity, DuplicateFileCleanActivity::class.java))
+                }
+            }
+
+            recentApp.setOnClickListener {
+
+            }
+
+            bigFile.setOnClickListener {
+
+            }
+
+            emptyFolder.setOnClickListener {
+                requestPermissions {
+                    canShowBackAd = true
+                    startActivity(Intent(this@MainActivity, EmptyFoldersCleanActivity::class.java))
                 }
             }
 

@@ -1,6 +1,5 @@
 package com.clean.filecleaner.ui.module
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.activity.addCallback
@@ -22,7 +21,7 @@ class NoticeSettingActivity : BaseActivity<ActivityNoticeSettingBinding>() {
 
             toolbar.title.text = getString(R.string.notification_settings)
             onBackPressedDispatcher.addCallback {
-                startActivity(Intent(this@NoticeSettingActivity, MainActivity::class.java))
+//                startActivity(Intent(this@NoticeSettingActivity, MainActivity::class.java))
                 finish()
             }
 
