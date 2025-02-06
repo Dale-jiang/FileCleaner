@@ -31,6 +31,7 @@ import com.clean.filecleaner.ui.ad.showNativeAd
 import com.clean.filecleaner.ui.ad.waitAdLoading
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
 import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
+import com.clean.filecleaner.ui.module.clean.bigfiles.BigFilesCleanActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
 import com.clean.filecleaner.ui.module.clean.empty.EmptyFoldersCleanActivity
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
@@ -136,7 +137,10 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
             }
 
             bigFile.setOnClickListener {
-
+                requestPermissions {
+                    canShowBackAd = true
+                    startActivity(Intent(this@MainActivity, BigFilesCleanActivity::class.java))
+                }
             }
 
             emptyFolder.setOnClickListener {

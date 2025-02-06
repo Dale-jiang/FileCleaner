@@ -107,8 +107,24 @@
     <string name="notification_settings">Notification Settings</string>
     <string name="network_traffic_monitoring">Network Traffic Monitoring</string>
     <string name="empty_folder">Empty Folder</string>
+    <string name="empty_folders">Empty Folders</string>
     <string name="recent_app">Recent App</string>
     <string name="big_file">Big File</string>
 
     <string name="folders_have_been_deleted">%1$d folders have been deleted</string>
+    <string name="all_types">All types</string>
+    <string name="big_file_photo">Photo</string>
+    <string name="big_file_video">Video</string>
+    <string name="big_file_audio">Audio</string>
+    <string name="big_file_docs">Document</string>
+    <string name="big_file_zip">Archives</string>
+    <string name="big_file_apk">Apk</string>
+    <string name="big_file_others">Others</string>
+
+    <string name="all_time">All time</string>
+    <string name="big_file_one_week">1 Week</string>
+    <string name="big_file_one_month">1 Month</string>
+    <string name="big_file_three_month">3 Months</string>
+    <string name="big_file_six_month">6 Months</string>
+    <string name="big_file_one_year">1 Year</string>
 </resources>
