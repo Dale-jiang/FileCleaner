@@ -52,7 +52,10 @@ class EmptyFoldersCleanActivity : BaseActivity<ActivityEmptyFoldersCleanBinding>
         }
 
         binding.btnClean.setOnClickListener {
-            // TODO:  
+            startActivity(Intent(this, EmptyFoldersCleanEndActivity::class.java).apply {
+                putStringArrayListExtra("EMPTY_FOLDERS", ArrayList(adapter!!.list))
+            })
+            finish()
         }
     }
 
