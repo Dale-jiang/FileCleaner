@@ -37,7 +37,7 @@ class BigFilesAdapter(
 
                 if (BigFilesHelper.isDocument(item.filetype!!)) {
                     Glide.with(activity)
-                        .load(R.mipmap.mc_file_document)
+                        .load(R.mipmap.icon_document)
                         .centerCrop()
                         .into(image)
                 } else if (item.filetype == FileTypes.TYPE_IMAGE || item.filetype == FileTypes.TYPE_VIDEO) {

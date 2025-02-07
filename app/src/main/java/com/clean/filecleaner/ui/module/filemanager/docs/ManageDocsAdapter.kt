@@ -35,7 +35,7 @@ class ManageDocsAdapter(
             list[holder.layoutPosition].let { item ->
 
                 Glide.with(activity)
-                    .load(R.mipmap.mc_file_document)
+                    .load(R.mipmap.icon_document)
                     .centerCrop()
                     .into(image)
 
