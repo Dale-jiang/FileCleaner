@@ -114,11 +114,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <FrameLayout
-                android:id="@+id/ad_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1">
@@ -130,7 +125,7 @@
                     android:clipToPadding="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="10"
-                    tools:listitem="@layout/item_empty_folders" />
+                    tools:listitem="@layout/item_big_files" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/empty_view"

@@ -1,6 +1,7 @@
 package com.clean.filecleaner.ui.module.filemanager
 
 import com.clean.filecleaner.ext.formatVideoDurationWithKotlinDuration
+import com.clean.filecleaner.ui.module.clean.bigfiles.FileTypes
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -18,6 +19,7 @@ data class FileInfo(
     val duration: Long = 0L,
     val path: String = "",
     val mimetype: String = "",
+    val filetype: FileTypes? = null,
     var isSelected: Boolean = false
 ) {
     val timeStr
