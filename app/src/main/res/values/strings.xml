@@ -129,4 +129,6 @@
     <string name="big_file_one_year">1 Year</string>
     <string name="delete_size">Delete (%1$s)</string>
     <string name="grant_permission">Grant Permission</string>
+    <string name="launches">Launches</string>
+    <string name="screen_time">Screen Time</string>
 </resources>
