@@ -265,6 +265,16 @@
             android:configChanges="density|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.module.clean.recent.AppRecentInfoPreActivity"
+            android:configChanges="density|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.module.clean.recent.AppRecentInfoActivity"
+            android:configChanges="density|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/fb_id" />

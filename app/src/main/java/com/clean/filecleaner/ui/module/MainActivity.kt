@@ -15,6 +15,7 @@ import com.clean.filecleaner.data.app
 import com.clean.filecleaner.databinding.ActivityMainBinding
 import com.clean.filecleaner.ext.animateToProgressWithValueAnimator
 import com.clean.filecleaner.ext.getStorageSizeInfo
+import com.clean.filecleaner.ext.hasUsagePermissions
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.isGrantedNotification
 import com.clean.filecleaner.ext.startScaleAnimation
@@ -36,6 +37,8 @@ import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivit
 import com.clean.filecleaner.ui.module.clean.empty.EmptyFoldersCleanActivity
 import com.clean.filecleaner.ui.module.clean.junk.JunkSearchActivity
 import com.clean.filecleaner.ui.module.clean.junk.viewmodel.allJunkDataList
+import com.clean.filecleaner.ui.module.clean.recent.AppRecentInfoActivity
+import com.clean.filecleaner.ui.module.clean.recent.AppRecentInfoPreActivity
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.filemanager.allFilesContainerList
@@ -62,17 +65,17 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
     private var hasRequestedNotification = false
     private val notificationLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            if (isGrantedNotification()){
+            if (isGrantedNotification()) {
                 DataReportingUtils.postCustomEvent("PermYes")
-            }else{
+            } else {
                 DataReportingUtils.postCustomEvent("PermNo")
             }
         }
     private val notificationSetLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (isGrantedNotification()){
+            if (isGrantedNotification()) {
                 DataReportingUtils.postCustomEvent("PermYes")
-            }else{
+            } else {
                 DataReportingUtils.postCustomEvent("PermNo")
             }
             jumpToSettings = false
@@ -134,6 +137,12 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
             recentApp.setOnClickListener {
 
+                if (hasUsagePermissions()) {
+                    canShowBackAd = true
+                    startActivity(Intent(this@MainActivity, AppRecentInfoActivity::class.java))
+                } else {
+                    startActivity(Intent(this@MainActivity, AppRecentInfoPreActivity::class.java))
+                }
             }
 
             bigFile.setOnClickListener {
