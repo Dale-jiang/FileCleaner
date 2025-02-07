@@ -8,11 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
+import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.DialogAdLoadingBinding
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
 
-class AdLoadingDialog : DialogFragment() {
+class AdLoadingDialog(private val msg: String = "") : DialogFragment() {
 
     private lateinit var binding: DialogAdLoadingBinding
 
@@ -24,9 +25,9 @@ class AdLoadingDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         isCancelable = false
+        binding.message.text = msg.ifEmpty { getString(R.string.ads_loading) }
         binding.loading.startRotatingWithRotateAnimation()
     }
-
 
     override fun onStart() {
         super.onStart()

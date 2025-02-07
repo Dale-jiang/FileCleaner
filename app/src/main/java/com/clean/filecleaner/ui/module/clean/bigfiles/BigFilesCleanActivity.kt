@@ -16,7 +16,9 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
+import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.R
+import com.clean.filecleaner.data.Callback
 import com.clean.filecleaner.databinding.ActivityBigFilesCleanBinding
 import com.clean.filecleaner.databinding.LayoutBigFilesPopBinding
 import com.clean.filecleaner.ext.immersiveMode
@@ -34,12 +36,15 @@ import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.clean.bigfiles.viewmodel.BigFilesHelper
 import com.clean.filecleaner.ui.module.clean.bigfiles.viewmodel.BigFilesViewModel
 import com.clean.filecleaner.ui.module.clean.bigfiles.viewmodel.BigFilesViewModel.Companion.bigFiles
+import com.clean.filecleaner.ui.module.dialog.AdLoadingDialog
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.filemanager.FileInfo
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class BigFilesCleanActivity : BaseActivity<ActivityBigFilesCleanBinding>() {
     override fun setupImmersiveMode() = immersiveMode(binding.root)
@@ -152,8 +157,13 @@ class BigFilesCleanActivity : BaseActivity<ActivityBigFilesCleanBinding>() {
                 leftBtn = getString(R.string.cancel),
                 cancelable = true,
                 rightClick = {
-
-
+                    val dialog = AdLoadingDialog("${getString(R.string.deleting)}...")
+                    dialog.show(supportFragmentManager, "LoadingDialog")
+                    deleteFiles {
+                        dialog.dismiss()
+                        setDeleteButton()
+                        handleListData()
+                    }
                 }
             ).show(supportFragmentManager, "CommonDialog")
         }
@@ -213,7 +223,7 @@ class BigFilesCleanActivity : BaseActivity<ActivityBigFilesCleanBinding>() {
 
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun changeListData() = runCatching {
+    private fun handleListData() = runCatching {
         bigFiles.onEach { it.isSelected = false }
         checkedList.clear()
         val list = filterList(bigFiles)
@@ -274,6 +284,24 @@ class BigFilesCleanActivity : BaseActivity<ActivityBigFilesCleanBinding>() {
         return filteredList.sortedByDescending { it.size }.toMutableList()
     }
 
+
+    private fun deleteFiles(onCompleted: Callback) {
+
+        val errorHandler = CoroutineExceptionHandler { _, throwable ->
+            LogUtils.e("Error: ${throwable.message}")
+        }
+
+        lifecycleScope.launch(Dispatchers.IO + errorHandler) {
+            checkedList.forEach { File(it.path).deleteRecursively() }
+            bigFiles.removeAll(checkedList)
+            checkedList.clear()
+            delay(600L)
+            withContext(Dispatchers.Main) {
+                onCompleted.invoke()
+            }
+        }
+    }
+
     private fun setUpAdapter() {
 
         with(binding) {
@@ -330,7 +358,7 @@ class BigFilesCleanActivity : BaseActivity<ActivityBigFilesCleanBinding>() {
 
         return BigFileSelectionAdapter(this@BigFilesCleanActivity) { selectedItem ->
             updateFilterView(type, selectedItem)
-            changeListData()
+            handleListData()
             currentPopupWindow?.dismiss()
         }.apply {
             initData(dataList.toMutableList())
@@ -378,6 +406,7 @@ class BigFilesCleanActivity : BaseActivity<ActivityBigFilesCleanBinding>() {
     override fun onDestroy() {
         super.onDestroy()
         stopLoadingAnim()
+        bigFiles.clear()
     }
 
 }
