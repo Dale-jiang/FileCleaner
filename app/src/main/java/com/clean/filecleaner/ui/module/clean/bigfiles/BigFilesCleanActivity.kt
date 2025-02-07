@@ -34,6 +34,7 @@ import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.clean.bigfiles.viewmodel.BigFilesHelper
 import com.clean.filecleaner.ui.module.clean.bigfiles.viewmodel.BigFilesViewModel
 import com.clean.filecleaner.ui.module.clean.bigfiles.viewmodel.BigFilesViewModel.Companion.bigFiles
+import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.filemanager.FileInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -144,7 +145,17 @@ class BigFilesCleanActivity : BaseActivity<ActivityBigFilesCleanBinding>() {
 
 
         binding.btnClean.setOnClickListener {
+            CommonDialog(
+                title = getString(R.string.warning),
+                message = getString(R.string.do_you_wish_to_delete_this),
+                rightBtn = getString(R.string.delete),
+                leftBtn = getString(R.string.cancel),
+                cancelable = true,
+                rightClick = {
 
+
+                }
+            ).show(supportFragmentManager, "CommonDialog")
         }
 
 
@@ -156,7 +167,7 @@ class BigFilesCleanActivity : BaseActivity<ActivityBigFilesCleanBinding>() {
                 val delayTime = timeTag + 2000 - System.currentTimeMillis()
                 if (delayTime > 0) delay(delayTime)
 
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     fullScreenAdShow {
 
                         stopLoadingAnim()
@@ -224,32 +235,43 @@ class BigFilesCleanActivity : BaseActivity<ActivityBigFilesCleanBinding>() {
     }
 
     private fun filterList(list: MutableList<FileInfo>): MutableList<FileInfo> {
-        val typeFilterList = when (typeList.indexOfFirst { it.select }) {
-            0 -> list
-            1 -> list.filter { it.filetype == FileTypes.TYPE_IMAGE }
-            2 -> list.filter { it.filetype == FileTypes.TYPE_VIDEO }
-            3 -> list.filter { it.filetype == FileTypes.TYPE_AUDIO }
-            4 -> list.filter { BigFilesHelper.isDocument(it.filetype!!) }
-            5 -> list.filter { it.filetype == FileTypes.TYPE_ARCHIVES }
-            6 -> list.filter { it.filetype == FileTypes.TYPE_APK }
-            else -> list.filter { it.filetype == FileTypes.TYPE_OTHER }
+
+        val currentTime = System.currentTimeMillis()
+
+        val filteredList = list.filter { fileInfo ->
+
+            val isTypeMatch = when (typeList.indexOfFirst { it.select }) {
+                0 -> true
+                1 -> fileInfo.filetype == FileTypes.TYPE_IMAGE
+                2 -> fileInfo.filetype == FileTypes.TYPE_VIDEO
+                3 -> fileInfo.filetype == FileTypes.TYPE_AUDIO
+                4 -> BigFilesHelper.isDocument(fileInfo.filetype!!)
+                5 -> fileInfo.filetype == FileTypes.TYPE_ARCHIVES
+                6 -> fileInfo.filetype == FileTypes.TYPE_APK
+                else -> fileInfo.filetype == FileTypes.TYPE_OTHER
+            }
+
+            val isSizeMatch = when (sizeList.indexOfFirst { it.select }) {
+                1 -> fileInfo.size >= 20_000_000
+                2 -> fileInfo.size >= 50_000_000
+                3 -> fileInfo.size >= 100_000_000
+                4 -> fileInfo.size >= 500_000_000
+                else -> true
+            }
+
+            val isTimeMatch = when (timeList.indexOfFirst { it.select }) {
+                1 -> currentTime - fileInfo.addTime >= 604800000 // 7 days
+                2 -> currentTime - fileInfo.addTime >= 1814400000 // 21 days
+                3 -> currentTime - fileInfo.addTime >= 7257600000L // 3 months
+                4 -> currentTime - fileInfo.addTime >= 14515200000L // 6 months
+                5 -> currentTime - fileInfo.addTime >= 31449600000L // 1 year
+                else -> true
+            }
+
+            isTypeMatch && isSizeMatch && isTimeMatch
         }
-        val sizeFilterList = when (sizeList.indexOfFirst { it.select }) {
-            1 -> typeFilterList.filter { it.size >= 20_000_000 }
-            2 -> typeFilterList.filter { it.size >= 50_000_000 }
-            3 -> typeFilterList.filter { it.size >= 100_000_000 }
-            4 -> typeFilterList.filter { it.size >= 500_000_000 }
-            else -> typeFilterList
-        }
-        val timeFilterList = when (timeList.indexOfFirst { it.select }) {
-            1 -> sizeFilterList.filter { System.currentTimeMillis() - it.addTime >= 604800000 }
-            2 -> sizeFilterList.filter { System.currentTimeMillis() - it.addTime >= 1814400000 }
-            3 -> sizeFilterList.filter { System.currentTimeMillis() - it.addTime >= 7257600000L }
-            4 -> sizeFilterList.filter { System.currentTimeMillis() - it.addTime >= 14515200000L }
-            5 -> sizeFilterList.filter { System.currentTimeMillis() - it.addTime >= 31449600000L }
-            else -> sizeFilterList
-        }
-        return timeFilterList.sortedByDescending { it.size }.toMutableList()
+
+        return filteredList.sortedByDescending { it.size }.toMutableList()
     }
 
     private fun setUpAdapter() {
