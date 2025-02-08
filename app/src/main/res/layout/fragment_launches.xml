@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/btn_date"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="today"
+            android:textColor="#414A4F"
+            android:textSize="14sp"
+            android:theme="@style/SansitaBold"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            app:srcCompat="@drawable/svg_open_arrow_primary" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_total"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="14dp"
+        android:background="@drawable/selector_app_launch_bg"
+        app:layout_constraintEnd_toStartOf="@+id/btn_foreground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_date">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/total_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="0"
+            android:textColor="@color/selector_app_launch_text"
+            android:textSize="14sp"
+            android:theme="@style/SansitaBold"
+            app:layout_constraintBottom_toTopOf="@+id/total_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/total_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:text="@string/launches"
+            android:textAllCaps="true"
+            android:textColor="@color/selector_app_launch_text_title"
+            android:textSize="11sp"
+            android:theme="@style/SansitaBold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/total_count"
+            app:layout_constraintStart_toStartOf="@+id/total_count"
+            app:layout_constraintTop_toBottomOf="@+id/total_count" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_foreground"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/selector_app_launch_bg"
+        app:layout_constraintEnd_toStartOf="@+id/btn_background"
+        app:layout_constraintStart_toEndOf="@+id/btn_total"
+        app:layout_constraintTop_toBottomOf="@+id/btn_date">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/foreground_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="0"
+            android:textColor="@color/selector_app_launch_text"
+            android:textSize="14sp"
+            android:theme="@style/SansitaBold"
+            app:layout_constraintBottom_toTopOf="@+id/foreground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/foreground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:text="@string/launches"
+            android:textAllCaps="true"
+            android:textColor="@color/selector_app_launch_text_title"
+            android:textSize="11sp"
+            android:theme="@style/SansitaBold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/foreground_count"
+            app:layout_constraintStart_toStartOf="@+id/foreground_count"
+            app:layout_constraintTop_toBottomOf="@+id/foreground_count" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/btn_background"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="14dp"
+        android:background="@drawable/selector_app_launch_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_foreground"
+        app:layout_constraintTop_toBottomOf="@+id/btn_date">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/background_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="0"
+            android:textColor="@color/selector_app_launch_text"
+            android:textSize="14sp"
+            android:theme="@style/SansitaBold"
+            app:layout_constraintBottom_toTopOf="@+id/background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:text="@string/launches"
+            android:textAllCaps="true"
+            android:textColor="@color/selector_app_launch_text_title"
+            android:textSize="11sp"
+            android:theme="@style/SansitaBold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/background_count"
+            app:layout_constraintStart_toStartOf="@+id/background_count"
+            app:layout_constraintTop_toBottomOf="@+id/background_count" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="="
+        android:textColor="#FF949EAC"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_total"
+        app:layout_constraintEnd_toStartOf="@+id/btn_foreground"
+        app:layout_constraintStart_toEndOf="@+id/btn_total"
+        app:layout_constraintTop_toTopOf="@+id/btn_total"
+        tools:ignore="HardcodedText" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textColor="#FF949EAC"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_foreground"
+        app:layout_constraintEnd_toStartOf="@+id/btn_background"
+        app:layout_constraintStart_toEndOf="@+id/btn_foreground"
+        app:layout_constraintTop_toTopOf="@+id/btn_foreground"
+        tools:ignore="HardcodedText" />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_total">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="20"
+            tools:listitem="@layout/item_app_launch" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_empty"
+                android:layout_width="144dp"
+                android:layout_height="144dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.35"
+                app:srcCompat="@mipmap/img_empty" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/currently_no_data"
+                android:textSize="15sp"
+                android:theme="@style/SansitaBold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_empty" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

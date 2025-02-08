@@ -131,4 +131,5 @@
     <string name="grant_permission">Grant Permission</string>
     <string name="launches">Launches</string>
     <string name="screen_time">Screen Time</string>
+    <string name="stop">Stop</string>
 </resources>
