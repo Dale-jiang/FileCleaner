@@ -138,4 +138,5 @@
     <string name="yesterday">Yesterday</string>
     <string name="last60">Last 60 mins</string>
     <string name="today">Today</string>
+    <string name="tap_force_stop_to_completely_close_the_running_app">Tap \"Force Stop\" to completely close the running app.</string>
 </resources>

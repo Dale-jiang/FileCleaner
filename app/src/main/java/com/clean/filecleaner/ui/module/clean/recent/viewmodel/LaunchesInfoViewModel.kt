@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.AppUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ui.module.clean.recent.AppLaunchInfo
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.util.LinkedList
 
@@ -19,15 +20,15 @@ class LaunchesInfoViewModel : ViewModel() {
     private val usageStatsManager by lazy { app.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager }
     val launchInfosLiveData = MutableLiveData<MutableList<AppLaunchInfo>>()
 
-    fun queryAppLaunches(start: Long, end: Long) = runCatching {
-        viewModelScope.launch(Dispatchers.IO) {
-            val groupedEvents = getGroupedEvents(start, end)
-            val foregroundEventsMap = getForegroundEvents(start, end)
-
-            val result = generateLaunchInfos(foregroundEventsMap, groupedEvents)
-
-            // 过滤系统包
-            launchInfosLiveData.postValue(result.filterNot { isSystemPackage(it.packageName) }.toMutableList())
+    fun fetchAppLaunchInfos(start: Long, end: Long) {
+        viewModelScope.launch(Dispatchers.Default + SupervisorJob()) {
+            runCatching {
+                val groupedEvents = getGroupedEvents(start, end)
+                val foregroundEventsMap = getForegroundEvents(start, end)
+                val result = generateLaunchInfos(foregroundEventsMap, groupedEvents)
+                // 过滤系统包
+                launchInfosLiveData.postValue(result.filterNot { isSystemPackage(it.packageName) }.toMutableList())
+            }
         }
     }
 

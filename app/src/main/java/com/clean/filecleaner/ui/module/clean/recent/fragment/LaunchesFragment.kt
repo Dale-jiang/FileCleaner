@@ -1,20 +1,28 @@
 package com.clean.filecleaner.ui.module.clean.recent.fragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.transition.TransitionManager
+import com.blankj.utilcode.util.LogUtils
+import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.FragmentLaunchesBinding
 import com.clean.filecleaner.ui.base.BaseFragment
+import com.clean.filecleaner.ui.module.SettingTipsActivity
 import com.clean.filecleaner.ui.module.clean.recent.AppLaunchInfo
 import com.clean.filecleaner.ui.module.clean.recent.LaunchType
 import com.clean.filecleaner.ui.module.clean.recent.RecentAppHelper.getDateRangePairByIndex
 import com.clean.filecleaner.ui.module.clean.recent.adapter.LaunchesAdapter
 import com.clean.filecleaner.ui.module.clean.recent.viewmodel.LaunchesInfoViewModel
 import com.clean.filecleaner.ui.module.dialog.AppLaunchesFilterDialog
+import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,9 +37,14 @@ class LaunchesFragment : BaseFragment<FragmentLaunchesBinding>() {
     private var launchesType: LaunchType = LaunchType.TOTAL
     private val viewModel by viewModels<LaunchesInfoViewModel>()
 
+    private val openSettingsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        jumpToSettings = false
+        fetchData()
+    }
+
     private val launchAdapter by lazy {
         LaunchesAdapter(requireActivity()) {
-
+            openAppSettingPage(it.packageName)
         }
     }
 
@@ -90,7 +103,7 @@ class LaunchesFragment : BaseFragment<FragmentLaunchesBinding>() {
     private fun fetchData() {
         val (start, end) = getDateRangePairByIndex(currentDateIndex)
         binding.progressbar.isVisible = true
-        viewModel.queryAppLaunches(start, end)
+        viewModel.fetchAppLaunchInfos(start, end)
     }
 
     private fun updateRecyclerView(listData: MutableList<AppLaunchInfo>) {
@@ -114,5 +127,24 @@ class LaunchesFragment : BaseFragment<FragmentLaunchesBinding>() {
             }
         }
     }
+
+    private fun openAppSettingPage(packageName: String) = runCatching {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.parse("package:$packageName")
+            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+        }
+        jumpToSettings = true
+        openSettingsLauncher.launch(intent)
+        lifecycleScope.launch(Dispatchers.Main) {
+            delay(300)
+            startActivity(Intent(requireActivity(), SettingTipsActivity::class.java).apply {
+                putExtra("SETTING_MESSAGE", getString(R.string.tap_force_stop_to_completely_close_the_running_app))
+            })
+
+        }
+    }.onFailure {
+        LogUtils.e("openAppSetting-Error", "Error opening app settings", it)
+    }
+
 
 }
