@@ -25,6 +25,7 @@ import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.clean.recent.adapter.ViewPageAdapter
 import com.clean.filecleaner.ui.module.clean.recent.fragment.LaunchesFragment
+import com.clean.filecleaner.ui.module.clean.recent.fragment.TimesFragment
 import com.clean.filecleaner.ui.module.filemanager.allFilesContainerList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -34,7 +35,7 @@ class AppRecentInfoActivity : BaseActivity<ActivityAppRecentInfoBinding>() {
     override fun inflateViewBinding(): ActivityAppRecentInfoBinding = ActivityAppRecentInfoBinding.inflate(layoutInflater)
 
     private val fragmentList by lazy {
-        mutableListOf<Fragment>(LaunchesFragment(), LaunchesFragment())
+        mutableListOf<Fragment>(LaunchesFragment(), TimesFragment())
     }
 
     private var timeTag = 0L

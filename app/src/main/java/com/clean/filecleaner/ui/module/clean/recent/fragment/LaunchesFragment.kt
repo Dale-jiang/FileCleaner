@@ -18,6 +18,7 @@ import com.clean.filecleaner.ui.base.BaseFragment
 import com.clean.filecleaner.ui.module.SettingTipsActivity
 import com.clean.filecleaner.ui.module.clean.recent.AppLaunchInfo
 import com.clean.filecleaner.ui.module.clean.recent.LaunchType
+import com.clean.filecleaner.ui.module.clean.recent.RecentAppHelper.getDateNameByIndex
 import com.clean.filecleaner.ui.module.clean.recent.RecentAppHelper.getDateRangePairByIndex
 import com.clean.filecleaner.ui.module.clean.recent.adapter.LaunchesAdapter
 import com.clean.filecleaner.ui.module.clean.recent.viewmodel.LaunchesInfoViewModel
@@ -95,6 +96,7 @@ class LaunchesFragment : BaseFragment<FragmentLaunchesBinding>() {
             itemAnimator = null
             adapter = launchAdapter
         }
+        binding.date.text = getDateNameByIndex(currentDateIndex)
         updateTypeBtn(launchesType)
         setListeners()
         fetchData()
