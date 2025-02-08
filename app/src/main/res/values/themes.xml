@@ -37,4 +37,12 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <style name="CustomBottomSheetDialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@color/trans</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>
