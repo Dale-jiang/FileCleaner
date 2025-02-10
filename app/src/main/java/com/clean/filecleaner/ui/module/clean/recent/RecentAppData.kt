@@ -11,10 +11,19 @@ data class AppLaunchInfo(
     val totalCount: Int,
     val foreground: Int,
     val background: Int,
-    val temp: String = "",
+    val temp: String = ""
 )
 
 @Keep
 enum class LaunchType {
     TOTAL, FOREGROUND, BACKGROUND
 }
+
+@Keep
+data class AppScreenTimeInfo(
+    val appName: String,
+    val packageName: String,
+    val icon: Drawable?,
+    val duration: Long,
+    val temp: String = ""
+)

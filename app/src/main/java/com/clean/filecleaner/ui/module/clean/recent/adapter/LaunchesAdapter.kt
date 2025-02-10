@@ -15,7 +15,7 @@ import com.clean.filecleaner.ui.module.clean.recent.RecentAppHelper.isAppEnableS
 class LaunchesAdapter(private val context: Context, private val callback: (AppLaunchInfo) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var launchType: LaunchType = LaunchType.TOTAL
-    val mList = mutableListOf<AppLaunchInfo>()
+    private val mList = mutableListOf<AppLaunchInfo>()
 
     @SuppressLint("NotifyDataSetChanged")
     fun initList(launchType: LaunchType, list: MutableList<AppLaunchInfo>) {
@@ -73,14 +73,4 @@ class LaunchesAdapter(private val context: Context, private val callback: (AppLa
         val launchString: String = if (launchCount <= 1) context.getString(R.string.launch) else context.getString(R.string.launches)
         return Pair(launchCount, launchString)
     }
-
-//    AppLaunchInfo(
-//    AppUtils.getAppName(packageName),
-//    packageName,
-//    AppUtils.getAppIcon(packageName),
-//    totalLaunches,
-//    events.size,
-//    totalLaunches - events.size
-//    )
-
 }
