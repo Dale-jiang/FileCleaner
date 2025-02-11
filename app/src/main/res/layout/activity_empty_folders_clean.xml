@@ -89,7 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="visible"
-                    tools:visibility="gone">
+                    tools:visibility="visible">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/img_empty"
@@ -106,7 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="@string/currently_no_data"
+                        android:text="@string/no_empty_folders_found"
                         android:textSize="15sp"
                         android:theme="@style/SansitaBold"
                         app:layout_constraintEnd_toEndOf="parent"
