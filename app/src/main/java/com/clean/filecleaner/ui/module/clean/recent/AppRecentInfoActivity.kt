@@ -92,9 +92,11 @@ class AppRecentInfoActivity : BaseActivity<ActivityAppRecentInfoBinding>() {
 
         lifecycleScope.launch {
             delay(2000L)
-            stopLoadingAnim()
-            TransitionManager.beginDelayedTransition(binding.root)
-            binding.loadingView.isVisible = false
+            fullScreenAdShow {
+                stopLoadingAnim()
+                TransitionManager.beginDelayedTransition(binding.root)
+                binding.loadingView.isVisible = false
+            }
         }
     }
 

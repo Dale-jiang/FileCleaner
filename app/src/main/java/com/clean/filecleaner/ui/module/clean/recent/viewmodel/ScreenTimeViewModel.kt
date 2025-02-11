@@ -21,97 +21,103 @@ import java.util.LinkedList
 
 class ScreenTimeViewModel : ViewModel() {
 
-    private val TAG = "ScreenTimeViewModel"
-    private val usageManager by lazy { app.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager }
-    private val excludedPackages by lazy {
+    private val TAG = "TimeTrackerViewModel"
+    private val usageStatsManager by lazy { app.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager }
+    private val excludedAppPackages by lazy {
         setOf(
             app.packageName,
             "com.android.settings",
-            "com.android.launcher",           //  Launcher
-            "com.google.android.apps.nexuslauncher",  // Google Pixel Launcher
-            "com.samsung.android.launcher",    // Samsung Launcher
-            "com.miui.home",                   // MIUI Launcher
-            "com.huawei.android.launcher",     // Huawei Launcher
-            "com.oppo.launcher",               // OPPO Launcher
-            "com.vivo.launcher",             // Vivo Launcher
+            "com.android.launcher",
+            "com.google.android.apps.nexuslauncher",
+            "com.samsung.android.launcher",
+            "com.miui.home",
+            "com.huawei.android.launcher",
+            "com.oppo.launcher",
+            "com.vivo.launcher",
         )
     }
 
-    val timeChartData = MutableLiveData<LongSparseArray<Long>>()
-    val appUsageList = MutableLiveData<MutableList<AppScreenTimeInfo>>()
+    val timeData = MutableLiveData<LongSparseArray<Long>>()
+    val appUsageDetails = MutableLiveData<MutableList<AppScreenTimeInfo>>()
 
-    private fun getRangeTimeInfoList(start: Long, end: Long) = runCatching {
+    private fun retrieveUsageInfoInRange(start: Long, end: Long) {
         if (end - start > 259200000) {
-            val resultMap = hashMapOf<String, Long>()
-            val usageStatsList = usageManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start, end)
-            usageStatsList.forEach { usageStats ->
-                if (usageStats.totalTimeInForeground > 0L && usageStats.lastTimeUsed > start) {
-                    val duration = resultMap.getOrDefault(usageStats.packageName, 0L) + usageStats.totalTimeInForeground
-                    resultMap[usageStats.packageName] = duration
+            try {
+                val usageMap = hashMapOf<String, Long>()
+                val usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start, end)
+                usageStatsList.forEach { stats ->
+                    if (stats.totalTimeInForeground > 0L && stats.lastTimeUsed > start) {
+                        val time = usageMap.getOrDefault(stats.packageName, 0L) + stats.totalTimeInForeground
+                        usageMap[stats.packageName] = time
+                    }
                 }
-            }
-            val resultList = mutableListOf<AppScreenTimeInfo>()
-            resultMap.forEach { (packageName, duration) ->
-                if (AppUtils.isAppInstalled(packageName) && !excludedPackages.any { it.contains(packageName) }) {
-                    resultList.add(AppScreenTimeInfo(AppUtils.getAppName(packageName), packageName, AppUtils.getAppIcon(packageName), duration))
+                val usageList = mutableListOf<AppScreenTimeInfo>()
+                usageMap.forEach { (packageName, duration) ->
+                    if (AppUtils.isAppInstalled(packageName) && !excludedAppPackages.any { it.contains(packageName) }) {
+                        usageList.add(AppScreenTimeInfo(AppUtils.getAppName(packageName), packageName, AppUtils.getAppIcon(packageName), duration))
+                    }
                 }
+                appUsageDetails.postValue(usageList)
+            } catch (e: Throwable) {
+                e.printStackTrace()
             }
-            appUsageList.postValue(resultList)
-        } else {
-            val usageEvents = usageManager.queryEvents(start, end)
-            val allEventLinkedList: LinkedList<LinkedList<UsageEvents.Event>> = LinkedList()
+            return
+        }
+
+        runCatching {
+            val usageEvents = usageStatsManager.queryEvents(start, end)
+            val eventGroupList: LinkedList<LinkedList<UsageEvents.Event>> = LinkedList()
             while (usageEvents != null && usageEvents.hasNextEvent()) {
                 val event = UsageEvents.Event()
                 if (usageEvents.getNextEvent(event) && event.eventType != UsageEvents.Event.ACTIVITY_STOPPED && event.eventType != UsageEvents.Event.STANDBY_BUCKET_CHANGED) {
-                    if (allEventLinkedList.isNotEmpty() && allEventLinkedList.last.last.packageName == event.packageName) {
-                        allEventLinkedList.last.addLast(event)
+                    if (eventGroupList.isNotEmpty() && eventGroupList.last.last.packageName == event.packageName) {
+                        eventGroupList.last.addLast(event)
                     } else {
-                        val pkgEventList: LinkedList<UsageEvents.Event> = LinkedList()
-                        pkgEventList.addLast(event)
-                        allEventLinkedList.addLast(pkgEventList)
+                        val newPkgEventList: LinkedList<UsageEvents.Event> = LinkedList()
+                        newPkgEventList.addLast(event)
+                        eventGroupList.addLast(newPkgEventList)
                     }
                 }
             }
-            val resultMap = hashMapOf<String, Long>()
-            allEventLinkedList.forEach { eventList ->
+            val usageMap = hashMapOf<String, Long>()
+            eventGroupList.forEach { eventList ->
                 val packageName = eventList.first.packageName
-                if (AppUtils.isAppInstalled(packageName) && !excludedPackages.any { it.contains(packageName) }) {
-                    var previousEvent: UsageEvents.Event? = null
-                    var totalTime = 0L
+                if (AppUtils.isAppInstalled(packageName) && !excludedAppPackages.any { it.contains(packageName) }) {
+                    var prevEvent: UsageEvents.Event? = null
+                    var totalUsageTime = 0L
                     eventList.forEach { event ->
-                        if (UsageEvents.Event.ACTIVITY_RESUMED == event.eventType && null == previousEvent) {
-                            previousEvent = event
-                        } else if (UsageEvents.Event.ACTIVITY_PAUSED == event.eventType && null != previousEvent) {
-                            val duration = event.timeStamp - (previousEvent?.timeStamp ?: 0L)
-                            if (duration > 0L) totalTime += duration
-                            previousEvent = null
+                        if (UsageEvents.Event.ACTIVITY_RESUMED == event.eventType && prevEvent == null) {
+                            prevEvent = event
+                        } else if (UsageEvents.Event.ACTIVITY_PAUSED == event.eventType && prevEvent != null) {
+                            val timeSpent = event.timeStamp - (prevEvent?.timeStamp ?: 0L)
+                            if (timeSpent > 0L) totalUsageTime += timeSpent
+                            prevEvent = null
                         }
                     }
-                    if (totalTime > 0L) {
-                        if (resultMap.containsKey(packageName)) {
-                            resultMap[packageName] = resultMap.getOrDefault(packageName, 0L) + totalTime
-                        } else resultMap[packageName] = totalTime
+                    if (totalUsageTime > 0L) {
+                        usageMap[packageName] = usageMap.getOrDefault(packageName, 0L) + totalUsageTime
                     }
                 }
             }
 
-            val resultList = mutableListOf<AppScreenTimeInfo>()
-            resultMap.forEach { (packageName, duration) ->
-                resultList.add(AppScreenTimeInfo(AppUtils.getAppName(packageName), packageName, AppUtils.getAppIcon(packageName), duration))
+            val usageList = mutableListOf<AppScreenTimeInfo>()
+            usageMap.forEach { (packageName, duration) ->
+                usageList.add(AppScreenTimeInfo(AppUtils.getAppName(packageName), packageName, AppUtils.getAppIcon(packageName), duration))
             }
-            appUsageList.postValue(resultList)
+            appUsageDetails.postValue(usageList)
         }
     }
 
-
-    fun fetchListData(index: Int) = runCatching {
+    fun fetchUsageData(index: Int) = run {
         viewModelScope.launch(Dispatchers.IO + SupervisorJob()) {
-            val timePair = fetchRangeTime(index)
-            getRangeTimeInfoList(timePair.first, timePair.second)
+            runCatching {
+                val (start, end) = getTimeRange(index)
+                retrieveUsageInfoInRange(start, end)
+            }
         }
     }
 
-    private fun fetchRangeTime(index: Int): Pair<Long, Long> {
+    private fun getTimeRange(index: Int): Pair<Long, Long> = let {
         val calendar = Calendar.getInstance()
 
         val currentTime = System.currentTimeMillis()
@@ -153,10 +159,10 @@ class ScreenTimeViewModel : ViewModel() {
         return Pair(startTime, currentTime)
     }
 
-    fun getRangeTotalByIndex(index: Int) = run {
+    fun getTotalUsageTimeByIndex(index: Int) = run {
         viewModelScope.launch(Dispatchers.IO + SupervisorJob()) {
             kotlin.runCatching {
-                val timeInMillis = when (index) {
+                val startMillis = when (index) {
                     0 -> Calendar.getInstance().apply {
                         set(Calendar.SECOND, 0)
                         set(Calendar.MILLISECOND, 0)
@@ -180,104 +186,103 @@ class ScreenTimeViewModel : ViewModel() {
                     else -> System.currentTimeMillis()
                 }
 
-                val interval: Long = when (index) {
-                    0 -> 60000L // Minute intervals for index 0
-                    1, 2 -> 3600000L // Hour intervals for index 1 and 2
-                    3 -> 86400000L // Day intervals for index 3
+                val intervalMillis: Long = when (index) {
+                    0 -> 60000L
+                    1, 2 -> 3600000L
+                    3 -> 86400000L
                     else -> 3600000L
                 }
 
-                val endList = LongArray(
+                val endTimes = LongArray(
                     when (index) {
-                        0 -> 60 // For minutes
-                        1, 2 -> 25 // For hours
-                        3 -> 7 // For days
+                        0 -> 60
+                        1, 2 -> 25
+                        3 -> 7
                         else -> 0
                     }
                 ) {
-                    timeInMillis - it * interval
+                    startMillis - it * intervalMillis
                 }
 
-                val longSparseArray = LongSparseArray<Long>(endList.size)
-                val deferredList = (1 until endList.size).map { current ->
+                val timeArray = LongSparseArray<Long>(endTimes.size)
+                val tasks = (1 until endTimes.size).map { idx ->
                     async(Dispatchers.Default) {
-                        val startTime = endList[current]
-                        val endTime = if (current > 0) endList[current - 1] else System.currentTimeMillis()
-                        Pair(startTime, getRangeTimeTotal(startTime, endTime))
+                        val start = endTimes[idx]
+                        val end = if (idx > 0) endTimes[idx - 1] else System.currentTimeMillis()
+                        Pair(start, calculateTotalTimeInRange(start, end))
                     }
                 }
 
-                deferredList.awaitAll().forEach { (startTime, total) ->
-                    longSparseArray.append(startTime, total)
+                tasks.awaitAll().forEach { (start, total) ->
+                    timeArray.append(start, total)
                 }
 
-                timeChartData.postValue(longSparseArray)
+                timeData.postValue(timeArray)
             }
         }
     }
 
-
-    private suspend fun getRangeTimeTotal(start: Long, end: Long): Long = withContext(Dispatchers.IO + SupervisorJob()) {
+    private suspend fun calculateTotalTimeInRange(start: Long, end: Long): Long = withContext(Dispatchers.IO + SupervisorJob()) {
         if (end - start > 259200000) {
-            calculateTotalForegroundTime(start, end)
+            calculateForegroundTimeTotal(start, end)
         } else {
-            calculateTotalEventTime(start, end)
+            calculateEventTimeTotal(start, end)
         }
     }
 
-    private fun calculateTotalForegroundTime(start: Long, end: Long): Long {
-        val resultMap = hashMapOf<String, Long>()
-        val usageStatsList = usageManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start, end)
+    private fun calculateForegroundTimeTotal(start: Long, end: Long): Long = let {
+        val usageMap = hashMapOf<String, Long>()
+        val usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start, end)
 
-        usageStatsList.forEach { usageStats ->
-            if (usageStats.totalTimeInForeground > 0L && usageStats.lastTimeUsed > start) {
-                resultMap[usageStats.packageName] = resultMap.getOrDefault(usageStats.packageName, 0L) + usageStats.totalTimeInForeground
+        usageStatsList.forEach { stats ->
+            if (stats.totalTimeInForeground > 0L && stats.lastTimeUsed > start) {
+                usageMap[stats.packageName] = usageMap.getOrDefault(stats.packageName, 0L) + stats.totalTimeInForeground
             }
         }
 
-        return calculateTotalFromMap(resultMap)
+        aggregateTotalFromMap(usageMap)
     }
 
-    private fun calculateTotalEventTime(start: Long, end: Long): Long {
-        val usageEvents = usageManager.queryEvents(start, end)
-        val allEventLinkedList = LinkedList<UsageEvents.Event>()
+    private fun calculateEventTimeTotal(start: Long, end: Long): Long = let {
+        val usageEvents = usageStatsManager.queryEvents(start, end)
+        val eventList = LinkedList<UsageEvents.Event>()
 
         while (usageEvents != null && usageEvents.hasNextEvent()) {
             val event = UsageEvents.Event()
             if (usageEvents.getNextEvent(event) && event.eventType in listOf(UsageEvents.Event.ACTIVITY_RESUMED, UsageEvents.Event.ACTIVITY_PAUSED)) {
-                allEventLinkedList.add(event)
+                eventList.add(event)
             }
         }
 
-        val resultMap = hashMapOf<String, Long>()
-        var previousEvent: UsageEvents.Event? = null
+        val usageMap = hashMapOf<String, Long>()
+        var prevEvent: UsageEvents.Event? = null
 
-        allEventLinkedList.forEach { event ->
+        eventList.forEach { event ->
             val packageName = event.packageName
-            if (AppUtils.isAppInstalled(packageName) && !excludedPackages.any { it == packageName }) {
+            if (AppUtils.isAppInstalled(packageName) && !excludedAppPackages.any { it == packageName }) {
                 if (event.eventType == UsageEvents.Event.ACTIVITY_RESUMED) {
-                    previousEvent = event
-                } else if (event.eventType == UsageEvents.Event.ACTIVITY_PAUSED && previousEvent != null) {
-                    val duration = event.timeStamp - (previousEvent?.timeStamp ?: 0L)
+                    prevEvent = event
+                } else if (event.eventType == UsageEvents.Event.ACTIVITY_PAUSED && prevEvent != null) {
+                    val duration = event.timeStamp - (prevEvent?.timeStamp ?: 0L)
                     if (duration > 0L) {
-                        resultMap[packageName] = resultMap.getOrDefault(packageName, 0L) + duration
+                        usageMap[packageName] = usageMap.getOrDefault(packageName, 0L) + duration
                     }
-                    previousEvent = null
+                    prevEvent = null
                 }
             }
         }
 
-        return calculateTotalFromMap(resultMap)
+        aggregateTotalFromMap(usageMap)
     }
 
-    private fun calculateTotalFromMap(resultMap: HashMap<String, Long>): Long {
+    private fun aggregateTotalFromMap(usageMap: HashMap<String, Long>): Long = let {
         var total = 0L
-        resultMap.forEach { (packageName, duration) ->
-            if (AppUtils.isAppInstalled(packageName) && !excludedPackages.contains(packageName)) {
+        usageMap.forEach { (packageName, duration) ->
+            if (!excludedAppPackages.contains(packageName) && AppUtils.isAppInstalled(packageName)) {
                 total += duration
             }
         }
-        return total
+        total
     }
 
 }

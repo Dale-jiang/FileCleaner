@@ -62,18 +62,18 @@ class TimesFragment : BaseFragment<FragmentScreenTimeBinding>() {
                     date.text = str
                     currentDateIndex = index
                     binding.progressbar.isVisible = true
-                    viewModel.getRangeTotalByIndex(index)
-                    viewModel.fetchListData(index)
+                    viewModel.getTotalUsageTimeByIndex(index)
+                    viewModel.fetchUsageData(index)
                 }.show()
             }
         }
 
         viewModel.apply {
-            timeChartData.observe(this@TimesFragment) {
+            timeData.observe(this@TimesFragment) {
                 binding.progressbar.isVisible = false
                 initChartData(it)
             }
-            appUsageList.observe(this@TimesFragment) { list ->
+            appUsageDetails.observe(this@TimesFragment) { list ->
                 lifecycleScope.launch(Dispatchers.Main) {
                     screenTimeAdapter.initList(mutableListOf())
                     delay(150L)
@@ -94,8 +94,8 @@ class TimesFragment : BaseFragment<FragmentScreenTimeBinding>() {
             date.text = getDateNameByIndex(currentDateIndex)
             barChart.setNoDataText("")
             progressbar.isVisible = true
-            viewModel.getRangeTotalByIndex(currentDateIndex)
-            viewModel.fetchListData(currentDateIndex)
+            viewModel.getTotalUsageTimeByIndex(currentDateIndex)
+            viewModel.fetchUsageData(currentDateIndex)
 
             recyclerView.itemAnimator = null
             recyclerView.adapter = screenTimeAdapter
