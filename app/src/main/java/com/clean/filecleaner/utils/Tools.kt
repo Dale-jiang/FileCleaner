@@ -9,6 +9,9 @@ import android.os.storage.StorageManager
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.hasUsagePermissions
+import com.clean.filecleaner.report.reporter.CloakRepository.cloakResult
+import com.clean.filecleaner.report.reporter.ReferrerRepository.installReferrerStr
+import com.clean.filecleaner.ui.ad.buyUserTags
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -105,4 +108,10 @@ object Tools {
         )?.find { it.packageName == packageName }?.lastTimeUsed ?: 0
 
     }
+
+
+    fun isBlackUser() = cloakResult == "mackinaw"
+
+    fun isBuyUser() = buyUserTags.any { installReferrerStr.contains(it, ignoreCase = true) }
+
 }

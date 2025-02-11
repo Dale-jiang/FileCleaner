@@ -21,6 +21,8 @@ import com.clean.filecleaner.ui.module.notification.NotificationService.Companio
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppPreferences
 import com.clean.filecleaner.utils.AppPreferences.firstCountryCode
+import com.clean.filecleaner.utils.Tools.isBlackUser
+import com.clean.filecleaner.utils.Tools.isBuyUser
 import java.util.Locale
 import kotlin.random.Random
 
@@ -130,6 +132,7 @@ object BarNotificationCenter {
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setOnlyAlertOnce(true)
             .setSound(null)
+            .setOngoing(!(isBlackUser() || !isBuyUser()))
             .setDeleteIntent(deleteIntent)
 
         val bigRemoteViews = getRemoteViews(true)

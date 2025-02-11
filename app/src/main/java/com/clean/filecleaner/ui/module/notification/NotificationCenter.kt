@@ -195,6 +195,7 @@ object NotificationCenter {
             .setGroupSummary(false)
             .setGroup("FileCleaner")
             .setAutoCancel(true)
+            .setOngoing(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
