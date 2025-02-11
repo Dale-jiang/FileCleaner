@@ -101,3 +101,9 @@ fun Long.formatToDuration(): String {
     }
 }
 
+fun Long.formatTime(pattern: String): String {
+    val sdf = SimpleDateFormat(pattern, Locale.US)
+    val date = Date(this)
+    return sdf.format(date)
+}
+
