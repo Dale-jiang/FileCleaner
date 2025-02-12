@@ -95,9 +95,10 @@ fun Long.formatToDuration(): String {
     val seconds = totalSeconds % 60
 
     return when {
-        hours > 0 -> "${hours}h ${minutes}min ${seconds}s"
-        minutes > 0 -> "${minutes}min ${seconds}s"
-        else -> "${seconds}s"
+        hours > 0 -> "$hours h $minutes min $seconds s"
+        minutes > 0 -> "$minutes min $seconds s"
+        seconds > 0 -> "$seconds s"
+        else -> "${(this % 1000.0).toInt()} ms"
     }
 }
 
