@@ -19,3 +19,19 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.clean.filecleaner.ui.module.clean.bigfiles.MaxHeightRecyclerView { *; }
+-keep class com.clean.filecleaner.ui.module.clean.bigfiles.MaxHeightRecyclerView {
+    <init>(...);
+    *;
+}
+
+-keep class com.clean.filecleaner.R$styleable {
+    *;
+}
+
+-keepclassmembers class * {
+    @android.util.AttributeSet <fields>;
+}
+
+-keep public class androidx.recyclerview.*{ *; }

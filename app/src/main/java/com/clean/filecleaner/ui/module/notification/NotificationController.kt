@@ -69,6 +69,13 @@ class NotificationService {
             bgScope.launch {
                 delay(1200L)
                 NotificationCenter.displayNotification(UserPresenceReminder)
+
+                if (null != context) {
+                    runCatching {
+                        NotificationJobIntentService.enqueueWork(context, Intent(context, NotificationJobIntentService::class.java))
+                    }
+                }
+
             }
         }
     }
