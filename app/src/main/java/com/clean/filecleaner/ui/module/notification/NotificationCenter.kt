@@ -21,6 +21,8 @@ import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.NOTICE
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppLifeHelper
 import com.clean.filecleaner.utils.AppPreferences
+import com.clean.filecleaner.utils.Tools.isBlackUser
+import com.clean.filecleaner.utils.Tools.isBuyUser
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -53,6 +55,7 @@ object NotificationCenter {
     var noticeConfig: NotificationConfig? = null
     private const val TAG = "NotificationCenter"
     private const val NOTIFICATION_CHANNEL = "FILE_CLEANER_TOOL"
+    var fcOngoing = "0"
 
     fun canShow(baseReminder: BaseReminder): Boolean {
 
@@ -195,9 +198,13 @@ object NotificationCenter {
             .setGroupSummary(false)
             .setGroup("FileCleaner")
             .setAutoCancel(true)
-            .setOngoing(true)
+//            .setOngoing(true)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+        if (fcOngoing == "1" && isBlackUser().not() && isBuyUser()) {
+            builder.setOngoing(true)
+        }
 
         val bigRemoteViews = getRemoteViews(infoItem, pendingIntent, 2)
         if (AndroidVersionUtils.isAndroid12OrAbove()) {

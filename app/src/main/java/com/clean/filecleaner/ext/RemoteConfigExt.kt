@@ -38,6 +38,16 @@ data class AdAbnormalConfig(
 
 fun Firebase.initRemoteConfig() {
 
+    fun getFcOngoing() {
+        runCatching {
+            val json = mRemoteConfig["fc_ongoing"].asString()
+            LogUtils.d("getFcOngoing", "Result: $json")
+            NotificationCenter.fcOngoing = json
+        }.onFailure {
+            NotificationCenter.fcOngoing = "0"
+        }
+    }
+
     fun getAdConfig() {
         runCatching {
             val json = mRemoteConfig["fc_ad_config"].asString()
@@ -118,13 +128,13 @@ fun Firebase.initRemoteConfig() {
         }
     }
 
-
     fun getAllConfigs() {
         getAdConfig()
         getAdAbnormalConfig()
         getUserConf()
         getNoticeConfig()
         fetchTopPercentConf()
+        getFcOngoing()
     }
 
 

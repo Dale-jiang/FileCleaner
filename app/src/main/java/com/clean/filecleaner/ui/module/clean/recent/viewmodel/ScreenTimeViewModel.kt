@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.AppUtils
+import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ui.module.clean.recent.AppScreenTimeInfo
 import kotlinx.coroutines.Dispatchers
@@ -159,9 +160,10 @@ class ScreenTimeViewModel : ViewModel() {
         return Pair(startTime, currentTime)
     }
 
-    fun getTotalUsageTimeByIndex(index: Int) = run {
+    fun getCharDataByIndex(index: Int) = run {
         viewModelScope.launch(Dispatchers.IO + SupervisorJob()) {
             kotlin.runCatching {
+
                 val startMillis = when (index) {
                     0 -> Calendar.getInstance().apply {
                         set(Calendar.SECOND, 0)
@@ -204,17 +206,19 @@ class ScreenTimeViewModel : ViewModel() {
                     startMillis - it * intervalMillis
                 }
 
+                LogUtils.d(TAG, "====${startMillis}")
+
                 val timeArray = LongSparseArray<Long>(endTimes.size)
-                val tasks = (1 until endTimes.size).map { idx ->
+                (1 until endTimes.size).map { idx ->
                     async(Dispatchers.Default) {
                         val start = endTimes[idx]
                         val end = if (idx > 0) endTimes[idx - 1] else System.currentTimeMillis()
                         Pair(start, calculateTotalTimeInRange(start, end))
                     }
-                }
-
-                tasks.awaitAll().forEach { (start, total) ->
-                    timeArray.append(start, total)
+                }.apply {
+                    awaitAll().forEach { (start, total) ->
+                        timeArray.append(start, total)
+                    }
                 }
 
                 timeData.postValue(timeArray)
@@ -283,6 +287,11 @@ class ScreenTimeViewModel : ViewModel() {
             }
         }
         total
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        LogUtils.d(TAG, "onCleared")
     }
 
 }

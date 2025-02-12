@@ -62,7 +62,7 @@ class TimesFragment : BaseFragment<FragmentScreenTimeBinding>() {
                     date.text = str
                     currentDateIndex = index
                     binding.progressbar.isVisible = true
-                    viewModel.getTotalUsageTimeByIndex(index)
+                    viewModel.getCharDataByIndex(index)
                     viewModel.fetchUsageData(index)
                 }.show()
             }
@@ -94,7 +94,7 @@ class TimesFragment : BaseFragment<FragmentScreenTimeBinding>() {
             date.text = getDateNameByIndex(currentDateIndex)
             barChart.setNoDataText("")
             progressbar.isVisible = true
-            viewModel.getTotalUsageTimeByIndex(currentDateIndex)
+            viewModel.getCharDataByIndex(currentDateIndex)
             viewModel.fetchUsageData(currentDateIndex)
 
             recyclerView.itemAnimator = null
