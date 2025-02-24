@@ -13,15 +13,42 @@ import android.os.StatFs
 import android.os.storage.StorageManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.appsflyer.AppsFlyerLib
+import com.clean.filecleaner.BuildConfig
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.data.storagePermissions
+import com.clean.filecleaner.report.DataReportingConfig.mDistinctId
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid10OrAbove
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid11OrAbove
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid12OrAbove
+import com.clean.filecleaner.utils.AppPreferences.alreadySubscribedToFcm
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import java.io.IOException
 
 fun Application.canInteractive() = runCatching { (getSystemService(Context.POWER_SERVICE) as PowerManager).isInteractive }.getOrNull() ?: false
+
+fun Application.subscribeFCM() {
+    if (!alreadySubscribedToFcm) {
+        runCatching {
+            Firebase.messaging.subscribeToTopic("US~ALL")
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        alreadySubscribedToFcm = true
+                    }
+                }
+        }
+    }
+}
+
+fun Application.initAF() = runCatching {
+    AppsFlyerLib.getInstance().apply {
+        init(if (BuildConfig.DEBUG) "" else "VDdWFNy9iHbnWwoDtnEvvf", null, this@initAF)
+        setCustomerUserId(mDistinctId)
+        start(this@initAF)
+    }
+}
 
 fun Context.getApplicationLabelString(packageName: String) = runCatching {
     app.packageManager.getApplicationLabel(app.packageManager.getApplicationInfo(packageName, 0)).toString()

@@ -5,7 +5,9 @@ import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ProcessUtils
 import com.clean.filecleaner.BuildConfig
 import com.clean.filecleaner.data.app
+import com.clean.filecleaner.ext.initAF
 import com.clean.filecleaner.ext.initRemoteConfig
+import com.clean.filecleaner.ext.subscribeFCM
 import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter
 import com.clean.filecleaner.ui.module.notification.notificationService
@@ -28,6 +30,8 @@ class MyApplication : Application() {
             BarNotificationCenter.init(this)
             DataReportingUtils.getAllInfos()
             notificationService.initialize()
+            subscribeFCM()
+            initAF()
         }
     }
 

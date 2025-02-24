@@ -10,7 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 object AdLTVReporter {
 
     private const val TAG = "AdLTVReporter"
-    var revenuePercentList = listOf<Double>()
+    var revenuePercentList = mutableListOf(0.1, 0.5, 0.6, 0.8, 1.0)
 
 
     fun post(revenue: Double) {

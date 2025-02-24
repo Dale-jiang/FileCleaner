@@ -31,6 +31,8 @@ object AppPreferences {
 
     var networkTrafficSwitch by prefs.prefDelegate(!BarNotificationCenter.isSamsungDevice())
 
+    var alreadySubscribedToFcm by prefs.prefDelegate(false)
+
 
 //    fun getNotificationShowCounts(baseReminder: BaseReminder): Int {
 //        return if (TimeUtils.isToday(getNotificationLashShow(baseReminder))) prefs.getInt("${baseReminder.reminderName}_reminder_amounts", 0) else 0
