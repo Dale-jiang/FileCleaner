@@ -11,6 +11,7 @@ import android.os.Environment
 import android.os.PowerManager
 import android.os.StatFs
 import android.os.storage.StorageManager
+import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.appsflyer.AppsFlyerLib
@@ -144,4 +145,9 @@ fun Context.isDarkMode() = run {
     } catch (e: Exception) {
         false
     }
+}
+
+
+fun Context.isOverlayPermissionGranted(): Boolean {
+    return Settings.canDrawOverlays(this)
 }

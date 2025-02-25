@@ -9,11 +9,13 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import com.blankj.utilcode.util.TimeUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.databinding.ActivitySplashBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.isDarkMode
 import com.clean.filecleaner.ext.isGrantedNotification
+import com.clean.filecleaner.ext.isOverlayPermissionGranted
 import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.canShow
@@ -33,6 +35,7 @@ import com.clean.filecleaner.ui.module.notification.TaskReminder
 import com.clean.filecleaner.ui.module.notification.UninstallReminder
 import com.clean.filecleaner.ui.module.notification.UserPresenceReminder
 import com.clean.filecleaner.utils.AndroidVersionUtils
+import com.clean.filecleaner.utils.AppPreferences.floatingPermissionPageTime
 import com.clean.filecleaner.utils.AppPreferences.hasRequestUMP
 import com.clean.filecleaner.utils.UMPUtils
 import kotlinx.coroutines.Dispatchers
@@ -135,8 +138,14 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             }
 
             else -> {
-                //startActivity(Intent(this, MainActivity::class.java))
-                startActivity(Intent(this, FloatingWindowPermissionActivity::class.java))
+
+               // if (!TimeUtils.isToday(floatingPermissionPageTime) && !isOverlayPermissionGranted()) {
+                if (true) {
+                    floatingPermissionPageTime = System.currentTimeMillis()
+                    startActivity(Intent(this, FloatingWindowPermissionActivity::class.java))
+                } else {
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
                 finish()
             }
         }

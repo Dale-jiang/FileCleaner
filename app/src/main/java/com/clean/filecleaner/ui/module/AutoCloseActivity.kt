@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.lifecycle.lifecycleScope
@@ -13,8 +14,10 @@ import com.clean.filecleaner.databinding.ActivityAutoCloseBinding
 import com.clean.filecleaner.ext.hasAllStoragePermissions
 import com.clean.filecleaner.ext.hasUsagePermissions
 import com.clean.filecleaner.ext.immersiveMode
+import com.clean.filecleaner.ext.isOverlayPermissionGranted
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid10OrAbove
+import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -57,6 +60,7 @@ class AutoCloseActivity : BaseActivity<ActivityAutoCloseBinding>() {
             val tipString = getString(R.string.make_sure_this_option_is_enabled)
             when (action) {
                 Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Settings.ACTION_USAGE_ACCESS_SETTINGS -> {
                     createAndLaunchSettingsIntent(action, tipString)
                 }
@@ -89,15 +93,27 @@ class AutoCloseActivity : BaseActivity<ActivityAutoCloseBinding>() {
                 startActivity(Intent(action).apply {
                     flags = Intent.FLAG_ACTIVITY_NO_HISTORY
                 })
+            } else if (action == Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    startActivity(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION).apply {
+                        flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+                        data = Uri.parse("package:${packageName}")
+                    })
+                }
             }
         }
 
-        lifecycleScope.launch {
-            delay(300)
-            startActivity(Intent(this@AutoCloseActivity, SettingTipsActivity::class.java).apply {
-                putExtra("SETTING_MESSAGE", tipString)
-            })
+        if (action != Settings.ACTION_MANAGE_OVERLAY_PERMISSION) {
+            lifecycleScope.launch {
+                delay(300)
+                startActivity(Intent(this@AutoCloseActivity, SettingTipsActivity::class.java).apply {
+                    putExtra("SETTING_MESSAGE", tipString)
+                })
+            }
+        } else {
+            jumpToSettings = true
         }
+
         return intent
     }
 
@@ -129,6 +145,7 @@ class AutoCloseActivity : BaseActivity<ActivityAutoCloseBinding>() {
         return when (intent.action) {
             Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION -> hasAllStoragePermissions()
             Settings.ACTION_USAGE_ACCESS_SETTINGS -> hasUsagePermissions()
+            Settings.ACTION_MANAGE_OVERLAY_PERMISSION -> isOverlayPermissionGranted()
             else -> false
         }
     }
