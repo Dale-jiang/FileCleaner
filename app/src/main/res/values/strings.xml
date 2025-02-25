@@ -142,4 +142,8 @@
     <string name="tap_force_stop_to_completely_close_the_running_app">Tap \"Force Stop\" to completely close the running app.</string>
     <string name="manage">Manage</string>
     <string name="no_empty_folders_found">No empty folders found</string>
+    <string name="skip">Skip</string>
+    <string name="floating_window_per_tip">Enable notifications to stay updated on important alerts.</string>
+    <string name="floating_window_permissions">Floating Window Permissions</string>
+    <string name="str_continue">Continue</string>
 </resources>

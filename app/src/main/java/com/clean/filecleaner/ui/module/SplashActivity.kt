@@ -135,7 +135,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             }
 
             else -> {
-                startActivity(Intent(this, MainActivity::class.java))
+                //startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, FloatingWindowPermissionActivity::class.java))
                 finish()
             }
         }
