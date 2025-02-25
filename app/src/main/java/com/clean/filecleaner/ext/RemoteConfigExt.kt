@@ -105,7 +105,7 @@ fun Firebase.initRemoteConfig() {
             NotificationCenter.noticeConfig = if (isSamsung) {
                 NotificationConfig(1, 30, 35, 10, 15, 30, 5, 30, 5)
             } else {
-                NotificationConfig(1, 30, 40, 10, 20, 30, 10, 30, 10)
+                NotificationConfig(1, 30, 40, 0, 50, 30, 10, 30, 10)
             }
         }
 

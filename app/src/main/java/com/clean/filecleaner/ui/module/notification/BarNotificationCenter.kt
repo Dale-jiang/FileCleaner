@@ -27,7 +27,7 @@ import kotlin.random.Random
 object BarNotificationCenter {
 
     private const val TAG = "BarNotificationCenter"
-    private const val NOTIFICATION_CHANNEL: String = "FILE_CLEANER_MAIN"
+    private const val NOTIFICATION_CHANNEL: String = "SYSTEM_MAIN_TOOL"
     const val FUNCTION_TYPE = "FUNCTION_TYPE"
     const val REMINDER_TYPE = "REMINDER_TYPE"
     const val NOTICE_INFO_ITEM = "NOTICE_INFO_ITEM"

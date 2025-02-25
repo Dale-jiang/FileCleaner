@@ -33,29 +33,47 @@ object NotificationCenter {
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_1, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_2, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_3, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
+
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_1, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12011),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_2, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12011),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_3, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12011),
+
+
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_1, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_2, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_3, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_4, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_5, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
+
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_1, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12012),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_2, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12012),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_3, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12012),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_4, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12012),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_5, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12012),
+
+
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_1, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_2, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_3, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_4, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_5, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),
+
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_1, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_2, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_3, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_4, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004),
-            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_5, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004),
+            NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_install_5, R.string.notice_btn_clean_install, FuncClean, InstallReminder, 12004)
+
         )
     }
 
 
     var noticeConfig: NotificationConfig? = null
     private const val TAG = "NotificationCenter"
-    private const val NOTIFICATION_CHANNEL = "FILE_CLEANER_TOOL"
+    private const val NOTIFICATION_CHANNEL = "SYSTEM_IMPORTANT_MESSAGE"
     var fcOngoing = "0"
+    private var timerNotificationInfo: NotificationInfo? = null
+    private var unlockNotificationInfo: NotificationInfo? = null
 
     fun canShow(baseReminder: BaseReminder): Boolean {
 
@@ -175,7 +193,10 @@ object NotificationCenter {
             }
 
             TaskReminder -> {
-                cleanInfos.filter { it.reminder == TaskReminder }.random()
+                val notificationInfo = cleanInfos.filter { it.reminder == TaskReminder }
+                    .filter { it.notificationId != timerNotificationInfo?.notificationId && it.messageId != timerNotificationInfo?.messageId }.random()
+                timerNotificationInfo = notificationInfo
+                notificationInfo
             }
 
             UninstallReminder -> {
@@ -183,7 +204,10 @@ object NotificationCenter {
             }
 
             UserPresenceReminder -> {
-                cleanInfos.filter { it.reminder == UserPresenceReminder }.random()
+                val notificationInfo = cleanInfos.filter { it.reminder == UserPresenceReminder }
+                    .filter { it.notificationId != unlockNotificationInfo?.notificationId && it.messageId != unlockNotificationInfo?.messageId }.random()
+                unlockNotificationInfo = notificationInfo
+                notificationInfo
             }
         }
         return infoItem
