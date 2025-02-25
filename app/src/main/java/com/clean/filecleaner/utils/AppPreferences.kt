@@ -85,4 +85,37 @@ object AppPreferences {
     }
 
 
+
+    fun getWindowShowCounts(baseReminder: BaseReminder): Int {
+        // 获取上次显示时间
+        val lastShowTime = getWindowLashShow(baseReminder)
+        // 如果是今天，返回显示次数，否则返回 0
+        return if (TimeUtils.isToday(lastShowTime)) {
+            prefs.getInt("${baseReminder.reminderName}_reminder_amounts_window", 0)
+        } else {
+            0
+        }
+    }
+
+    fun getWindowLashShow(baseReminder: BaseReminder): Long {
+        // 返回最后显示时间
+        return prefs.getLong("${baseReminder.reminderName}_reminder_time_window", 0L)
+    }
+
+    fun updateNWindowShowCounts(baseReminder: BaseReminder) {
+        val key = "${baseReminder.reminderName}_reminder_amounts_window"
+        val lastShowTime = getNotificationLashShow(baseReminder)
+        val newCount = if (TimeUtils.isToday(lastShowTime)) {
+            prefs.getInt(key, 0) + 1
+        } else {
+            1
+        }
+        prefs.edit().putInt(key, newCount).apply()
+    }
+
+    fun updateWindowLashShow(baseReminder: BaseReminder) {
+        prefs.edit().putLong("${baseReminder.reminderName}_reminder_time_window", System.currentTimeMillis()).apply()
+    }
+
+
 }

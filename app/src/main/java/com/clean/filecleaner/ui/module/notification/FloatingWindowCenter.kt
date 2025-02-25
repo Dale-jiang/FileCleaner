@@ -8,13 +8,14 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.ui.module.SplashActivity
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid8OrAbove
 
-class FloatingWindowUtil(private val context: Context) {
+class FloatingWindowCenter(private val context: Context) {
 
     private lateinit var windowManager: WindowManager
     private var floatingView: View? = null
@@ -24,8 +25,9 @@ class FloatingWindowUtil(private val context: Context) {
     private var buttonTextView: TextView? = null
 
     fun showFloatingWindow(notificationInfo: NotificationInfo) {
-
+        LogUtils.e("----------000----->>>>")
         if (floatingView == null) {
+            LogUtils.e("----------111----->>>>")
             windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             floatingView = LayoutInflater.from(context).inflate(R.layout.layout_floating_window, null)
 
@@ -39,14 +41,17 @@ class FloatingWindowUtil(private val context: Context) {
                 x = 0
                 y = SizeUtils.dp2px(25f)
             }
-            windowManager.addView(floatingView, params)
 
+            LogUtils.e("---------222------>>>>${floatingView}")
+            windowManager.addView(floatingView, params)
 
             closeButton = floatingView?.findViewById(R.id.close)
             contentTextView = floatingView?.findViewById(R.id.message)
             buttonTextView = floatingView?.findViewById(R.id.btn)
             mImage = floatingView?.findViewById(R.id.image)
         }
+
+        LogUtils.e("----------333----->>>>")
 
         contentTextView?.text = context.getString(notificationInfo.messageId)
         buttonTextView?.text = context.getString(notificationInfo.btnStrId)

@@ -13,6 +13,7 @@ import com.clean.filecleaner.R
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.isDarkMode
 import com.clean.filecleaner.ext.isGrantedNotification
+import com.clean.filecleaner.ext.isOverlayPermissionGranted
 import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.loadAd
@@ -67,8 +68,6 @@ object NotificationCenter {
         )
     }
 
-    val floatingWindowUtil by lazy { FloatingWindowUtil(app) }
-
     var noticeConfig: NotificationConfig? = null
     private const val TAG = "NotificationCenter"
     private const val NOTIFICATION_CHANNEL = "SYSTEM_IMPORTANT_MESSAGE"
@@ -76,7 +75,7 @@ object NotificationCenter {
     private var timerNotificationInfo: NotificationInfo? = null
     private var unlockNotificationInfo: NotificationInfo? = null
 
-    fun canShow(baseReminder: BaseReminder): Boolean {
+    private fun canShow(baseReminder: BaseReminder): Boolean {
 
         if (AppLifeHelper.isAppForeground()) {
             DataReportingUtils.postCustomEvent("FGOn")
@@ -155,11 +154,15 @@ object NotificationCenter {
 
 
     fun displayNotification(baseReminder: BaseReminder) {
-        if (canShow(baseReminder).not()) return
-        postNoticeInfo(baseReminder)
-        NotificationService.uiScope.launch { adManagerState.fcLaunchState.loadAd() }
-        val infoItem = getNoticeInfo(baseReminder)
-        showNotification(baseReminder, infoItem)
+        if (app.isOverlayPermissionGranted()) {
+            FloatingWindowController.displayFloatingWindow(baseReminder)
+        } else {
+            if (canShow(baseReminder).not()) return
+            postNoticeInfo(baseReminder)
+            NotificationService.uiScope.launch { adManagerState.fcLaunchState.loadAd() }
+            val infoItem = getNoticeInfo(baseReminder)
+            showNotification(baseReminder, infoItem)
+        }
     }
 
     private fun postNoticeInfo(baseReminder: BaseReminder) {

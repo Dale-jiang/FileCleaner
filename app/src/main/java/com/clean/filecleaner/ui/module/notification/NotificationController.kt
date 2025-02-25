@@ -58,7 +58,7 @@ class NotificationService {
     }
 
     private fun beginBackgroundTasks() {
-        startTickerFlow(bgScope, 70_000L, 120_000L, onTick = {
+        startTickerFlow(bgScope, 50_000L, 60_000L, onTick = {
             DataReportingUtils.postCustomEvent("PopDetect")
             NotificationCenter.displayNotification(TaskReminder)
         })

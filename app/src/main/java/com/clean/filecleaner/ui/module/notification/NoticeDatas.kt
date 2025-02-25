@@ -86,3 +86,31 @@ data class NotificationInfo(
     val notificationId: Int,
     val temp: String = ""
 ) : Parcelable
+
+
+@Parcelize
+@Keep
+data class FloatingWindowConfig(
+    @SerializedName("fcwindow_on")
+    val isOpen: Int,
+
+    @SerializedName("fcwindowt")
+    val timeInterval: Int,
+    @SerializedName("fcwindowt_limit")
+    val timeLimit: Int,
+
+    @SerializedName("fcwindowu")
+    val unlockInterval: Int,
+    @SerializedName("fcwindowu_limit")
+    val unlockLimit: Int,
+
+    @SerializedName("fcwindowunins")
+    val uninstallInterval: Int,
+    @SerializedName("fcwindowuni_limit")
+    val uninstallLimit: Int,
+
+    @SerializedName("fcwindowadd")
+    val installInterval: Int,
+    @SerializedName("fcwindowadd_limit")
+    val installLimit: Int,
+) : Parcelable

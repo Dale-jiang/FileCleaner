@@ -10,6 +10,8 @@ import com.clean.filecleaner.ui.ad.local_ad_json
 import com.clean.filecleaner.ui.ad.userCloConfig
 import com.clean.filecleaner.ui.ad.userRefConfig
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter
+import com.clean.filecleaner.ui.module.notification.FloatingWindowConfig
+import com.clean.filecleaner.ui.module.notification.FloatingWindowController
 import com.clean.filecleaner.ui.module.notification.NotificationCenter
 import com.clean.filecleaner.ui.module.notification.NotificationConfig
 import com.google.firebase.Firebase
@@ -112,6 +114,24 @@ fun Firebase.initRemoteConfig() {
     }
 
 
+    fun getFloatingWindowConfig() {
+        runCatching {
+            val json = mRemoteConfig["fc_window_pop"].asString()
+            if (json.isNotEmpty()) {
+                FloatingWindowController.windowConfig = Gson().fromJson(json, FloatingWindowConfig::class.java)
+            } else {
+                FloatingWindowController.windowConfig =
+                    FloatingWindowConfig(1, 30, 15, 5, 15, 30, 5, 30, 5)
+            }
+        }.onFailure {
+            FloatingWindowController.windowConfig =
+                FloatingWindowConfig(1, 30, 15, 0, 55, 30, 5, 30, 5)
+
+        }
+
+    }
+
+
     fun fetchTopPercentConf() = runCatching {
         val json = remoteConfig["FIleCleaner_toppercent"].asString()
         if (json.isBlank()) return@runCatching
@@ -135,12 +155,14 @@ fun Firebase.initRemoteConfig() {
         getNoticeConfig()
         fetchTopPercentConf()
         getFcOngoing()
+        getFloatingWindowConfig()
     }
 
 
     if (BuildConfig.DEBUG) {
         adManagerState.initData()
         getNoticeConfig()
+        getFloatingWindowConfig()
     } else {
         getAllConfigs()
         mRemoteConfig.fetchAndActivate().addOnSuccessListener { getAllConfigs() }
