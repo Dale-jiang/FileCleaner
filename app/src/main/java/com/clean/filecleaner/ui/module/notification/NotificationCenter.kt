@@ -28,7 +28,7 @@ import kotlin.random.Random
 
 object NotificationCenter {
 
-    private val cleanInfos by lazy {
+    val cleanInfos by lazy {
         listOf(
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_1, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_2, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12001),
@@ -67,6 +67,7 @@ object NotificationCenter {
         )
     }
 
+    val floatingWindowUtil by lazy { FloatingWindowUtil(app) }
 
     var noticeConfig: NotificationConfig? = null
     private const val TAG = "NotificationCenter"

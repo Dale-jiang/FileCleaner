@@ -37,6 +37,8 @@ import com.clean.filecleaner.ui.module.notification.UserPresenceReminder
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppPreferences.floatingPermissionPageTime
 import com.clean.filecleaner.utils.AppPreferences.hasRequestUMP
+import com.clean.filecleaner.utils.Tools.isBlackUser
+import com.clean.filecleaner.utils.Tools.isBuyUser
 import com.clean.filecleaner.utils.UMPUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -139,8 +141,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
             else -> {
 
-               // if (!TimeUtils.isToday(floatingPermissionPageTime) && !isOverlayPermissionGranted()) {
-                if (true) {
+                if (!isBlackUser() && isBuyUser() && !TimeUtils.isToday(floatingPermissionPageTime) && !isOverlayPermissionGranted()) {
                     floatingPermissionPageTime = System.currentTimeMillis()
                     startActivity(Intent(this, FloatingWindowPermissionActivity::class.java))
                 } else {
