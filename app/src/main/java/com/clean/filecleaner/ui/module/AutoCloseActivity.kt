@@ -83,13 +83,15 @@ class AutoCloseActivity : BaseActivity<ActivityAutoCloseBinding>() {
                 data = Uri.parse("package:$packageName")
             } else if (action == Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION) {
                 data = Uri.parse("package:$packageName")
+            } else if (action == Settings.ACTION_MANAGE_OVERLAY_PERMISSION) {
+                data = Uri.parse("package:$packageName")
             }
         }
 
         runCatching {
             startActivity(intent)
         }.onFailure {
-            if (action == Settings.ACTION_USAGE_ACCESS_SETTINGS) {
+            if (action == Settings.ACTION_USAGE_ACCESS_SETTINGS || action == Settings.ACTION_MANAGE_OVERLAY_PERMISSION) {
                 startActivity(Intent(action).apply {
                     flags = Intent.FLAG_ACTIVITY_NO_HISTORY
                 })
