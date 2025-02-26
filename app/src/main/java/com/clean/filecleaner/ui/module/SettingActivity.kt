@@ -40,6 +40,12 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
                 })
             }
 
+            trustLookPolicy.setOnClickListener {
+                startActivity(Intent(this@SettingActivity, WebActivity::class.java).apply {
+                    putExtra(WEB_URL, "https://www.trustlook.com/privacy-policy")
+                })
+            }
+
             noticeSet.setOnClickListener {
                 startActivity(Intent(this@SettingActivity, NoticeSettingActivity::class.java))
             }
