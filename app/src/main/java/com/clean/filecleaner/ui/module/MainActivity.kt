@@ -116,6 +116,12 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
                 startActivity(Intent(this@MainActivity, SettingActivity::class.java))
             }
 
+            antivirus.setOnClickListener {
+
+
+
+            }
+
             appManager.setOnClickListener {
                 canShowBackAd = true
                 startActivity(Intent(this@MainActivity, ApplicationManagementActivity::class.java))

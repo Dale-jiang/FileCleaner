@@ -160,13 +160,13 @@
                     android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/app_manager"
+                        android:id="@+id/antivirus"
                         android:layout_width="100dp"
                         android:layout_height="128dp"
                         android:background="@drawable/shape_btn_function_bg_28"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/duplicate_files"
+                        app:layout_constraintEnd_toStartOf="@+id/recent_app"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -175,7 +175,7 @@
                             android:layout_height="52dp"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="25dp"
-                            app:srcCompat="@mipmap/icon_app_manager" />
+                            app:srcCompat="@mipmap/icon_antivirus" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
@@ -184,82 +184,12 @@
                             android:layout_marginHorizontal="5dp"
                             android:layout_marginTop="10dp"
                             android:gravity="center_horizontal"
-                            android:text="@string/app_manager"
+                            android:text="@string/antivirus"
                             android:textColor="#FF292D35"
                             android:textSize="13sp"
                             android:theme="@style/SansitaBold" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/duplicate_files"
-                        android:layout_width="100dp"
-                        android:layout_height="128dp"
-                        android:background="@drawable/shape_btn_function_bg_28"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/screenshot"
-                        app:layout_constraintStart_toEndOf="@+id/app_manager"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="52dp"
-                            android:layout_height="52dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="25dp"
-                            android:gravity="center_horizontal"
-                            app:srcCompat="@mipmap/icon_duplicate_files" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginHorizontal="5dp"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/duplicate_files"
-                            android:textColor="#FF292D35"
-                            android:textSize="13sp"
-                            android:theme="@style/SansitaBold" />
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/screenshot"
-                        android:layout_width="100dp"
-                        android:layout_height="128dp"
-                        android:background="@drawable/shape_btn_function_bg_28"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/duplicate_files"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="52dp"
-                            android:layout_height="52dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="25dp"
-                            android:gravity="center_horizontal"
-                            app:srcCompat="@mipmap/icon_screenshot" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginHorizontal="5dp"
-                            android:layout_marginTop="10dp"
-                            android:text="@string/screenshot"
-                            android:textColor="#FF292D35"
-                            android:textSize="13sp"
-                            android:theme="@style/SansitaBold" />
-
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/recent_app"
@@ -268,8 +198,8 @@
                         android:background="@drawable/shape_btn_function_bg_28"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/big_file"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/app_manager"
+                        app:layout_constraintStart_toEndOf="@+id/antivirus"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.appcompat.widget.AppCompatImageView
@@ -294,6 +224,78 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/app_manager"
+                        android:layout_width="100dp"
+                        android:layout_height="128dp"
+                        android:background="@drawable/shape_btn_function_bg_28"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/recent_app"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="25dp"
+                            app:srcCompat="@mipmap/icon_app_manager" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_horizontal"
+                            android:text="@string/app_manager"
+                            android:textColor="#FF292D35"
+                            android:textSize="13sp"
+                            android:theme="@style/SansitaBold" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/duplicate_files"
+                        android:layout_width="100dp"
+                        android:layout_height="128dp"
+                        android:background="@drawable/shape_btn_function_bg_28"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/big_file"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="25dp"
+                            android:gravity="center_horizontal"
+                            app:srcCompat="@mipmap/icon_duplicate_files" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/duplicate_files"
+                            android:textColor="#FF292D35"
+                            android:textSize="13sp"
+                            android:theme="@style/SansitaBold" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:id="@+id/big_file"
                         android:layout_width="100dp"
                         android:layout_height="128dp"
@@ -301,7 +303,7 @@
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/empty_folder"
-                        app:layout_constraintStart_toEndOf="@+id/recent_app"
+                        app:layout_constraintStart_toEndOf="@+id/duplicate_files"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.appcompat.widget.AppCompatImageView
@@ -357,6 +359,111 @@
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/screenshot"
+                        android:layout_width="100dp"
+                        android:layout_height="128dp"
+                        android:background="@drawable/shape_btn_function_bg_28"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/temp_1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="25dp"
+                            android:gravity="center_horizontal"
+                            app:srcCompat="@mipmap/icon_screenshot" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/screenshot"
+                            android:textColor="#FF292D35"
+                            android:textSize="13sp"
+                            android:theme="@style/SansitaBold" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/temp_1"
+                        android:layout_width="100dp"
+                        android:layout_height="128dp"
+                        android:background="@drawable/shape_btn_function_bg_28"
+                        android:orientation="vertical"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/temp_2"
+                        app:layout_constraintStart_toEndOf="@+id/screenshot"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="25dp"
+                            android:gravity="center_horizontal"
+                            app:srcCompat="@mipmap/icon_big_file" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/big_file"
+                            android:textColor="#FF292D35"
+                            android:textSize="13sp"
+                            android:theme="@style/SansitaBold" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/temp_2"
+                        android:layout_width="100dp"
+                        android:layout_height="128dp"
+                        android:background="@drawable/shape_btn_function_bg_28"
+                        android:orientation="vertical"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/temp_1"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="25dp"
+                            android:gravity="center_horizontal"
+                            app:srcCompat="@mipmap/icon_empty_folders" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/empty_folder"
+                            android:textColor="#FF292D35"
+                            android:textSize="13sp"
+                            android:theme="@style/SansitaBold" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
