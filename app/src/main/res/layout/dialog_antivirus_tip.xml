@@ -40,7 +40,7 @@
         android:text="@string/antivirus_tip"
         android:textColor="#4C4C4C"
         android:lineSpacingExtra="3dp"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:theme="@style/Sansita"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
