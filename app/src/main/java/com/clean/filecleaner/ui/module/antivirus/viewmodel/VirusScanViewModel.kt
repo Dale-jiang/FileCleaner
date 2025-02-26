@@ -31,72 +31,65 @@ class VirusScanViewModel : ViewModel() {
 
     private val virusScanClient by lazy { CloudScanClient.Builder(app).setRegion(Region.INTL).setConnectionTimeout(30000).setSocketTimeout(30000).build() }
 
-    private val scanListener by lazy {
-        object : CloudScanListener() {
-            override fun onScanStarted() = Unit
+    private val scanListener = object : CloudScanListener() {
+        override fun onScanStarted() = Unit
 
-            override fun onScanProgress(curr: Int, total: Int, appInfo: AppInfo?) {
-                if (null == appInfo) return
-                scanTimeoutJob?.cancel()
-                scanPathLiveData.postValue(appInfo.apkPath)
-                if (!appInfo.isSystemApp && appInfo.packageName.isNotBlank() && AppUtils.isAppInstalled(appInfo.packageName) && installedPathPrefixes.any {
-                        appInfo.apkPath.startsWith(it)
-                    }) {
-                    if (appInfo.score > 5) {
-                        allVirusList.add(
-                            VirusInfo(
-                                label = appInfo.appName,
-                                path = appInfo.apkPath,
-                                score = appInfo.score,
-                                packageName = appInfo.packageName,
-                                drawable = app.getApplicationIconDrawable(appInfo.packageName),
-                                virusType = appInfo.virusName ?: "",
-                                isApp = true
-                            )
-                        )
-                        scanVirusNumChangedLiveData.postValue(true)
-                    }
-                } else {
-                    if (appInfo.score > 5) {
-                        allVirusList.add(
-                            VirusInfo(
-                                label = File(appInfo.apkPath).name,
-                                path = appInfo.apkPath,
-                                score = appInfo.score,
-                                virusType = appInfo.virusName ?: "",
-                                isApp = false
-                            )
-                        )
-                        scanVirusNumChangedLiveData.postValue(true)
-                    }
-                }
-            }
-
-            override fun onScanError(errCode: Int, errMsg: String?) {
-//                PostUtils.postCustomEvent("antivirus_scan_error", hashMapOf("code" to errCode))
-                scanFailedLiveData.postValue(errCode)
-            }
-
-            override fun onScanCanceled() = Unit
-
-            override fun onScanInterrupt() {
-                scanFailedLiveData.postValue(1111)
-            }
-
-            override fun onScanFinished(result: MutableList<AppInfo>?) {
-                if (scanFailedLiveData.value == null || scanFailedLiveData.value != 9) {
-                    scanCompletedLiveData.postValue(true)
+        override fun onScanProgress(curr: Int, total: Int, appInfo: AppInfo?) {
+            appInfo?.let {
+                scanPathLiveData.postValue(it.apkPath)
+                if (it.score > 5) {
+                    handleVirusFound(it)
                 }
             }
         }
+
+        override fun onScanError(errCode: Int, errMsg: String?) {
+            scanFailedLiveData.postValue(errCode)
+        }
+
+        override fun onScanInterrupt() {
+            scanFailedLiveData.postValue(2222)
+        }
+
+        override fun onScanFinished(result: MutableList<AppInfo>?) {
+            if (scanFailedLiveData.value != 9) {
+                scanCompletedLiveData.postValue(true)
+            }
+        }
+
+        override fun onScanCanceled() = Unit
     }
 
 
-    fun startScanVirus() = runCatching {
-        allVirusList.clear()
-        virusScanClient?.startComprehensiveScan(300, scanListener)
-        startTimeOutCount()
+    private fun handleVirusFound(appInfo: AppInfo) {
+        val virusInfo = if (isAppVirus(appInfo)) {
+            VirusInfo(
+                label = appInfo.appName,
+                path = appInfo.apkPath,
+                score = appInfo.score,
+                packageName = appInfo.packageName,
+                drawable = app.getApplicationIconDrawable(appInfo.packageName),
+                virusType = appInfo.virusName ?: "",
+                isApp = true
+            )
+        } else {
+            VirusInfo(
+                label = File(appInfo.apkPath).name,
+                path = appInfo.apkPath,
+                score = appInfo.score,
+                virusType = appInfo.virusName ?: "",
+                isApp = false
+            )
+        }
+        allVirusList.add(virusInfo)
+        scanVirusNumChangedLiveData.postValue(true)
     }
+
+    private fun isAppVirus(appInfo: AppInfo): Boolean {
+        return !appInfo.isSystemApp && appInfo.packageName.isNotBlank() && AppUtils.isAppInstalled(appInfo.packageName) &&
+                installedPathPrefixes.any { appInfo.apkPath.startsWith(it) }
+    }
+
 
     private fun startTimeOutCount() = runCatching {
         scanTimeoutJob?.cancel()
@@ -109,6 +102,12 @@ class VirusScanViewModel : ViewModel() {
                 }
             }
         }
+    }
+
+    fun startScanVirus() = runCatching {
+        allVirusList.clear()
+        virusScanClient?.startComprehensiveScan(300, scanListener)
+        startTimeOutCount()
     }
 
 }

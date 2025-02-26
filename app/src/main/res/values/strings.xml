@@ -3,6 +3,7 @@
     <string name="fb_id">wwww</string>
     <string name="fb_token">wwwww</string>
     <string name="admob_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="trust_look_key">902f837a9821f8dfa2348d2fdafb7a20745286e015a33ad42b6819e8</string>
 
     <string name="app_name">File Cleaner</string>
     <string name="splash_loading_tips">Loading, thank you for your patience.</string>
@@ -152,6 +153,9 @@
     <string name="antivirus_tip"><![CDATA[Trustlook\'s mobile security solution uses an SDK to collect data on installed apps—such as package identifiers, digital signatures, and hash values—for malware analysis. This app metadata is securely sent to Trustlook\'s cloud-based threat detection platform for thorough security verification. For more information on data handling practices, refer to Trustlook\'s official privacy policy:<a href=\'https://www.trustlook.com/privacy-policy\'>https://www.trustlook.com/privacy-policy</a>]]></string>
     <string name="virus">Virus</string>
     <string name="malware">Malware</string>
+    <string name="scan_error">Scan Error</string>
+    <string name="please_try_again">Please try again!</string>
+    <string name="finished">Finished</string>
 
 
 </resources>

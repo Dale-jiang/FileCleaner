@@ -12,7 +12,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.clean.filecleaner"
+        applicationId "com.example.aceclean"
         minSdk 24
         //noinspection OldTargetApi
         targetSdk 34
