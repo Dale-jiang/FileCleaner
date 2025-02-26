@@ -30,7 +30,7 @@ class AntivirusTipDialog(val ok: Callback) : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        isCancelable = false
+        isCancelable = true
 
         val spanned = Html.fromHtml(getString(R.string.antivirus_tip), Html.FROM_HTML_MODE_COMPACT)
         val spannable = SpannableString(spanned)
