@@ -31,6 +31,7 @@ import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.ad.showNativeAd
 import com.clean.filecleaner.ui.ad.waitAdLoading
 import com.clean.filecleaner.ui.base.StoragePermissionBaseActivity
+import com.clean.filecleaner.ui.module.antivirus.VirusScanActivity
 import com.clean.filecleaner.ui.module.clean.app.ApplicationManagementActivity
 import com.clean.filecleaner.ui.module.clean.bigfiles.BigFilesCleanActivity
 import com.clean.filecleaner.ui.module.clean.duplicate.DuplicateFileCleanActivity
@@ -119,7 +120,10 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
             antivirus.setOnClickListener {
 
-                AntivirusTipDialog{}.show(supportFragmentManager,"AntivirusTipDialog")
+                AntivirusTipDialog {
+                    canShowBackAd = true
+                    startActivity(Intent(this@MainActivity, VirusScanActivity::class.java))
+                }.show(supportFragmentManager, "AntivirusTipDialog")
 
             }
 

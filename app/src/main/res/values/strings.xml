@@ -150,6 +150,8 @@
     <string name="data_collection_notice">Data Collection Notice</string>
     <string name="agree">Agree</string>
     <string name="antivirus_tip"><![CDATA[Trustlook\'s mobile security solution uses an SDK to collect data on installed apps—such as package identifiers, digital signatures, and hash values—for malware analysis. This app metadata is securely sent to Trustlook\'s cloud-based threat detection platform for thorough security verification. For more information on data handling practices, refer to Trustlook\'s official privacy policy:<a href=\'https://www.trustlook.com/privacy-policy\'>https://www.trustlook.com/privacy-policy</a>]]></string>
+    <string name="virus">Virus</string>
+    <string name="malware">Malware</string>
 
 
 </resources>

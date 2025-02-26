@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_loading"
+        android:layout_width="198dp"
+        android:layout_height="198dp"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35"
+        app:srcCompat="@mipmap/icon_clean_loading" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_loading"
+        app:layout_constraintEnd_toEndOf="@+id/iv_loading"
+        app:layout_constraintStart_toStartOf="@+id/iv_loading"
+        app:layout_constraintTop_toTopOf="@+id/iv_loading"
+        app:srcCompat="@drawable/icon_scan_virus" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="21dp"
+        android:textColor="#FF4D5962"
+        android:textSize="20sp"
+        android:theme="@style/SansitaBold"
+        app:layout_constraintEnd_toEndOf="@+id/iv_loading"
+        app:layout_constraintStart_toStartOf="@+id/iv_loading"
+        app:layout_constraintTop_toBottomOf="@+id/iv_loading"
+        tools:text="Scanning..." />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/line"
+        app:layout_constraintEnd_toStartOf="@+id/line"
+        app:layout_constraintTop_toTopOf="@+id/line">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="100"
+            app:indicatorColor="#2BDE8C"
+            app:indicatorDirectionCircular="clockwise"
+            app:indicatorSize="35dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackCornerRadius="3dp"
+            app:trackThickness="3dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/virus_num"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:autoSizeMaxTextSize="15sp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="0"
+            android:textColor="@color/color_21c366"
+            android:textSize="15sp"
+            android:theme="@style/SansitaBold"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_1"
+            app:layout_constraintEnd_toEndOf="@+id/progress_1"
+            app:layout_constraintStart_toStartOf="@+id/progress_1"
+            app:layout_constraintTop_toTopOf="@+id/progress_1"
+            tools:ignore="HardcodedText,UnusedAttribute" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/virus"
+            android:textColor="#02320D"
+            android:textSize="12sp"
+            android:theme="@style/Sansita"
+            app:layout_constraintEnd_toEndOf="@+id/progress_1"
+            app:layout_constraintStart_toStartOf="@+id/progress_1"
+            app:layout_constraintTop_toBottomOf="@+id/progress_1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="1dp"
+        android:layout_height="84dp"
+        android:background="#EFEFEF"
+        app:layout_constraintBottom_toTopOf="@+id/trust_look_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_loading"
+        app:layout_constraintVertical_bias="0.65" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/line"
+        app:layout_constraintStart_toEndOf="@+id/line"
+        app:layout_constraintTop_toTopOf="@+id/line">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="100"
+            app:indicatorColor="#2BDE8C"
+            app:indicatorDirectionCircular="clockwise"
+            app:indicatorSize="35dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:trackCornerRadius="3dp"
+            app:trackThickness="3dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/malware_num"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:autoSizeMaxTextSize="15sp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="0"
+            android:textColor="@color/color_21c366"
+            android:textSize="15sp"
+            android:theme="@style/SansitaBold"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_2"
+            app:layout_constraintEnd_toEndOf="@+id/progress_2"
+            app:layout_constraintStart_toStartOf="@+id/progress_2"
+            app:layout_constraintTop_toTopOf="@+id/progress_2"
+            tools:ignore="HardcodedText,UnusedAttribute" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/malware"
+            android:textColor="#02320D"
+            android:textSize="12sp"
+            android:theme="@style/Sansita"
+            app:layout_constraintEnd_toEndOf="@+id/progress_2"
+            app:layout_constraintStart_toStartOf="@+id/progress_2"
+            app:layout_constraintTop_toBottomOf="@+id/progress_2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/trust_look_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="37dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.7">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="Powered by"
+            android:textColor="#585858"
+            android:textSize="10sp"
+            android:theme="@style/Sansita"
+            tools:ignore="HardcodedText,SmallSp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:srcCompat="@drawable/icon_trust_look_logo" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

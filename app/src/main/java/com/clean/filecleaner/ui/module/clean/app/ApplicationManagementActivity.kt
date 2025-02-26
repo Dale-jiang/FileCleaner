@@ -146,6 +146,7 @@ class ApplicationManagementActivity : BaseActivity<ActivityApplicationManagement
 
             withContext(Dispatchers.Main) {
                 fullScreenAdShow {
+                    stopLoadingAnim()
                     binding.loadingView.isVisible = false
                     setUpAdapter(finalList.toMutableList())
                     nativeAdShow()

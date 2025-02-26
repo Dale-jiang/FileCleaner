@@ -26,7 +26,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <queries>
         <!-- ========= Packages ========== -->
@@ -281,6 +281,11 @@
 
         <activity
             android:name=".ui.module.FloatingWindowPermissionActivity"
+            android:configChanges="density|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.module.antivirus.VirusScanActivity"
             android:configChanges="density|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 

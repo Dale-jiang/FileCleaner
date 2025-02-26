@@ -2,6 +2,7 @@ package com.clean.filecleaner.ui.module.notification
 
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
+import com.clean.filecleaner.ext.canInteractive
 import com.clean.filecleaner.ext.isOverlayPermissionGranted
 import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.ad.adManagerState
@@ -79,7 +80,7 @@ object FloatingWindowController {
 
     private fun canShow(baseReminder: BaseReminder): Boolean {
 
-        if (AppLifeHelper.isAppForeground()) {
+        if (AppLifeHelper.isAppForeground() || !app.canInteractive()) {
             return false
         }
 
