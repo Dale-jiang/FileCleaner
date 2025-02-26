@@ -155,19 +155,23 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     private fun closeNotice() {
 
         if (barFunction != null || mNoticeInfo != null) {
-            DataReportingUtils.postCustomEvent("PopAllClick")
+            if ("0" != mNoticeInfo?.temp) {
+                DataReportingUtils.postCustomEvent("PopAllClick")
+            }
         }
 
         mNoticeInfo?.apply {
-            when (this.reminder) {
-                InstallReminder -> DataReportingUtils.postCustomEvent("PopAddClick")
-                TaskReminder -> DataReportingUtils.postCustomEvent("PopTimerClick")
-                UninstallReminder -> DataReportingUtils.postCustomEvent("PopUniqueClick")
-                UserPresenceReminder -> DataReportingUtils.postCustomEvent("PopUnlockClick")
-            }
+            if ("0" != this.temp) {
+                when (this.reminder) {
+                    InstallReminder -> DataReportingUtils.postCustomEvent("PopAddClick")
+                    TaskReminder -> DataReportingUtils.postCustomEvent("PopTimerClick")
+                    UninstallReminder -> DataReportingUtils.postCustomEvent("PopUniqueClick")
+                    UserPresenceReminder -> DataReportingUtils.postCustomEvent("PopUnlockClick")
+                }
 
-            if (app.isDarkMode()) {
-                DataReportingUtils.postCustomEvent("PopDarkClick")
+                if (app.isDarkMode()) {
+                    DataReportingUtils.postCustomEvent("PopDarkClick")
+                }
             }
         }
 

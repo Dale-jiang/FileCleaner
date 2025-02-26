@@ -84,7 +84,7 @@ data class NotificationInfo(
     val function: BaseBarFunction,
     val reminder: BaseReminder,
     val notificationId: Int,
-    val temp: String = ""
+    var temp: String = ""
 ) : Parcelable
 
 

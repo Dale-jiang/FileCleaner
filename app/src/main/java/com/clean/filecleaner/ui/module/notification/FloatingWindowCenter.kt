@@ -113,6 +113,7 @@ class FloatingWindowCenter(private val context: Context) {
     private fun launchOrAdjustActivity(notificationInfo: NotificationInfo) {
         runCatching {
             val intent = Intent(context, SplashActivity::class.java).apply {
+                notificationInfo.temp = "0"
                 putExtra(NOTICE_INFO_ITEM, notificationInfo)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
