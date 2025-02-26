@@ -3,6 +3,7 @@ package com.clean.filecleaner.ui.module.notification
 import com.blankj.utilcode.util.LogUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.isOverlayPermissionGranted
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.ad.adManagerState
 import com.clean.filecleaner.ui.ad.loadAd
 import com.clean.filecleaner.ui.module.notification.NotificationCenter.cleanInfos
@@ -19,12 +20,35 @@ object FloatingWindowController {
 
     fun displayFloatingWindow(baseReminder: BaseReminder) {
         if (canShow(baseReminder).not()) return
+        postNoticeInfo(baseReminder)
         val infoItem = getNoticeInfo(baseReminder)
         NotificationService.uiScope.launch {
             adManagerState.fcLaunchState.loadAd()
             floatingWindowCenter.showFloatingWindow(infoItem)
         }
     }
+
+    private fun postNoticeInfo(baseReminder: BaseReminder) {
+        DataReportingUtils.postCustomEvent("winpop_trigger")
+        when (baseReminder) {
+            InstallReminder -> {
+                DataReportingUtils.postCustomEvent("winpopAddTrig")
+            }
+
+            TaskReminder -> {
+                DataReportingUtils.postCustomEvent("winpopTimerTrig")
+            }
+
+            UninstallReminder -> {
+                DataReportingUtils.postCustomEvent("winpopUniqueTrig")
+            }
+
+            UserPresenceReminder -> {
+                DataReportingUtils.postCustomEvent("winpopUnlockTrig")
+            }
+        }
+    }
+
 
     private fun getNoticeInfo(baseReminder: BaseReminder): NotificationInfo {
         val infoItem = when (baseReminder) {

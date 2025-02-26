@@ -8,11 +8,12 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.blankj.utilcode.util.SizeUtils
 import com.clean.filecleaner.R
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.module.SplashActivity
+import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.NOTICE_INFO_ITEM
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid8OrAbove
 
 class FloatingWindowCenter(private val context: Context) {
@@ -25,9 +26,7 @@ class FloatingWindowCenter(private val context: Context) {
     private var buttonTextView: TextView? = null
 
     fun showFloatingWindow(notificationInfo: NotificationInfo) {
-        LogUtils.e("----------000----->>>>")
         if (floatingView == null) {
-            LogUtils.e("----------111----->>>>")
             windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             floatingView = LayoutInflater.from(context).inflate(R.layout.layout_floating_window, null)
 
@@ -42,20 +41,38 @@ class FloatingWindowCenter(private val context: Context) {
                 y = SizeUtils.dp2px(25f)
             }
 
-            LogUtils.e("---------222------>>>>${floatingView}")
             windowManager.addView(floatingView, params)
 
             closeButton = floatingView?.findViewById(R.id.close)
             contentTextView = floatingView?.findViewById(R.id.message)
             buttonTextView = floatingView?.findViewById(R.id.btn)
             mImage = floatingView?.findViewById(R.id.image)
-        }
 
-        LogUtils.e("----------333----->>>>")
+        }
 
         contentTextView?.text = context.getString(notificationInfo.messageId)
         buttonTextView?.text = context.getString(notificationInfo.btnStrId)
         mImage?.setImageResource(notificationInfo.icon)
+
+        DataReportingUtils.postCustomEvent("winpop_show")
+
+        when (notificationInfo.reminder) {
+            InstallReminder -> {
+                DataReportingUtils.postCustomEvent("winpopAddShow")
+            }
+
+            TaskReminder -> {
+                DataReportingUtils.postCustomEvent("winpopTimerShow")
+            }
+
+            UninstallReminder -> {
+                DataReportingUtils.postCustomEvent("winpopUniqueShow")
+            }
+
+            UserPresenceReminder -> {
+                DataReportingUtils.postCustomEvent("winpopUnlockShow")
+            }
+        }
 
 
         closeButton?.setOnClickListener {
@@ -65,16 +82,40 @@ class FloatingWindowCenter(private val context: Context) {
         }
 
         floatingView?.setOnClickListener {
-            launchOrAdjustActivity()
+            postClickInfo(notificationInfo.reminder)
+            launchOrAdjustActivity(notificationInfo)
             hideFloatingWindow()
         }
     }
 
 
-    private fun launchOrAdjustActivity() {
+    private fun postClickInfo(baseReminder: BaseReminder) {
+        DataReportingUtils.postCustomEvent("winpop_click")
+        when (baseReminder) {
+            InstallReminder -> {
+                DataReportingUtils.postCustomEvent("winpopAddClick")
+            }
+
+            TaskReminder -> {
+                DataReportingUtils.postCustomEvent("winpopTimerClick")
+            }
+
+            UninstallReminder -> {
+                DataReportingUtils.postCustomEvent("winpopUniqueClick")
+            }
+
+            UserPresenceReminder -> {
+                DataReportingUtils.postCustomEvent("winpopUnlockClick")
+            }
+        }
+    }
+
+    private fun launchOrAdjustActivity(notificationInfo: NotificationInfo) {
         runCatching {
-            val intent = Intent(context, SplashActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            val intent = Intent(context, SplashActivity::class.java).apply {
+                putExtra(NOTICE_INFO_ITEM, notificationInfo)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
             context.startActivity(intent)
         }
     }
