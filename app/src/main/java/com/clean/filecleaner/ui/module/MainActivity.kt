@@ -40,6 +40,7 @@ import com.clean.filecleaner.ui.module.clean.junk.viewmodel.allJunkDataList
 import com.clean.filecleaner.ui.module.clean.recent.AppRecentInfoActivity
 import com.clean.filecleaner.ui.module.clean.recent.AppRecentInfoPreActivity
 import com.clean.filecleaner.ui.module.clean.screenshot.ScreenshotCleanActivity
+import com.clean.filecleaner.ui.module.dialog.AntivirusTipDialog
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.ui.module.filemanager.allFilesContainerList
 import com.clean.filecleaner.ui.module.filemanager.allMediaList
@@ -118,7 +119,7 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
             antivirus.setOnClickListener {
 
-
+                AntivirusTipDialog{}.show(supportFragmentManager,"AntivirusTipDialog")
 
             }
 
