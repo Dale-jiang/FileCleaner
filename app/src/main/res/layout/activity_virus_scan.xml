@@ -47,6 +47,24 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_loading"
         tools:text="Scanning..." />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_path"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:maxLines="2"
+        android:textColor="#CC4D5962"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:theme="@style/Sansita"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_loading"
+        tools:ignore="HardcodedText"
+        tools:text="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
