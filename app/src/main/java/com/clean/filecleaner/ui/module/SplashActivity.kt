@@ -27,6 +27,7 @@ import com.clean.filecleaner.ui.module.notification.BarNotificationCenter
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.FUNCTION_TYPE
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.NOTICE_INFO_ITEM
 import com.clean.filecleaner.ui.module.notification.BaseBarFunction
+import com.clean.filecleaner.ui.module.notification.FuncAntivirus
 import com.clean.filecleaner.ui.module.notification.FuncClean
 import com.clean.filecleaner.ui.module.notification.FuncScreenShot
 import com.clean.filecleaner.ui.module.notification.InstallReminder
@@ -132,7 +133,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     private fun toNextPage() {
         val function = if (barFunction == null) mNoticeInfo?.function else barFunction
         when (function) {
-            FuncScreenShot, FuncClean -> {
+            FuncScreenShot, FuncClean, FuncAntivirus -> {
                 startActivity(Intent(this, MainActivity::class.java).apply {
                     putExtra(FUNCTION_TYPE, function)
                 })

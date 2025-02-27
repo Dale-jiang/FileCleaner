@@ -52,6 +52,7 @@ import com.clean.filecleaner.ui.module.filemanager.image.ManageImageActivity
 import com.clean.filecleaner.ui.module.filemanager.video.ManageVideoActivity
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.FUNCTION_TYPE
 import com.clean.filecleaner.ui.module.notification.BaseBarFunction
+import com.clean.filecleaner.ui.module.notification.FuncAntivirus
 import com.clean.filecleaner.ui.module.notification.FuncClean
 import com.clean.filecleaner.ui.module.notification.FuncScreenShot
 import com.clean.filecleaner.utils.AndroidVersionUtils
@@ -263,6 +264,23 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
                 requestPermissions {
                     canShowBackAd = true
                     startActivity(Intent(this@MainActivity, JunkSearchActivity::class.java))
+                }
+            }
+
+            FuncAntivirus -> {
+                if (alreadyShowAntivirusDialog) {
+                    requestPermissions {
+                        canShowBackAd = true
+                        startActivity(Intent(this@MainActivity, VirusScanActivity::class.java))
+                    }
+                } else {
+                    AntivirusTipDialog {
+                        requestPermissions {
+                            canShowBackAd = true
+                            alreadyShowAntivirusDialog = true
+                            startActivity(Intent(this@MainActivity, VirusScanActivity::class.java))
+                        }
+                    }.show(supportFragmentManager, "AntivirusTipDialog")
                 }
             }
 

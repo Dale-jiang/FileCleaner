@@ -20,7 +20,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/screenshot"
+        android:id="@+id/antivirus"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -30,7 +30,7 @@
         <ImageView
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:src="@mipmap/ic_bar_notice_screenshot" />
+            android:src="@drawable/ic_bar_notice_antivirus" />
 
     </LinearLayout>
 

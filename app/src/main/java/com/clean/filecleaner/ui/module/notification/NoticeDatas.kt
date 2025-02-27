@@ -29,6 +29,13 @@ data object FuncScreenShot : BaseBarFunction(
 
 @Parcelize
 @Keep
+data object FuncAntivirus : BaseBarFunction(
+    functionNameId = R.string.antivirus,
+    functionIconId = R.drawable.ic_bar_notice_antivirus
+)
+
+@Parcelize
+@Keep
 data class NotificationConfig(
     @SerializedName("fcon")
     val isOpen: Int,

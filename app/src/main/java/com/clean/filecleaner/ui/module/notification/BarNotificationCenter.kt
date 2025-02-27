@@ -93,7 +93,7 @@ object BarNotificationCenter {
 
     private fun RemoteViews.setOnClickPendingIntents() {
         setOnClickPendingIntent(R.id.clean, toSplashPendingIntent(FuncClean))
-        setOnClickPendingIntent(R.id.screenshot, toSplashPendingIntent(FuncScreenShot))
+        setOnClickPendingIntent(R.id.antivirus, toSplashPendingIntent(FuncAntivirus))
     }
 
     private fun toSplashPendingIntent(function: BaseBarFunction): PendingIntent {
