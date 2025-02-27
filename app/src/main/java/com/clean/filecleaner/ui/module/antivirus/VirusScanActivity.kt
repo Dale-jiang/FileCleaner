@@ -96,12 +96,8 @@ class VirusScanActivity : BaseActivity<ActivityVirusScanBinding>() {
                         ToastUtils.showLong("没有---")
                     } else {
 //                        PostUtils.postCustomEvent("antivirus_res_page", hashMapOf("res" to "yes"))
-//                        toActivity<AntivirusScanResultActivity> {
-//                            putExtra(AntivirusScanResultActivity.APP_NUM, viewModel.scannedApps)
-//                            putExtra(AntivirusScanResultActivity.FILE_NUM, viewModel.scannedFiles)
-//                        }
-//                        finish()
-                        ToastUtils.showLong("有-${allVirusList.size}-个")
+                        startActivity(Intent(this@VirusScanActivity, VirusListActivity::class.java))
+                        finish()
                     }
 
                 }
@@ -115,6 +111,9 @@ class VirusScanActivity : BaseActivity<ActivityVirusScanBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
 
         adManagerState.fcResultIntState.loadAd(this@VirusScanActivity)
+        adManagerState.fcResultIntState.loadAd(this@VirusScanActivity)
+        adManagerState.fcResultNatState.loadAd(this@VirusScanActivity)
+
         setListener()
         viewModel.startScanVirus()
 

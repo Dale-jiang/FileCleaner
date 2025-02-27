@@ -289,6 +289,11 @@
             android:configChanges="density|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.module.antivirus.VirusListActivity"
+            android:configChanges="density|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/fb_id" />

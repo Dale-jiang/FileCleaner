@@ -155,7 +155,9 @@
     <string name="malware">Malware</string>
     <string name="scan_error">Scan Error</string>
     <string name="please_try_again">Please try again!</string>
-    <string name="finished">Finished</string>
-
+    <string name="finished">Scan Complete</string>
+    <string name="threats_found">%1$d Threats Found</string>
+    <string name="sure_to_delete">Sure to delete?</string>
+    <string name="delete_failed">Delete Failed!</string>
 
 </resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/layout_toolbar" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="76dp"
+        app:srcCompat="@drawable/icon_virus_found"
+        android:layout_height="76dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/finished"
+        android:textColor="#FF272727"
+        android:textSize="16sp"
+        android:theme="@style/SansitaBold" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:id="@+id/threats_num"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textColor="#FF8F8F8F"
+        android:textSize="12sp"
+        android:theme="@style/Sansita"
+        tools:text="3 threats found" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="58dp"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="20"
+        tools:listitem="@layout/item_virus_info" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
