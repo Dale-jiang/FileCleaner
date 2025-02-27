@@ -44,7 +44,7 @@ class VirusListAdapter(
                     title = activity.getString(R.string.virus),
                     message = item.path,
                     rightBtn = activity.getString(R.string.ok),
-                    cancelable = false,
+                    cancelable = true,
                     rightClick = { }
                 ).show(activity.supportFragmentManager, "CommonDialog")
 

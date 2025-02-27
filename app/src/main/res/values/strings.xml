@@ -159,5 +159,7 @@
     <string name="threats_found">%1$d Threats Found</string>
     <string name="sure_to_delete">Sure to delete?</string>
     <string name="delete_failed">Delete Failed!</string>
-
+    <string name="antivirus_finished">Antivirus Finished</string>
+    <string name="no_threats_found">No threats found</string>
+    <string name="all_threats_resolved">All Threats Resolved</string>
 </resources>

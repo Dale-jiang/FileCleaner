@@ -6,7 +6,6 @@ import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.blankj.utilcode.util.ToastUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ActivityVirusScanBinding
 import com.clean.filecleaner.ext.immersiveMode
@@ -91,9 +90,9 @@ class VirusScanActivity : BaseActivity<ActivityVirusScanBinding>() {
 
                     if (allVirusList.isEmpty()) {
 //                        PostUtils.postCustomEvent("antivirus_res_page", hashMapOf("res" to "no"))
-//                        toActivity<AntivirusNoThreatsActivity>()
-//                        finish()
-                        ToastUtils.showLong("没有---")
+
+                        startActivity(Intent(this@VirusScanActivity, AntivirusEndActivity::class.java))
+                        finish()
                     } else {
 //                        PostUtils.postCustomEvent("antivirus_res_page", hashMapOf("res" to "yes"))
                         startActivity(Intent(this@VirusScanActivity, VirusListActivity::class.java))

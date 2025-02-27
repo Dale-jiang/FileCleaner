@@ -112,14 +112,16 @@ class VirusListActivity : BaseActivity<ActivityVirusListBinding>() {
                     adapter?.notifyItemRemoved(index)
                 }
 
-                val remainingItems = list.size
+                val remainingItems = adapter?.list?.size ?: 0
                 binding.threatsNum.text = getString(R.string.threats_found, remainingItems)
 
                 if (remainingItems <= 0) {
-//                    toActivity<AntivirusNoThreatsActivity> {
-//                        putExtra(AntivirusNoThreatsActivity.INTENT_KEY, getString(R.string.all_threats_resolved))
-//                    }
-//                    finish()
+
+                    startActivity(Intent(this@VirusListActivity, AntivirusEndActivity::class.java).apply {
+                        putExtra("MESSAGE", getString(R.string.all_threats_resolved))
+                    })
+
+                    finish()
                 }
             }
         }
