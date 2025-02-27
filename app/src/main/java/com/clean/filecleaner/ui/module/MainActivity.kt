@@ -56,6 +56,7 @@ import com.clean.filecleaner.ui.module.notification.FuncClean
 import com.clean.filecleaner.ui.module.notification.FuncScreenShot
 import com.clean.filecleaner.utils.AndroidVersionUtils
 import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
+import com.clean.filecleaner.utils.AppPreferences.alreadyShowAntivirusDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -120,11 +121,20 @@ class MainActivity : StoragePermissionBaseActivity<ActivityMainBinding>() {
 
             antivirus.setOnClickListener {
 
-                AntivirusTipDialog {
-                    canShowBackAd = true
-                    startActivity(Intent(this@MainActivity, VirusScanActivity::class.java))
-                }.show(supportFragmentManager, "AntivirusTipDialog")
-
+                if (alreadyShowAntivirusDialog) {
+                    requestPermissions {
+                        canShowBackAd = true
+                        startActivity(Intent(this@MainActivity, VirusScanActivity::class.java))
+                    }
+                } else {
+                    AntivirusTipDialog {
+                        requestPermissions {
+                            canShowBackAd = true
+                            alreadyShowAntivirusDialog = true
+                            startActivity(Intent(this@MainActivity, VirusScanActivity::class.java))
+                        }
+                    }.show(supportFragmentManager, "AntivirusTipDialog")
+                }
             }
 
             appManager.setOnClickListener {

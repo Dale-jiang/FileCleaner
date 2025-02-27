@@ -5,14 +5,19 @@ import android.os.Bundle
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ActivityVirusScanBinding
 import com.clean.filecleaner.ext.immersiveMode
 import com.clean.filecleaner.ext.startRotatingWithRotateAnimation
 import com.clean.filecleaner.ext.stopRotatingWithRotateAnimation
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.canShow
+import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
 import com.clean.filecleaner.ui.ad.loadAd
+import com.clean.filecleaner.ui.ad.showFullScreenAd
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.antivirus.viewmodel.VirusScanViewModel
@@ -88,15 +93,17 @@ class VirusScanActivity : BaseActivity<ActivityVirusScanBinding>() {
                     binding.tvLoading.text = getString(R.string.finished)
                     delay(800)
 
-                    if (allVirusList.isEmpty()) {
+                    fullScreenAdShow {
+                        if (allVirusList.isEmpty()) {
 //                        PostUtils.postCustomEvent("antivirus_res_page", hashMapOf("res" to "no"))
 
-                        startActivity(Intent(this@VirusScanActivity, AntivirusEndActivity::class.java))
-                        finish()
-                    } else {
+                            startActivity(Intent(this@VirusScanActivity, AntivirusEndActivity::class.java))
+                            finish()
+                        } else {
 //                        PostUtils.postCustomEvent("antivirus_res_page", hashMapOf("res" to "yes"))
-                        startActivity(Intent(this@VirusScanActivity, VirusListActivity::class.java))
-                        finish()
+                            startActivity(Intent(this@VirusScanActivity, VirusListActivity::class.java))
+                            finish()
+                        }
                     }
 
                 }
@@ -109,7 +116,6 @@ class VirusScanActivity : BaseActivity<ActivityVirusScanBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
 
-        adManagerState.fcResultIntState.loadAd(this@VirusScanActivity)
         adManagerState.fcResultIntState.loadAd(this@VirusScanActivity)
         adManagerState.fcResultNatState.loadAd(this@VirusScanActivity)
 
@@ -134,6 +140,23 @@ class VirusScanActivity : BaseActivity<ActivityVirusScanBinding>() {
         super.stopLoadingAnim()
         binding.ivLoading.stopRotatingWithRotateAnimation()
     }
+
+    private fun fullScreenAdShow(onComplete: () -> Unit) = runCatching {
+        if (adManagerState.hasReachedUnusualAdLimit()) return@runCatching onComplete()
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_scan_int"))
+        val adState = adManagerState.fcBackScanIntState
+        if (!adState.canShow()) {
+            adState.loadAd(this)
+            return@runCatching onComplete()
+        }
+        lifecycleScope.launch {
+            while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                delay(210L)
+            }
+            adState.showFullScreenAd(this@VirusScanActivity, "fc_scan_int") { onComplete() }
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

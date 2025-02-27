@@ -60,7 +60,6 @@ class VirusScanViewModel : ViewModel() {
         override fun onScanCanceled() = Unit
     }
 
-
     private fun handleVirusFound(appInfo: AppInfo) {
         val virusInfo = if (isAppVirus(appInfo)) {
             VirusInfo(

@@ -6,18 +6,27 @@ import android.os.Bundle
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.clean.filecleaner.R
 import com.clean.filecleaner.databinding.ActivityVirusListBinding
 import com.clean.filecleaner.ext.immersiveMode
+import com.clean.filecleaner.report.reporter.DataReportingUtils
+import com.clean.filecleaner.ui.ad.IAd
+import com.clean.filecleaner.ui.ad.adManagerState
+import com.clean.filecleaner.ui.ad.canShow
+import com.clean.filecleaner.ui.ad.hasReachedUnusualAdLimit
+import com.clean.filecleaner.ui.ad.showNativeAd
+import com.clean.filecleaner.ui.ad.waitAdLoading
 import com.clean.filecleaner.ui.base.BaseActivity
 import com.clean.filecleaner.ui.module.MainActivity
 import com.clean.filecleaner.ui.module.dialog.CommonDialog
 import com.clean.filecleaner.utils.AppLifeHelper.jumpToSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -51,6 +60,7 @@ class VirusListActivity : BaseActivity<ActivityVirusListBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
 
         setListener()
+        nativeAdShow()
 
         with(binding) {
             toolbar.title.text = getString(R.string.antivirus)
@@ -137,6 +147,31 @@ class VirusListActivity : BaseActivity<ActivityVirusListBinding>() {
                 putExtra(Intent.EXTRA_RETURN_RESULT, true)
             })
         }
+    }
+
+
+    private var ad: IAd? = null
+    private fun nativeAdShow() {
+        if (adManagerState.hasReachedUnusualAdLimit()) return
+        DataReportingUtils.postCustomEvent("fc_ad_chance", hashMapOf("ad_pos_id" to "fc_scan_nat"))
+        val adState = adManagerState.fcScanNatState
+        adState.waitAdLoading(this) {
+            lifecycleScope.launch {
+                while (!lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) delay(210L)
+                if (adState.canShow()) {
+                    ad?.destroy()
+                    adState.showNativeAd(this@VirusListActivity, binding.adContainer, "fc_scan_nat") {
+                        ad = it
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ad?.destroy()
+        stopLoadingAnim()
     }
 
 }
