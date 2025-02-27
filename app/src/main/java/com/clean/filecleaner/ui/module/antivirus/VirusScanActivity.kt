@@ -46,7 +46,7 @@ class VirusScanActivity : BaseActivity<ActivityVirusScanBinding>() {
 
             scanFailedLiveData.observe(this@VirusScanActivity) {
 
-                // PostUtils.postCustomEvent("antivirus_scan_error_popshow")
+                DataReportingUtils.postCustomEvent("antivirus_scan_error_popshow")
                 CommonDialog(
                     title = getString(R.string.scan_error),
                     message = getString(R.string.please_try_again),
@@ -95,12 +95,11 @@ class VirusScanActivity : BaseActivity<ActivityVirusScanBinding>() {
 
                     fullScreenAdShow {
                         if (allVirusList.isEmpty()) {
-//                        PostUtils.postCustomEvent("antivirus_res_page", hashMapOf("res" to "no"))
-
+                            DataReportingUtils.postCustomEvent("antivirus_res_page", hashMapOf("res" to "no"))
                             startActivity(Intent(this@VirusScanActivity, AntivirusEndActivity::class.java))
                             finish()
                         } else {
-//                        PostUtils.postCustomEvent("antivirus_res_page", hashMapOf("res" to "yes"))
+                            DataReportingUtils.postCustomEvent("antivirus_res_page", hashMapOf("res" to "yes"))
                             startActivity(Intent(this@VirusScanActivity, VirusListActivity::class.java))
                             finish()
                         }

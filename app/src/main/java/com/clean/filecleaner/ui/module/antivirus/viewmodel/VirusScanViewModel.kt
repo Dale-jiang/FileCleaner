@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.AppUtils
 import com.clean.filecleaner.data.app
 import com.clean.filecleaner.ext.getApplicationIconDrawable
+import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.module.antivirus.VirusInfo
 import com.clean.filecleaner.ui.module.antivirus.allVirusList
 import com.trustlook.sdk.cloudscan.CloudScanClient
@@ -44,6 +45,7 @@ class VirusScanViewModel : ViewModel() {
         }
 
         override fun onScanError(errCode: Int, errMsg: String?) {
+            DataReportingUtils.postCustomEvent("antivirus_scan_error", hashMapOf("code" to errCode))
             scanFailedLiveData.postValue(errCode)
         }
 
@@ -96,7 +98,7 @@ class VirusScanViewModel : ViewModel() {
             delay(35 * 1000L)
             withContext(Dispatchers.Main) {
                 if (scanPathLiveData.value.isNullOrEmpty()) {
-//                    PostUtils.postCustomEvent("antivirus_scan_error", hashMapOf("code" to 9))
+                    DataReportingUtils.postCustomEvent("antivirus_scan_error", hashMapOf("code" to 9))
                     scanFailedLiveData.postValue(9)
                 }
             }
