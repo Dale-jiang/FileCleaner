@@ -107,7 +107,7 @@ fun Firebase.initRemoteConfig() {
             NotificationCenter.noticeConfig = if (isSamsung) {
                 NotificationConfig(1, 30, 35, 10, 15, 30, 5, 30, 5)
             } else {
-                NotificationConfig(1, 30, 40, 0, 50, 30, 10, 30, 10)
+                NotificationConfig(1, 30, 40, 10, 20, 30, 10, 30, 10)
             }
         }
 
@@ -125,7 +125,7 @@ fun Firebase.initRemoteConfig() {
             }
         }.onFailure {
             FloatingWindowController.windowConfig =
-                FloatingWindowConfig(1, 30, 15, 0, 55, 30, 5, 30, 5)
+                FloatingWindowConfig(1, 30, 15, 5, 15, 30, 5, 30, 5)
 
         }
 
@@ -133,7 +133,7 @@ fun Firebase.initRemoteConfig() {
 
 
     fun fetchTopPercentConf() = runCatching {
-        val json = remoteConfig["FIleCleaner_toppercent"].asString()
+        val json = remoteConfig["FileCleaner_toppercent"].asString()
         if (json.isBlank()) return@runCatching
         JSONObject(json).apply {
             AdLTVReporter.run {

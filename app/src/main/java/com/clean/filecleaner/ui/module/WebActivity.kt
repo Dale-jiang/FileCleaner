@@ -34,6 +34,9 @@ class WebActivity : BaseActivity<ActivityWebBinding>() {
         }
         initWebView()
         binding.webView.loadUrl(mUrl)
+        binding.toolbar.ivLeft.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
     }
 

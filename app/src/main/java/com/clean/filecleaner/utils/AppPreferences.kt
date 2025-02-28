@@ -104,7 +104,7 @@ object AppPreferences {
         return prefs.getLong("${baseReminder.reminderName}_reminder_time_window", 0L)
     }
 
-    fun updateNWindowShowCounts(baseReminder: BaseReminder) {
+    fun updateWindowShowCounts(baseReminder: BaseReminder) {
         val key = "${baseReminder.reminderName}_reminder_amounts_window"
         val lastShowTime = getNotificationLashShow(baseReminder)
         val newCount = if (TimeUtils.isToday(lastShowTime)) {

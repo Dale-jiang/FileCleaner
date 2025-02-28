@@ -39,6 +39,14 @@ object NotificationCenter {
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_2, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12011),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_time_3, R.string.notice_btn_clean_time, FuncClean, TaskReminder, 12011),
 
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_time_1, R.string.notice_btn_virus_time, FuncAntivirus, TaskReminder, 12001),
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_time_2, R.string.notice_btn_virus_time, FuncAntivirus, TaskReminder, 12001),
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_time_3, R.string.notice_btn_virus_time, FuncAntivirus, TaskReminder, 12001),
+
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_time_1, R.string.notice_btn_virus_time, FuncAntivirus, TaskReminder, 12011),
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_time_2, R.string.notice_btn_virus_time, FuncAntivirus, TaskReminder, 12011),
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_time_3, R.string.notice_btn_virus_time, FuncAntivirus, TaskReminder, 12011),
+
 
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_1, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_2, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12002),
@@ -51,6 +59,14 @@ object NotificationCenter {
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_3, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12012),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_4, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12012),
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_unlock_5, R.string.notice_btn_clean_unlock, FuncClean, UserPresenceReminder, 12012),
+
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_unlock_1, R.string.notice_btn_virus_unlock, FuncAntivirus, UserPresenceReminder, 12002),
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_unlock_2, R.string.notice_btn_virus_unlock, FuncAntivirus, UserPresenceReminder, 12002),
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_unlock_3, R.string.notice_btn_virus_unlock, FuncAntivirus, UserPresenceReminder, 12002),
+
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_unlock_1, R.string.notice_btn_virus_unlock, FuncAntivirus, UserPresenceReminder, 12012),
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_unlock_2, R.string.notice_btn_virus_unlock, FuncAntivirus, UserPresenceReminder, 12012),
+            NotificationInfo(R.mipmap.ic_notice_antivirus, R.string.notice_message_virus_unlock_3, R.string.notice_btn_virus_unlock, FuncAntivirus, UserPresenceReminder, 12012),
 
 
             NotificationInfo(R.mipmap.ic_notice_clean, R.string.notice_message_clean_uninstall_1, R.string.notice_btn_clean_uninstall, FuncClean, UninstallReminder, 12003),

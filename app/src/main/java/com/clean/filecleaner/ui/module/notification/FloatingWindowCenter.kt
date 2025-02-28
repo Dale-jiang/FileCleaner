@@ -15,6 +15,7 @@ import com.clean.filecleaner.report.reporter.DataReportingUtils
 import com.clean.filecleaner.ui.module.SplashActivity
 import com.clean.filecleaner.ui.module.notification.BarNotificationCenter.NOTICE_INFO_ITEM
 import com.clean.filecleaner.utils.AndroidVersionUtils.isAndroid8OrAbove
+import com.clean.filecleaner.utils.AppPreferences
 
 class FloatingWindowCenter(private val context: Context) {
 
@@ -53,6 +54,9 @@ class FloatingWindowCenter(private val context: Context) {
         contentTextView?.text = context.getString(notificationInfo.messageId)
         buttonTextView?.text = context.getString(notificationInfo.btnStrId)
         mImage?.setImageResource(notificationInfo.icon)
+
+        AppPreferences.updateWindowLashShow(notificationInfo.reminder)
+        AppPreferences.updateWindowShowCounts(notificationInfo.reminder)
 
         DataReportingUtils.postCustomEvent("winpop_show")
 

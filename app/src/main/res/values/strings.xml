@@ -84,6 +84,11 @@
     <string name="notice_message_clean_time_2">Clean junk instantly!</string>
     <string name="notice_message_clean_time_3">Clear unnecessary files!</string>
 
+    <string name="notice_btn_virus_time">Now!</string>
+    <string name="notice_message_virus_time_1">Critical virus detected! Act immediately!</string>
+    <string name="notice_message_virus_time_2">System security compromised! One-click threat removal!</string>
+    <string name="notice_message_virus_time_3">Virus breach detected! Initiate deep scan now!</string>
+
 
     <string name="notice_btn_clean_unlock">Clean</string>
     <string name="notice_message_clean_unlock_1">Free up space instantly!</string>
@@ -91,6 +96,12 @@
     <string name="notice_message_clean_unlock_3">One tap to clean up!</string>
     <string name="notice_message_clean_unlock_4">Optimize storage now!</string>
     <string name="notice_message_clean_unlock_5">Speed up your device!</string>
+
+    <string name="notice_btn_virus_unlock">Destroy!</string>
+    <string name="notice_message_virus_unlock_1">Virus Detected: Some files may be infected!</string>
+    <string name="notice_message_virus_unlock_2">Urgent Notice! Your passwords might be vulnerable.</string>
+    <string name="notice_message_virus_unlock_3">Suspicious Program Detected: Potential data theft risk.</string>
+
 
     <string name="notice_btn_clean_uninstall">Clean</string>
     <string name="notice_message_clean_uninstall_1">Erase junk in seconds!</string>
